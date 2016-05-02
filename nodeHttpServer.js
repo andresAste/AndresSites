@@ -29,12 +29,19 @@ var staticPath = path.resolve(__dirname, '.');
 app.use(express.static(staticPath));
 
 //Define a service  localhost:9090/"Users"
-app.get('/Users', function (req, res) {
-   fs.readFile( staticPath + "/Services/" + "users.json", 'utf8', function (err, data) {
-       console.log(googleDriveAPI.DownloadSpreadsheet());
-       res.end( data );
+app.get('/GastosMensuales', function (req, res) {
+   /*fs.readFile( staticPath + "/Services/" + "users.json", 'utf8', function (err, data) {
+       
+       
    });
-})
+	*/
+	res.end( "calling method to get file" );
+	console.log(googleDriveAPI.DownloadSpreadsheet());
+});
+
+app.get('*', function(req, res) {
+  res.end("page not found");
+});
 
 app.listen(9090, function() {
   console.log('listening on staticPath:' + staticPath);
