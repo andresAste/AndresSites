@@ -15,9 +15,11 @@ var TOKEN_PATH = TOKEN_DIR + 'gastosMensuales.json';
  * given callback function.
  *
  * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
+ * @param {function} callback The callback to call with the authorized client
+ * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
+ * @param {function} callbackError The callback to call with the authorized client, for a failed action
  */
-function authorize(credentials, callback) {
+function authorize(credentials, callback, callbackOK, callbackError) {
   var clientSecret = credentials.installed.client_secret;
   var clientId = credentials.installed.client_id;
   var redirectUrl = credentials.installed.redirect_uris[0];
@@ -27,10 +29,10 @@ function authorize(credentials, callback) {
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, function(err, token) {
     if (err) {
-      getNewToken(oauth2Client, callback);
+      getNewToken(oauth2Client, callback, callbackOK, callbackError);
     } else {
       oauth2Client.credentials = JSON.parse(token);
-      callback(oauth2Client);
+      callback(oauth2Client, callbackOK, callbackError);
     }
   });
 }
@@ -40,10 +42,11 @@ function authorize(credentials, callback) {
  * execute the given callback with the authorized OAuth2 client.
  *
  * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback to call with the authorized
- *     client.
+ * @param {getEventsCallback} callback The callback to call with the authorized client.
+ * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
+ * @param {function} callbackError The callback to call with the authorized client, for a failed action
  */
-function getNewToken(oauth2Client, callback) {
+function getNewToken(oauth2Client, callback, callbackOK, callbackError) {
   var authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES
@@ -58,11 +61,12 @@ function getNewToken(oauth2Client, callback) {
     oauth2Client.getToken(code, function(err, token) {
       if (err) {
         console.log('Error while trying to retrieve access token', err);
+        callbackError('Error while trying to retrieve access token' + err);
         return;
       }
       oauth2Client.credentials = token;
       storeToken(token);
-      callback(oauth2Client);
+      callback(oauth2Client, callbackOK, callbackError);
     });
   });
 }
@@ -89,34 +93,39 @@ function storeToken(token) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listFiles(auth) {
+function listFiles(auth, callbackOK, callbackError) {
   var service = google.drive('v3');
-  service.files.list({
+  service.files.list(
+  {
     auth: auth,
     pageSize: 10,
     fields: "nextPageToken, files(id, name)"
-  }, function(err, response) {
+  }, 
+  function(err, response) {
     if (err) {
       console.log('The API returned an error: ' + err);
-      return;
+      callbackError('The API returned an error: ' + err);
     }
-    var files = response.files;
-    if (files.length == 0) {
-      console.log('No files found.');
-    } else {
-      console.log('Files:');
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        console.log('%s (%s)', file.name, file.id);
-        if (file.name == "Gastos mensuales") {
-          downloadGastosMensuales(file.id, auth);
-        };
-      }
+    else {
+      var files = response.files;
+      if (files.length == 0) {
+        console.log('No files found.');
+        callbackError('No files found.');
+      } else {
+        console.log('Files:');
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          console.log('%s (%s)', file.name, file.id);
+          if (file.name == "Gastos mensuales") {
+            downloadGastosMensuales(file.id, auth, callbackOK, callbackError);
+          };
+        }
+      }  
     }
   });
 }
 
-function downloadGastosMensuales(fileID, auth) {
+function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
   var dest = fs.createWriteStream(__dirname + '/tmp/gastosMensuales.csv');
   var service = google.drive('v3');
   service.files.export({
@@ -124,23 +133,41 @@ function downloadGastosMensuales(fileID, auth) {
     fileId: fileID,
     mimeType: 'text/csv'
   })
-  .on('end', function() { console.log('Done');  })
-  .on('error', function(err) { console.log('Error during download', err); })
+  .on('end', function() { 
+    console.log('Done'); 
+    callbackOK({ message: 'File saved successfully. Pending: read file and return results as JSON'});
+  })
+  .on('error', function(err) { 
+    console.log('Error during download', err); 
+    callbackError('Error during download' + err);
+  })
   .pipe(dest);
-
 }
 
 module.exports = {
-	DownloadSpreadsheet: function() {
+	DownloadSpreadsheet: function(callback) {
+    var result = {
+      errors : [],
+      gastosMensuales: {}
+    };
+
 		// Load client secrets from a local file.
     fs.readFile(__dirname +'/client_secret.json', function processClientSecrets(err, content) {
       if (err) {
         console.log('Error loading client secret file: ' + err);
-        return;
+        result.errors.push('Error loading client secret file: ' + err);
+        return result;
       }
-      // Authorize a client with the loaded credentials, then call the
-      // Drive API.
-      authorize(JSON.parse(content), listFiles);
+      // Authorize a client with the loaded credentials, then call the Drive API.
+      authorize(JSON.parse(content), listFiles,
+        function (content){
+          result.gastosMensuales = content;
+          callback(result);
+        },
+        function (err){
+          result.errors.push(err);
+          callback(result);
+        });
     });
 	}
 }

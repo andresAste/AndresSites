@@ -28,15 +28,31 @@ var staticPath = path.resolve(__dirname, '.');
 
 app.use(express.static(staticPath));
 
-//Define a service  localhost:9090/"Users"
+//Pages
 app.get('/GastosMensuales', function (req, res) {
+   fs.readFile( staticPath + "/GastosMensuales/index.html", 'utf8', function (err, data) {
+      if (err) {
+      	console.log(err);
+      }
+      else {
+      	res.end(data);
+      }
+   });
+});
+//Services
+app.get('/Services/GastosMensuales', function (req, res) {
    /*fs.readFile( staticPath + "/Services/" + "users.json", 'utf8', function (err, data) {
        
        
    });
 	*/
-	res.end( "calling method to get file" );
-	console.log(googleDriveAPI.DownloadSpreadsheet());
+	googleDriveAPI.DownloadSpreadsheet(function(result) {
+		//This line returns a string
+		//res.end(JSON.stringify(result)); 
+
+		//This line returns a JSON object
+		res.json(result);
+	});
 });
 
 app.get('*', function(req, res) {
