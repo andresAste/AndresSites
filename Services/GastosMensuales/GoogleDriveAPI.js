@@ -1,15 +1,25 @@
-//Token stored to \Users\aasteasu/.credentials/gastosMensuales.json
+// ***** MODULES IMPORTED *****************************************************************************************************************************************
 var fs = require("fs");
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 
-// If modifying these scopes, delete your previously saved credentials
-// at ~/.credentials/drive-nodejs-quickstart.json
+// ***** LOCAL VARIABLES ******************************************************************************************************************************************
+//Converter Class 
+var Converter = require("csvtojson").Converter;
+var converter = new Converter({});
+
+// If modifying these scopes, delete your previously saved credentials at /.credentials/TOKEN_PATH
 var SCOPES = ['https://spreadsheets.google.com/feeds', 'https://docs.google.com/feeds', 'https://www.googleapis.com/auth/drive.file'];
 var TOKEN_DIR = __dirname + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'gastosMensuales.json';
+var GASTOS_MENSUALES_FILE = '/tmp/gastosMensuales.csv';
 
+var SEPARADOR = "***";
+var MES_PAGADO = "-p";
+var PAGO_ANUAL = "-a";
+var CONCEPTO = "Concepto";
+// ***** PRIVATE FUNCTIONS *****************************************************************************************************************************************
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
  * given callback function.
@@ -99,6 +109,7 @@ function listFiles(auth, callbackOK, callbackError) {
   {
     auth: auth,
     pageSize: 10,
+    q: "name contains 'Gastos'", //Remove this filter if desired to return all files
     fields: "nextPageToken, files(id, name)"
   }, 
   function(err, response) {
@@ -125,8 +136,16 @@ function listFiles(auth, callbackOK, callbackError) {
   });
 }
 
+/**
+ * Download Gastos Mensuales Spreadsheet
+ * 
+ * @param {String} fileID ID of the file.
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
+ * @param {function} callbackError The callback to call with the authorized client, for a failed action
+*/
 function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
-  var dest = fs.createWriteStream(__dirname + '/tmp/gastosMensuales.csv');
+  var dest = fs.createWriteStream(__dirname + GASTOS_MENSUALES_FILE);
   var service = google.drive('v3');
   service.files.export({
     auth: auth,
@@ -135,7 +154,7 @@ function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
   })
   .on('end', function() { 
     console.log('Done'); 
-    callbackOK({ message: 'File saved successfully. Pending: read file and return results as JSON'});
+    ParseGastosMensuales(__dirname + GASTOS_MENSUALES_FILE, callbackOK, callbackError);
   })
   .on('error', function(err) { 
     console.log('Error during download', err); 
@@ -144,6 +163,74 @@ function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
   .pipe(dest);
 }
 
+/**
+ * Reads a csv file and returns the contents as a JSON  file.
+ * @param {string} filePath Path to the cvs file
+ * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
+ * @param {function} callbackError The callback to call with the authorized client, for a failed action
+*/
+function ParseGastosMensuales(filePath, callbackOK, callbackError) {
+  
+  converter.on("end_parsed", function (jsonObj) {
+    var parsedObject = {
+      Meses: [{Mes: "Enero", Pagos:[] }, {Mes: "Febrero", Pagos:[] }, {Mes: "Marzo", Pagos:[] }, {Mes: "Abril", Pagos:[] }, {Mes: "Mayo", Pagos:[] }, {Mes: "Junio", Pagos:[] }, 
+              {Mes: "Julio", Pagos:[] }, {Mes: "Agosto", Pagos:[] }, {Mes: "Septiembre", Pagos:[] }, {Mes: "Octubre", Pagos:[] }, {Mes: "Noviembre", Pagos:[] }, 
+              {Mes: "Diciembre", Pagos:[] }, ],
+      Conceptos:[]
+    };   
+
+    //find pagos per month
+    parsedObject.Meses.forEach(function(mes, index, array) {
+      var i = 1;
+      while (i < jsonObj.length && jsonObj[i].field1 !=  SEPARADOR) {
+        var pago = {
+          Mes: mes.Mes,
+          Concepto:jsonObj[i].field1,
+          Monto:jsonObj[i+1][mes.Mes],
+          Vencimiento: jsonObj[i][mes.Mes],
+          Pagado: jsonObj[i][mes.Mes].toString().lastIndexOf("-p") != -1,
+          EsPagoAnual: jsonObj[i][mes.Mes].toString().lastIndexOf("-a") != -1,
+        };
+
+        mes.Pagos.push(pago);
+        i = i+2;
+      }
+    });
+
+    //find general pagos' information
+    var i = 1;
+    while (i < jsonObj.length && jsonObj[i].field1 !=  CONCEPTO) {
+      i = i+1;
+    }
+    if (i < jsonObj.length) {
+      i = i + 1; //Skip Concepto's header
+      while (i < jsonObj.length && jsonObj[i].field1 !=  SEPARADOR) {
+        var concepto = {
+          Concepto:jsonObj[i].field1,
+          CodigoPago:jsonObj[i].field2,
+          CarpetaDropbox: jsonObj[i].Enero,
+          PalabraDropbox: jsonObj[i].Febrero,
+          Origen: jsonObj[i].Marzo
+        };
+
+        parsedObject.Conceptos.push(concepto);
+        i = i+1;
+      }
+    };
+
+    callbackOK(parsedObject);
+  })
+  .on("error",function(errMsg,errData){
+    console.log(errMsg);
+    console.log(errData);
+    callbackError(errMsg);
+  });
+
+  fs.createReadStream(filePath)
+    .pipe(converter);
+}
+
+// ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
 module.exports = {
 	DownloadSpreadsheet: function(callback) {
     var result = {

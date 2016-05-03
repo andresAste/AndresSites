@@ -39,6 +39,7 @@ app.get('/GastosMensuales', function (req, res) {
       }
    });
 });
+
 //Services
 app.get('/Services/GastosMensuales', function (req, res) {
    /*fs.readFile( staticPath + "/Services/" + "users.json", 'utf8', function (err, data) {
