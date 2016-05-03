@@ -143,7 +143,7 @@ function listFiles(auth, callbackOK, callbackError) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
  * @param {function} callbackError The callback to call with the authorized client, for a failed action
-*/
+ */
 function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
   var dest = fs.createWriteStream(__dirname + GASTOS_MENSUALES_FILE);
   var service = google.drive('v3');
@@ -168,7 +168,7 @@ function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
  * @param {string} filePath Path to the cvs file
  * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
  * @param {function} callbackError The callback to call with the authorized client, for a failed action
-*/
+ */
 function ParseGastosMensuales(filePath, callbackOK, callbackError) {
   
   converter.on("end_parsed", function (jsonObj) {
@@ -184,7 +184,6 @@ function ParseGastosMensuales(filePath, callbackOK, callbackError) {
       var i = 1;
       while (i < jsonObj.length && jsonObj[i].field1 !=  SEPARADOR) {
         var pago = {
-          Mes: mes.Mes,
           Concepto:jsonObj[i].field1,
           Monto:jsonObj[i+1][mes.Mes],
           Vencimiento: jsonObj[i][mes.Mes],
