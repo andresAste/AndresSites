@@ -7,7 +7,6 @@ var googleAuth = require('google-auth-library');
 // ***** LOCAL VARIABLES ******************************************************************************************************************************************
 //Converter Class 
 var Converter = require("csvtojson").Converter;
-var converter = new Converter({});
 
 // If modifying these scopes, delete your previously saved credentials at /.credentials/TOKEN_PATH
 var SCOPES = ['https://spreadsheets.google.com/feeds', 'https://docs.google.com/feeds', 'https://www.googleapis.com/auth/drive.file'];
@@ -171,6 +170,8 @@ function downloadGastosMensuales(fileID, auth, callbackOK, callbackError) {
  */
 function ParseGastosMensuales(filePath, callbackOK, callbackError) {
   
+  var converter = new Converter({});
+
   converter.on("end_parsed", function (jsonObj) {
     var parsedObject = {
       Meses: [{Mes: "Enero", Pagos:[] }, {Mes: "Febrero", Pagos:[] }, {Mes: "Marzo", Pagos:[] }, {Mes: "Abril", Pagos:[] }, {Mes: "Mayo", Pagos:[] }, {Mes: "Junio", Pagos:[] }, 
