@@ -10,6 +10,11 @@ var GastosMensuales;
             event.preventDefault(); // cancel default behavior
             GastosMensuales.GetAllGastosMensuales();
         });
+
+        $(document).on({
+            ajaxStart: function() { $("body").addClass("gm-loading"); },
+            ajaxStop: function() { $("body").removeClass("gm-loading"); }    
+        });
     };
 
     /**
@@ -19,7 +24,7 @@ var GastosMensuales;
         var getCall = ServicesBaseAddress + "GastosMensuales";
         console.log(getCall);
         $.get( getCall, function( data ) {
-          CreateTableForMesCorriente(data);
+           CreateTableForMesCorriente(data);
         })
         .fail(function(data) { 
             alert( "error" ); 
