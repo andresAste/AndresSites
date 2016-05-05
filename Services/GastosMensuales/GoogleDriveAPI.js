@@ -3,6 +3,7 @@ var fs = require("fs");
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
+var utils = require('./Utils');
 
 // ***** LOCAL VARIABLES ******************************************************************************************************************************************
 //Converter Class 
@@ -184,12 +185,23 @@ function ParseGastosMensuales(filePath, callbackOK, callbackError) {
     parsedObject.Meses.forEach(function(mes, index, array) {
       var i = 1;
       while (i < jsonObj.length && jsonObj[i].field1 !=  SEPARADOR) {
+        var vencimientoRaw = jsonObj[i][mes.Mes].toString();
+        var vencimientoDay = vencimientoRaw.replace("-p", "").replace("-a", "").replace("?", "");
+
+        var date = new Date();
+        var diaVencimiento = "";
+
+        if (utils.ValidateDay(vencimientoDay)) {
+          diaVencimiento = new Date(date.getFullYear(), index, vencimientoDay);
+        };
+
         var pago = {
           Concepto:jsonObj[i].field1,
           Monto:jsonObj[i+1][mes.Mes],
-          Vencimiento: jsonObj[i][mes.Mes],
-          Pagado: jsonObj[i][mes.Mes].toString().lastIndexOf("-p") != -1,
-          EsPagoAnual: jsonObj[i][mes.Mes].toString().lastIndexOf("-a") != -1,
+          Vencimiento: diaVencimiento,
+          FechaTentativa : vencimientoRaw.lastIndexOf("?") != -1,
+          Pagado: vencimientoRaw.lastIndexOf("-p") != -1,
+          EsPagoAnual: vencimientoRaw.lastIndexOf("-a") != -1,
         };
 
         mes.Pagos.push(pago);

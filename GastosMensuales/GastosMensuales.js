@@ -45,25 +45,27 @@ var GastosMensuales;
         $.each(gastosMensualesJSON.gastosMensuales.Meses, function(mesIndex, mes) {
             if (mesIndex == currenMonth) {
 
-                var pagosforThisMonth= [];
+                var pagosPaidForThisMonth= [];
+                var pagosNotPaidForThisMonth= [];
                 $.each(mes.Pagos, function (pagoIndex, pago) {
-                    if (pago.Vencimiento != "") {
-                        pagosforThisMonth.push(pago);
-                    };
+                    pago.ConceptoObject = GetItemByProperty(gastosMensualesJSON.gastosMensuales.Conceptos, "Concepto", pago.Concepto);
+                    if (pago.Vencimiento != "" && pago.Pagado) {
+                        pagosPaidForThisMonth.push(pago);
+                    }
+                    else if (pago.Vencimiento != "" && !pago.Pagado) {
+                        pagosNotPaidForThisMonth.push(pago);
+                    };;
                 });                
+                Sort(pagosPaidForThisMonth, "Vencimiento", true, true);
+                Sort(pagosNotPaidForThisMonth, "Vencimiento", false, false);
 
-                Sort(pagosforThisMonth, "Pagado", false, false);
-
-                $.each(pagosforThisMonth, function (pagoIndex, pago) {
-                    var newRow = "<tr>" + 
-                                     "<td>" + pago.Concepto + "</td>" +
-                                     "<td>" + pago.Vencimiento + "</td>" +
-                                     "<td>" + pago.Monto + "</td>" +
-                                     "<td>" + pago.Pagado + "</td>" +
-                                     "<td>" + pago.EsPagoAnual + "</td>" +
-                                 "</tr>";
-                    rows = rows +  newRow;           
+                $.each(pagosNotPaidForThisMonth, function (pagoIndex, pago) {
+                    rows = rows +  GeneratePagoRow(pago);           
                 });
+                $.each(pagosPaidForThisMonth, function (pagoIndex, pago) {
+                    rows = rows +  GeneratePagoRow(pago);                    
+                 });
+
             };
         });
         
@@ -114,5 +116,44 @@ var GastosMensuales;
         }
     }
 
+    /**
+     * Returns the first element of the array having property = value
+     */
+    function GetItemByProperty(itemsArray, property, value) {
+        var itemFound = null;
+        
+        $.each(itemsArray, function(itemIndex, item) {
+            for (var key in item) {
+                if (item.hasOwnProperty(key) && item[key] == value) {
+                    itemFound = item;
+                }
+            }    
+        })
+        
+        return itemFound;
+    }
+
+    /**
+     * Generates an HTML row for the given Pago
+     */
+    function GeneratePagoRow(pago) {
+        var codigoPago = pago.ConceptoObject != null ? pago.ConceptoObject.CodigoPago : "";
+        var carpetaDropbox = pago.ConceptoObject != null ? pago.ConceptoObject.CarpetaDropbox : "";
+        var origen = pago.ConceptoObject != null ? pago.ConceptoObject.Origen : "";
+        var fechaTentativaSuffix = pago.FechaTentativa ? "(?)" : "";
+        var vencimiento = (new Date(pago.Vencimiento)).toLocaleDateString("es-ar") + fechaTentativaSuffix;
+
+        var row = "<tr>" + 
+                     "<td>" + pago.Concepto + "</td>" +
+                     "<td>" + vencimiento + "</td>" +
+                     "<td>" + pago.Monto + "</td>" +
+                     "<td>" + pago.Pagado + "</td>" +
+                     "<td>" + pago.EsPagoAnual + "</td>" +
+                     "<td>" + codigoPago + "</td>" +
+                     "<td>" + carpetaDropbox + "</td>" +
+                     "<td>" + origen + "</td>" +
+                  "</tr>";
+        return row;                  
+    }
 
 })(GastosMensuales || (GastosMensuales = {}));
