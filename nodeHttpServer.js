@@ -21,7 +21,7 @@ var path = require('path');
 var express = require('express');
 var fs = require("fs");
 var googleDriveAPI = require('./Services/GastosMensuales/GoogleDriveAPI');
-
+var dropboxAPI = require('./Services/DropBox/DropboxAPI');
 var app = express();
 
 var staticPath = path.resolve(__dirname, '.');
@@ -42,11 +42,6 @@ app.get('/GastosMensuales', function (req, res) {
 
 //Services
 app.get('/Services/GastosMensuales', function (req, res) {
-   /*fs.readFile( staticPath + "/Services/" + "users.json", 'utf8', function (err, data) {
-       
-       
-   });
-	*/
 	googleDriveAPI.DownloadSpreadsheet(function(result) {
 		//This line returns a string
 		//res.end(JSON.stringify(result)); 
@@ -55,6 +50,20 @@ app.get('/Services/GastosMensuales', function (req, res) {
 		res.json(result);
 	});
 });
+app.get('/Services/DropBox/File', function (req, res) {
+  dropboxAPI.DownloadFileRequest(res, function(result) {
+    res.json(result);
+  });
+});
+/*app.get('/Services/DropBox/auth', function(req, res) {
+  dropboxAPI.Authenticate(res);
+});
+*/
+app.get('/Services/DropBox/auth-callback', function(req, res) {
+  var code = req.query.code;
+  dropboxAPI.AuthenticateCallback(code, res);
+});
+
 
 app.get('*', function(req, res) {
   res.end("page not found");
