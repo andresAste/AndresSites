@@ -1,6 +1,6 @@
 var GastosMensuales;
 (function (GastosMensuales) {
-    var ServicesBaseAddress = "http://localhost:9090/Services/";
+    var ServicesBaseAddress = "http://localhost:9090/api/";
     
     /**
      * Initializes page
@@ -21,7 +21,7 @@ var GastosMensuales;
      * Get all Gastos Mensuales
      */
     GastosMensuales.GetAllGastosMensuales = function () {
-        var getCall = ServicesBaseAddress + "GastosMensuales";
+        var getCall = ServicesBaseAddress + "gastosMensuales";
         console.log(getCall);
         $.get( getCall, function( data ) {
            CreateTableForMesCorriente(data);

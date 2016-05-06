@@ -8,7 +8,7 @@ var TOKEN_PATH = TOKEN_DIR + 'accessToken.json';
 var CREDENTIALS_PATH = TOKEN_DIR + 'credentials.json';
 // ***** PRIVATE FUNCTIONS *****************************************************************************************************************************************
 
-function Authenticate(responseObject, callback, callbackOK, callbackError) {
+function Authenticate(responseObject, callback, callbackParams, callbackOK, callbackError) {
   // Check if we have previously stored a token.
   fs.readFile(TOKEN_PATH, function(err, token) {
     if (err) {
@@ -16,7 +16,7 @@ function Authenticate(responseObject, callback, callbackOK, callbackError) {
     } else {
       var savedToken = JSON.parse(token);
       var client = new Dropbox.Client({ token: savedToken.token }); 
-      callback(client, callbackOK, callbackError);
+      callback(client, callbackOK, callbackError, callbackParams);
     }
   });
 }
@@ -31,7 +31,7 @@ function AuthenticateCallback(code, responseObject) {
 
     client.authDriver({
       authType: function() {return "code";},
-      url: function() {return "http://localhost:9090/Services/DropBox/auth-callback";}, //this needs to be set on https://www.dropbox.com/developers/apps, Redirect URIs
+      url: function() {return "http://localhost:9090/api/dropBox/auth-callback";}, //this needs to be set on https://www.dropbox.com/developers/apps, Redirect URIs
       doAuthorize: function(authUrl, stateParam, client, callback) {
         return callback({code: code});// this is the code from the callback
       },
@@ -58,7 +58,7 @@ function AuthenticateCallback(code, responseObject) {
  * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
  * @param {function} callbackError The callback to call with the authorized client, for a failed action
  */
-function getNewToken(responseObject, callback, callbackOK, callbackError) {
+function getNewToken(responseObject) {
   var credentials = require(CREDENTIALS_PATH);
   // Server-side applications use both the API key and secret.
   var client = new Dropbox.Client({
@@ -68,7 +68,7 @@ function getNewToken(responseObject, callback, callbackOK, callbackError) {
 
   client.authDriver({
       authType: function() {return "code";},
-      url: function() {return "http://localhost:9090/Services/DropBox/auth-callback";}, //this needs to be set on https://www.dropbox.com/developers/apps, Redirect URIs
+      url: function() {return "http://localhost:9090/api/dropBox/auth-callback";}, //this needs to be set on https://www.dropbox.com/developers/apps, Redirect URIs
       doAuthorize: function(authUrl, stateParam, client, callback) {
         responseObject.redirect(authUrl);// redirect to Dropbox
       },
@@ -97,14 +97,14 @@ function storeToken(token) {
   console.log('Token stored to ' + TOKEN_PATH);
 }
 
-function DownloadFile(dropboxClient, callbackOK, callbackError) {
+function DownloadFile(dropboxClient, callbackOK, callbackError, callbackParams) {
   // to get the user Dropbox id use 
   /*dropboxClient.getAccountInfo(function(error, accountInfo) {
     console.log(accountInfo);
     callbackOK(accountInfo);
   });*/
 
-  dropboxClient.readFile("Pagos/ABSA/ABSA_Marzo2016.pdf", { buffer: true }, function(error, data) {
+  dropboxClient.readFile(callbackParams[0], { buffer: true }, function(error, data) {
     if (error) {
       return console.log(error);
     }
@@ -120,9 +120,10 @@ module.exports = {
   AuthenticateCallback: function(code, responseObject) {
     AuthenticateCallback(code, responseObject);
   },
-  DownloadFileRequest: function(responseObject, callback){
+  DownloadFileRequest: function(responseObject, fullFilePath, callback){
     // Authorize a client with the loaded credentials, then call the Drive API.
-    Authenticate(responseObject, DownloadFile,
+    var callbackParams = [fullFilePath];
+    Authenticate(responseObject, DownloadFile, callbackParams,
       function (content){
         callback(content);
       },
