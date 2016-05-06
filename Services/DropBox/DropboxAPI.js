@@ -99,10 +99,17 @@ function storeToken(token) {
 
 function DownloadFile(dropboxClient, callbackOK, callbackError) {
   // to get the user Dropbox id use 
-  dropboxClient.getAccountInfo(function(error, accountInfo) {
+  /*dropboxClient.getAccountInfo(function(error, accountInfo) {
     console.log(accountInfo);
+    callbackOK(accountInfo);
+  });*/
+
+  dropboxClient.readFile("Pagos/ABSA/ABSA_Marzo2016.pdf", { buffer: true }, function(error, data) {
+    if (error) {
+      return console.log(error);
+    }
+    callbackOK(data);
   });
-  callbackOK("ok");
 }
 
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************

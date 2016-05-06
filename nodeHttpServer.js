@@ -43,22 +43,19 @@ app.get('/GastosMensuales', function (req, res) {
 //Services
 app.get('/Services/GastosMensuales', function (req, res) {
 	googleDriveAPI.DownloadSpreadsheet(function(result) {
-		//This line returns a string
-		//res.end(JSON.stringify(result)); 
-
-		//This line returns a JSON object
 		res.json(result);
 	});
 });
 app.get('/Services/DropBox/File', function (req, res) {
   dropboxAPI.DownloadFileRequest(res, function(result) {
-    res.json(result);
+    res.writeHead(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=some_file.pdf',
+      'Content-Length': result.length
+    });
+    res.end(result);
   });
 });
-/*app.get('/Services/DropBox/auth', function(req, res) {
-  dropboxAPI.Authenticate(res);
-});
-*/
 app.get('/Services/DropBox/auth-callback', function(req, res) {
   var code = req.query.code;
   dropboxAPI.AuthenticateCallback(code, res);
