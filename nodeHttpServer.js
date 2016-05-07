@@ -77,7 +77,7 @@ router.route('/gastosMensuales')
 router.route('/dropBox/file/:file_path')
     // get a file (accessed at GET http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
     .get(function(req, res) {
-      var fullFilePath = req.params.file_path.replace(/--/g, "/");//'Pagos/ABSA/' + fileName + ".pdf";
+      var fullFilePath = req.params.file_path.replace(/--/g, "/");
       console.log(fullFilePath);
       var pathParts = fullFilePath.split ("/"); 
       console.log(JSON.stringify(pathParts));

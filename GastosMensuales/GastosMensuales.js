@@ -34,6 +34,7 @@ var GastosMensuales;
     };
 
     // *** private methods ****************************************************************
+
     /**
      * Creates HTML  table with the current and previous month
      */
@@ -60,10 +61,10 @@ var GastosMensuales;
                 Sort(pagosNotPaidForThisMonth, "Vencimiento", false, false);
 
                 $.each(pagosNotPaidForThisMonth, function (pagoIndex, pago) {
-                    rows = rows +  GeneratePagoRow(pago);           
+                    rows = rows +  GeneratePagoRow(pago, mes.Mes);           
                 });
                 $.each(pagosPaidForThisMonth, function (pagoIndex, pago) {
-                    rows = rows +  GeneratePagoRow(pago);                    
+                    rows = rows +  GeneratePagoRow(pago, mes.Mes);                    
                  });
 
             };
@@ -71,6 +72,8 @@ var GastosMensuales;
         
         $("#tbMesCorriente").find("tr:gt(0)").remove();
         $('#tbMesCorriente').append(rows);
+        debugger;
+        $(".gm-Pago").addClass("gm-PagoRealizado");
     }
 
     /**
@@ -136,23 +139,33 @@ var GastosMensuales;
     /**
      * Generates an HTML row for the given Pago
      */
-    function GeneratePagoRow(pago) {
+    function GeneratePagoRow(pago, mes) {
         var codigoPago = pago.ConceptoObject != null ? pago.ConceptoObject.CodigoPago : "";
-        var carpetaDropbox = pago.ConceptoObject != null ? pago.ConceptoObject.CarpetaDropbox : "";
         var origen = pago.ConceptoObject != null ? pago.ConceptoObject.Origen : "";
         var fechaTentativaSuffix = pago.FechaTentativa ? "(?)" : "";
         var vencimiento = (new Date(pago.Vencimiento)).toLocaleDateString("es-ar") + fechaTentativaSuffix;
+        var cssCustom = pago.Pagado ? "gm-Pago" : "";
 
-        var row = "<tr>" + 
-                     "<td>" + pago.Concepto + "</td>" +
+        //generate link to download comprobante de pago
+        var linkDropbox = "";
+        if (pago.ConceptoObject != null && pago.Pagado && pago.ConceptoObject.CarpetaDropbox != "") {
+            //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
+            var pathComprobantePago = ServicesBaseAddress + "dropBox/file/" +  
+                                      pago.ConceptoObject.CarpetaDropbox.replace(/\//g, "--") + "--"  + pago.ConceptoObject.PalabraDropbox + mes + (new Date()).getFullYear();
+            var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar comprobante de pago</a>"
+        };
+
+        var row = "<tr css=" + cssCustom + ">" +
+                     "<td>" +  pago.Concepto + "</td>" +
                      "<td>" + vencimiento + "</td>" +
                      "<td>" + pago.Monto + "</td>" +
-                     "<td>" + pago.Pagado + "</td>" +
+                     "<td>" +  pago.Pagado + "</td>" +
                      "<td>" + pago.EsPagoAnual + "</td>" +
                      "<td>" + codigoPago + "</td>" +
-                     "<td>" + carpetaDropbox + "</td>" +
+                     "<td>" + linkDropbox + "</td>" +
                      "<td>" + origen + "</td>" +
                   "</tr>";
+
         return row;                  
     }
 
