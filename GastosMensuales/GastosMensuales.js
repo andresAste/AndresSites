@@ -1,6 +1,7 @@
 var GastosMensuales;
 (function (GastosMensuales) {
     var ServicesBaseAddress = "http://localhost:9090/api/";
+    var DropBoxFileService = "dropBox/file/";
     
     /**
      * Initializes page
@@ -72,8 +73,12 @@ var GastosMensuales;
         
         $("#tbMesCorriente").find("tr:gt(0)").remove();
         $('#tbMesCorriente').append(rows);
-        debugger;
-        $(".gm-Pago").addClass("gm-PagoRealizado");
+        $(".gm-Pago").addClass("gm-PagoRealizado"); //not working
+        $(".gm-btnUploadComprobante").click(function(event) {
+            event.preventDefault();
+            var filePath = $(this).attr('data-path');
+            UploadComprobantePago(filePath);
+        });
     }
 
     /**
@@ -148,11 +153,17 @@ var GastosMensuales;
 
         //generate link to download comprobante de pago
         var linkDropbox = "";
-        if (pago.ConceptoObject != null && pago.Pagado && pago.ConceptoObject.CarpetaDropbox != "") {
-            //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
-            var pathComprobantePago = ServicesBaseAddress + "dropBox/file/" +  
-                                      pago.ConceptoObject.CarpetaDropbox.replace(/\//g, "--") + "--"  + pago.ConceptoObject.PalabraDropbox + mes + (new Date()).getFullYear();
-            var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar comprobante de pago</a>"
+        if (pago.ConceptoObject != null && pago.ConceptoObject.CarpetaDropbox != "") {
+            var filePath = pago.ConceptoObject.CarpetaDropbox.replace(/\//g, "--") + "--"  + pago.ConceptoObject.PalabraDropbox + mes + (new Date()).getFullYear();
+            var linkDropbox = "";
+            if (pago.Pagado) {
+                //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
+                var pathComprobantePago = ServicesBaseAddress + DropBoxFileService +  filePath ;
+                var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar comprobante de pago </a>"    
+            };
+            
+            var btunUploadComprobantePago = " <button type='button' class='gm-btnUploadComprobante' data-path='"+ filePath + "'>Subir comprobante</button> "
+            linkDropbox = linkDropbox + btunUploadComprobantePago;
         };
 
         var row = "<tr css=" + cssCustom + ">" +
@@ -167,6 +178,20 @@ var GastosMensuales;
                   "</tr>";
 
         return row;                  
+    }
+
+    /**
+     * Uploads a file to the appropiate path
+     */
+    function UploadComprobantePago(filePath) {
+        var uploadURL = ServicesBaseAddress + DropBoxFileService + filePath;
+
+        var jqxhr = $.post( uploadURL, function() {
+          //todo: do I need something here?
+        })
+        .fail(function() {
+            alert( "error when uploading file" );
+        })
     }
 
 })(GastosMensuales || (GastosMensuales = {}));

@@ -89,6 +89,15 @@ router.route('/dropBox/file/:file_path')
         });
         res.end(result);
       });
+    })
+    //uploads a file (accessed at POST http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
+    .post(function(req, res) {
+      var fullFilePath = req.params.file_path.replace(/--/g, "/");
+      console.log(fullFilePath);
+      var pathParts = fullFilePath.split ("/"); 
+      console.log(JSON.stringify(pathParts));
+      console.log("upload method not implemented!");
+      res.end("upload method not implemented!");
     });
    
 router.route('/dropBox/auth-callback')
