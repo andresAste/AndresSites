@@ -204,8 +204,8 @@ var GastosMensuales;
                 url:uploadURL,
                 multiple:false,
                 dragDrop:false,
-                maxFileCount:1,
-                fileName:"myfile"
+                fileName:"comprobantePago",
+                acceptFiles:".pdf"
             });   
     }
 

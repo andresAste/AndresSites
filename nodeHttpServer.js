@@ -93,7 +93,7 @@ router.route('/dropBox/file/:file_path')
       });
     })
     //uploads a file (accessed at POST http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
-    .post(upload.single("myfile"), function(req, res) {
+    .post(upload.single("comprobantePago"), function(req, res) {
       var fullFilePath = req.params.file_path.replace(/--/g, "/");
       console.log(fullFilePath);
       console.log(JSON.stringify(req.file));
