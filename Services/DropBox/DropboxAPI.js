@@ -112,6 +112,23 @@ function DownloadFile(dropboxClient, callbackOK, callbackError, callbackParams) 
   });
 }
 
+function UploadFile(dropboxClient, callbackOK, callbackError, callbackParams) {
+  fs.readFile(callbackParams[0], function(error, data) {
+    // No encoding passed, readFile produces a Buffer instance
+    if (error) {
+      return console.log(error);
+    }
+    dropboxClient.writeFile(callbackParams[1], data, function(error, stat) {
+      if (error) {
+        return handleError(error);
+      }
+      fs.unlink(callbackParams[0]);
+      // The file has been succesfully written.
+      callbackOK("The file has been uploaded successfully");
+    });
+  });
+}
+
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
 module.exports = {
   Authenticate: function(responseObject) {
@@ -130,6 +147,16 @@ module.exports = {
       function (err){
         callback(content);
       });
-  }
+  },
+  UploadFile: function(responseObject, tempFilePath, destFilePath, callback) {
+    var callbackParams = [tempFilePath, destFilePath];
+     Authenticate(responseObject, UploadFile, callbackParams,
+      function (content){
+        callback(content);
+      },
+      function (err){
+        callback(content);
+      });
+  } 
 }
 

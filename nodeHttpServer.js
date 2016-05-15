@@ -23,6 +23,7 @@ var fs = require("fs");
 var googleDriveAPI = require('./Services/GastosMensuales/GoogleDriveAPI');
 var dropboxAPI = require('./Services/DropBox/DropboxAPI');
 var bodyParser = require('body-parser');
+var multer = require('multer'); //To handle file uploads
 
 var staticPath = path.resolve(__dirname, '.');
 
@@ -45,8 +46,9 @@ router.use(function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
+var upload = multer({dest: './uploads/'});
 
-// REGISTER OUR ROUTES -------------------------------
+// **** REGISTER OUR ROUTES ***************************************************************************************************************/
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
@@ -91,13 +93,13 @@ router.route('/dropBox/file/:file_path')
       });
     })
     //uploads a file (accessed at POST http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
-    .post(function(req, res) {
+    .post(upload.single("myfile"), function(req, res) {
       var fullFilePath = req.params.file_path.replace(/--/g, "/");
       console.log(fullFilePath);
-      var pathParts = fullFilePath.split ("/"); 
-      console.log(JSON.stringify(pathParts));
-      console.log("upload method not implemented!");
-      res.end("upload method not implemented!");
+      console.log(JSON.stringify(req.file));
+      dropboxAPI.UploadFile(res, req.file.path, fullFilePath +'.pdf', function(result) {
+        res.end("File uploaded successfully");  
+      })
     });
    
 router.route('/dropBox/auth-callback')

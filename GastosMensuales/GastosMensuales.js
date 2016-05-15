@@ -74,10 +74,15 @@ var GastosMensuales;
         $("#tbMesCorriente").find("tr:gt(0)").remove();
         $('#tbMesCorriente').append(rows);
         $(".gm-Pago").addClass("gm-PagoRealizado"); //not working
-        $(".gm-btnUploadComprobante").click(function(event) {
+        /*$(".gm-btnUploadComprobante").click(function(event) {
             event.preventDefault();
             var filePath = $(this).attr('data-path');
             UploadComprobantePago(filePath);
+        });*/
+        
+        $(".gm-btunUploadComprobantePago").each(function(divIndex, div) {
+            var filePath = $(div).attr('data-path');
+            UploadComprobantePago(filePath, div);
         });
     }
 
@@ -162,7 +167,8 @@ var GastosMensuales;
                 var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar comprobante de pago </a>"    
             };
             
-            var btunUploadComprobantePago = " <button type='button' class='gm-btnUploadComprobante' data-path='"+ filePath + "'>Subir comprobante</button> "
+            //var btunUploadComprobantePago = " <button type='button' class='gm-btnUploadComprobante' data-path='"+ filePath + "'>Subir comprobante</button> "
+            var btunUploadComprobantePago= "<div class='gm-btunUploadComprobantePago' data-path='"+ filePath + "'></div";
             linkDropbox = linkDropbox + btunUploadComprobantePago;
         };
 
@@ -183,15 +189,24 @@ var GastosMensuales;
     /**
      * Uploads a file to the appropiate path
      */
-    function UploadComprobantePago(filePath) {
+    function UploadComprobantePago(filePath, div) {
         var uploadURL = ServicesBaseAddress + DropBoxFileService + filePath;
 
+        /*
         var jqxhr = $.post( uploadURL, function() {
           //todo: do I need something here?
         })
         .fail(function() {
             alert( "error when uploading file" );
         })
+        */
+          $(div).uploadFile({
+                url:uploadURL,
+                multiple:false,
+                dragDrop:false,
+                maxFileCount:1,
+                fileName:"myfile"
+            });   
     }
 
 })(GastosMensuales || (GastosMensuales = {}));
