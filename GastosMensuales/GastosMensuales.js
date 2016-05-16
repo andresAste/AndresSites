@@ -164,15 +164,14 @@ var GastosMensuales;
             if (pago.Pagado) {
                 //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
                 var pathComprobantePago = ServicesBaseAddress + DropBoxFileService +  filePath ;
-                var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar comprobante de pago </a>"    
+                var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar</a>"    
             };
             
-            //var btunUploadComprobantePago = " <button type='button' class='gm-btnUploadComprobante' data-path='"+ filePath + "'>Subir comprobante</button> "
             var btunUploadComprobantePago= "<div class='gm-btunUploadComprobantePago' data-path='"+ filePath + "'></div";
-            linkDropbox = linkDropbox + btunUploadComprobantePago;
+            linkDropbox = "<table><tr><td>" + linkDropbox + "</td><td>" + btunUploadComprobantePago + "</td></tr></table>"; 
         };
 
-        var row = "<tr css=" + cssCustom + ">" +
+        var row = "<tr class=" + cssCustom + ">" +
                      "<td>" +  pago.Concepto + "</td>" +
                      "<td>" + vencimiento + "</td>" +
                      "<td>" + pago.Monto + "</td>" +
@@ -192,14 +191,6 @@ var GastosMensuales;
     function UploadComprobantePago(filePath, div) {
         var uploadURL = ServicesBaseAddress + DropBoxFileService + filePath;
 
-        /*
-        var jqxhr = $.post( uploadURL, function() {
-          //todo: do I need something here?
-        })
-        .fail(function() {
-            alert( "error when uploading file" );
-        })
-        */
           $(div).uploadFile({
                 url:uploadURL,
                 multiple:false,
