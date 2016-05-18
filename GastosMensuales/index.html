@@ -17,16 +17,24 @@
 	<button id="btnGetGastosMensuales">Get Gastos Mensuales</button>
 	<br/>
 	<div class="result">
-		<table id="tbMesCorriente" border="1">
-			<tr class="gm-header">
-				<th class="gm-concepto">Concepto</th>
-				<th class="gm-vencimiento">Vencimiento</th>
-				<th class="gm-monto">Monto</th>
-				<th class="gm-pagado">Pagado</th>
-				<th class="gm-esPagoAnual">Es Pago Anual</th>
-				<th>Código Pago</th>
-				<th>Comprobante de pago</th>
-				<th>Origen</th>
+		<table id="tbGastosMensuales">
+			<tr>
+				<td class="gm-MesAnterior gm-mesButton"><button id="btnMesAnterior">Mes anterior</button></td>
+				<td><table id="tbMesCorriente" border="1">
+						<tr><td colspan="8" class="gm-MonthName">Mes actual</td></tr>
+						<tr class="gm-header">
+							<th class="gm-concepto">Concepto</th>
+							<th class="gm-vencimiento">Vencimiento</th>
+							<th class="gm-monto">Monto</th>
+							<th class="gm-pagado">Pagado</th>
+							<th class="gm-esPagoAnual">Es Pago Anual</th>
+							<th>Código Pago</th>
+							<th>Comprobante de pago</th>
+							<th>Origen</th>
+						</tr>
+					</table>
+				</td>
+				<td class="gm-MesSiguiente gm-mesButton"><button id="btnMesSiguiente">Mes siguiente</button></td>
 			</tr>
 		</table>
 	</div>

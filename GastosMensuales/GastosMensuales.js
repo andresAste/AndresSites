@@ -3,6 +3,12 @@ var GastosMensuales;
     var ServicesBaseAddress = "http://localhost:9090/api/";
     var DropBoxFileService = "dropBox/file/";
     
+    // *** PROPERTIES ****************************************************************
+    GastosMensuales.GastosMensualesJSON = null;
+    GastosMensuales.MesActual = (new Date()).getMonth();
+    GastosMensuales.MonthName =  ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+
+    // *** PUBLIC METHODS ************************************************************
     /**
      * Initializes page
      */
@@ -10,6 +16,16 @@ var GastosMensuales;
         $("#btnGetGastosMensuales").click(function(event) {
             event.preventDefault(); // cancel default behavior
             GastosMensuales.GetAllGastosMensuales();
+        });
+
+        $("#btnMesAnterior").click(function(event) {
+            event.preventDefault(); // cancel default behavior
+            UpdateTableForMonth(false);
+        });
+
+        $("#btnMesSiguiente").click(function(event) {
+            event.preventDefault(); // cancel default behavior
+            UpdateTableForMonth(true);
         });
 
         $(document).on({
@@ -25,7 +41,8 @@ var GastosMensuales;
         var getCall = ServicesBaseAddress + "gastosMensuales";
         console.log(getCall);
         $.get( getCall, function( data ) {
-           CreateTableForMesCorriente(data);
+           GastosMensuales.GastosMensualesJSON  = data;
+           CreateTableForMesCorriente(data, GastosMensuales.MesActual);
         })
         .fail(function(data) { 
             alert( "error" ); 
@@ -37,11 +54,23 @@ var GastosMensuales;
     // *** private methods ****************************************************************
 
     /**
+    * Gets next or previous month
+    */
+    function UpdateTableForMonth(getNextMonth) {
+        if (getNextMonth == true && GastosMensuales.MesActual < 11) {
+            GastosMensuales.MesActual = GastosMensuales.MesActual + 1;
+            CreateTableForMesCorriente(GastosMensuales.GastosMensualesJSON, GastosMensuales.MesActual);
+        }
+        else if (getNextMonth == false && GastosMensuales.MesActual > 0) {
+            GastosMensuales.MesActual = GastosMensuales.MesActual - 1;
+            CreateTableForMesCorriente(GastosMensuales.GastosMensualesJSON, GastosMensuales.MesActual);
+        };
+    }
+
+    /**
      * Creates HTML  table with the current and previous month
      */
-    function CreateTableForMesCorriente(gastosMensualesJSON) {
-        var date = new Date();
-        var currenMonth = date.getMonth(); 
+    function CreateTableForMesCorriente(gastosMensualesJSON, currenMonth) {
         var rows = "";
 
         $.each(gastosMensualesJSON.gastosMensuales.Meses, function(mesIndex, mes) {
@@ -71,15 +100,10 @@ var GastosMensuales;
             };
         });
         
-        $("#tbMesCorriente").find("tr:gt(0)").remove();
+        $("#tbMesCorriente .gm-MonthName").html(GastosMensuales.MonthName[currenMonth]);
+        $("#tbMesCorriente").find("tr:gt(1)").remove();
         $('#tbMesCorriente').append(rows);
-        $(".gm-Pago").addClass("gm-PagoRealizado"); //not working
-        /*$(".gm-btnUploadComprobante").click(function(event) {
-            event.preventDefault();
-            var filePath = $(this).attr('data-path');
-            UploadComprobantePago(filePath);
-        });*/
-        
+        $(".gm-Pago").addClass("gm-PagoRealizado"); 
         $(".gm-btunUploadComprobantePago").each(function(divIndex, div) {
             var filePath = $(div).attr('data-path');
             UploadComprobantePago(filePath, div);
