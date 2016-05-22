@@ -1,18 +1,18 @@
 var GastosMensuales;
-(function (GastosMensuales) {
+(function(GastosMensuales) {
     var ServicesBaseAddress = "http://localhost:9090/api/";
     var DropBoxFileService = "dropBox/file/";
-    
+
     // *** PROPERTIES ****************************************************************
     GastosMensuales.GastosMensualesJSON = null;
     GastosMensuales.MesActual = (new Date()).getMonth();
-    GastosMensuales.MonthName =  ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    GastosMensuales.MonthName = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
     // *** PUBLIC METHODS ************************************************************
     /**
      * Initializes page
      */
-    GastosMensuales.Initialize = function () {
+    GastosMensuales.Initialize = function() {
         $("#btnGetGastosMensuales").click(function(event) {
             event.preventDefault(); // cancel default behavior
             GastosMensuales.GetAllGastosMensuales();
@@ -29,42 +29,45 @@ var GastosMensuales;
         });
 
         $(document).on({
-            ajaxStart: function() { $("body").addClass("gm-loading"); },
-            ajaxStop: function() { $("body").removeClass("gm-loading"); }    
+            ajaxStart: function() {
+                $("body").addClass("gm-loading");
+            },
+            ajaxStop: function() {
+                $("body").removeClass("gm-loading");
+            }
         });
     };
 
     /**
      * Get all Gastos Mensuales
      */
-    GastosMensuales.GetAllGastosMensuales = function () {
+    GastosMensuales.GetAllGastosMensuales = function() {
         var getCall = ServicesBaseAddress + "gastosMensuales";
         console.log(getCall);
-        $.get( getCall, function( data ) {
-           GastosMensuales.GastosMensualesJSON  = data;
-           CreateTableForMesCorriente(data, GastosMensuales.MesActual);
-        })
-        .fail(function(data) { 
-            alert( "error" ); 
-            console.log(data);
-            $( ".result" ).html( data.statusText);
-        });
+        $.get(getCall, function(data) {
+                GastosMensuales.GastosMensualesJSON = data;
+                CreateTableForMesCorriente(data, GastosMensuales.MesActual);
+            })
+            .fail(function(data) {
+                alert("error");
+                console.log(data);
+                $(".result").html(data.statusText);
+            });
     };
 
     // *** private methods ****************************************************************
 
     /**
-    * Gets next or previous month
-    */
+     * Gets next or previous month
+     */
     function UpdateTableForMonth(getNextMonth) {
-        if (getNextMonth == true && GastosMensuales.MesActual < 11) {
+        if (getNextMonth === true && GastosMensuales.MesActual < 11) {
             GastosMensuales.MesActual = GastosMensuales.MesActual + 1;
             CreateTableForMesCorriente(GastosMensuales.GastosMensualesJSON, GastosMensuales.MesActual);
-        }
-        else if (getNextMonth == false && GastosMensuales.MesActual > 0) {
+        } else if (getNextMonth === false && GastosMensuales.MesActual > 0) {
             GastosMensuales.MesActual = GastosMensuales.MesActual - 1;
             CreateTableForMesCorriente(GastosMensuales.GastosMensualesJSON, GastosMensuales.MesActual);
-        };
+        }
     }
 
     /**
@@ -76,34 +79,33 @@ var GastosMensuales;
         $.each(gastosMensualesJSON.gastosMensuales.Meses, function(mesIndex, mes) {
             if (mesIndex == currenMonth) {
 
-                var pagosPaidForThisMonth= [];
-                var pagosNotPaidForThisMonth= [];
-                $.each(mes.Pagos, function (pagoIndex, pago) {
+                var pagosPaidForThisMonth = [];
+                var pagosNotPaidForThisMonth = [];
+                $.each(mes.Pagos, function(pagoIndex, pago) {
                     pago.ConceptoObject = GetItemByProperty(gastosMensualesJSON.gastosMensuales.Conceptos, "Concepto", pago.Concepto);
-                    if (pago.Vencimiento != "" && pago.Pagado) {
+                    if (pago.Vencimiento !== "" && pago.Pagado) {
                         pagosPaidForThisMonth.push(pago);
-                    }
-                    else if (pago.Vencimiento != "" && !pago.Pagado) {
+                    } else if (pago.Vencimiento !== "" && !pago.Pagado) {
                         pagosNotPaidForThisMonth.push(pago);
-                    };;
-                });                
+                    }
+                });
                 Sort(pagosPaidForThisMonth, "Vencimiento", true, true);
                 Sort(pagosNotPaidForThisMonth, "Vencimiento", false, false);
 
-                $.each(pagosNotPaidForThisMonth, function (pagoIndex, pago) {
-                    rows = rows +  GeneratePagoRow(pago, mes.Mes);           
+                $.each(pagosNotPaidForThisMonth, function(pagoIndex, pago) {
+                    rows = rows + GeneratePagoRow(pago, mes.Mes);
                 });
-                $.each(pagosPaidForThisMonth, function (pagoIndex, pago) {
-                    rows = rows +  GeneratePagoRow(pago, mes.Mes);                    
-                 });
+                $.each(pagosPaidForThisMonth, function(pagoIndex, pago) {
+                    rows = rows + GeneratePagoRow(pago, mes.Mes);
+                });
 
-            };
+            }
         });
-        
+
         $("#tbMesCorriente .gm-MonthName").html(GastosMensuales.MonthName[currenMonth]);
         $("#tbMesCorriente").find("tr:gt(1)").remove();
         $('#tbMesCorriente').append(rows);
-        $(".gm-Pago").addClass("gm-PagoRealizado"); 
+        $(".gm-Pago").addClass("gm-PagoRealizado");
         $(".gm-btunUploadComprobantePago").each(function(divIndex, div) {
             var filePath = $(div).attr('data-path');
             UploadComprobantePago(filePath, div);
@@ -116,25 +118,25 @@ var GastosMensuales;
     function Sort(arr, prop, reverse, numeric) {
         // Ensure there's a property
         if (!prop || !arr) {
-            return arr
+            return arr;
         }
 
         // Set up sort function
-        var sort_by = function (field, rev, primer) {
+        var sort_by = function(field, rev, primer) {
             // Return the required a,b function
-            return function (a, b) {
+            return function(a, b) {
                 // Reset a, b to the field
                 a = primer(a[field]), b = primer(b[field]);
                 // Do actual sorting, reverse as needed
                 return ((a < b) ? -1 : ((a > b) ? 1 : 0)) * (rev ? -1 : 1);
-            }
-        }
+            };
+        };
 
         // Distinguish between numeric and string to prevent 100's from coming before smaller
-         if (numeric) {
+        if (numeric) {
 
             // Do sort "in place" with sort_by function
-            arr.sort(sort_by(prop, reverse, function (a) {
+            arr.sort(sort_by(prop, reverse, function(a) {
 
                 // - Force value to a string.
                 // - Replace any non numeric characters.
@@ -145,7 +147,7 @@ var GastosMensuales;
         } else {
 
             // Do sort "in place" with sort_by function
-            arr.sort(sort_by(prop, reverse, function (a) {
+            arr.sort(sort_by(prop, reverse, function(a) {
 
                 // - Force value to string.
                 return String(a).toUpperCase();
@@ -158,70 +160,73 @@ var GastosMensuales;
      */
     function GetItemByProperty(itemsArray, property, value) {
         var itemFound = null;
-        
+
         $.each(itemsArray, function(itemIndex, item) {
             for (var key in item) {
                 if (item.hasOwnProperty(key) && item[key] == value) {
                     itemFound = item;
                 }
-            }    
-        })
-        
+            }
+        });
+
         return itemFound;
     }
 
-    /**
-     * Generates an HTML row for the given Pago
-     */
+   /**
+    * Generates a html table row for a given Pago
+    * @param {Pago} pago a procesar
+    * @param {String} String representation of a month
+    */
     function GeneratePagoRow(pago, mes) {
-        var codigoPago = pago.ConceptoObject != null ? pago.ConceptoObject.CodigoPago : "";
-        var origen = pago.ConceptoObject != null ? pago.ConceptoObject.Origen : "";
+        var codigoPago = pago.ConceptoObject !== null ? pago.ConceptoObject.CodigoPago : "";
+        var origen = pago.ConceptoObject !== null ? pago.ConceptoObject.Origen : "";
         var fechaTentativaSuffix = pago.FechaTentativa ? "(?)" : "";
         var vencimiento = (new Date(pago.Vencimiento)).toLocaleDateString("es-ar") + fechaTentativaSuffix;
         var cssCustom = pago.Pagado ? "gm-Pago" : "";
 
         //generate link to download comprobante de pago
         var linkDropbox = "";
-        if (pago.ConceptoObject != null && pago.ConceptoObject.CarpetaDropbox != "") {
-            var filePath = pago.ConceptoObject.CarpetaDropbox.replace(/\//g, "--") + "--"  + pago.ConceptoObject.PalabraDropbox + mes + (new Date()).getFullYear();
-            var linkDropbox = "";
+        if (pago.ConceptoObject !== null && pago.ConceptoObject.CarpetaDropbox !== "") {
+            var filePath = pago.ConceptoObject.CarpetaDropbox.replace(/\//g, "--") + "--" + pago.ConceptoObject.PalabraDropbox + mes + (new Date()).getFullYear();
+            linkDropbox = "";
             if (pago.Pagado) {
                 //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
-                var pathComprobantePago = ServicesBaseAddress + DropBoxFileService +  filePath ;
-                var linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar</a>"    
-            };
-            
-            var btunUploadComprobantePago= "<div class='gm-btunUploadComprobantePago' data-path='"+ filePath + "'></div";
-            linkDropbox = "<table><tr><td>" + linkDropbox + "</td><td>" + btunUploadComprobantePago + "</td></tr></table>"; 
-        };
+                var pathComprobantePago = ServicesBaseAddress + DropBoxFileService + filePath;
+                linkDropbox = "<a class='gm-linkComprobantePago' href='" + pathComprobantePago + "'>Descargar</a>";
+            }
+
+            var btunUploadComprobantePago = "<div class='gm-btunUploadComprobantePago' data-path='" + filePath + "'></div";
+            linkDropbox = "<table><tr><td>" + linkDropbox + "</td><td>" + btunUploadComprobantePago + "</td></tr></table>";
+        }
 
         var row = "<tr class=" + cssCustom + ">" +
-                     "<td>" +  pago.Concepto + "</td>" +
-                     "<td>" + vencimiento + "</td>" +
-                     "<td>" + pago.Monto + "</td>" +
-                     "<td>" +  pago.Pagado + "</td>" +
-                     "<td>" + pago.EsPagoAnual + "</td>" +
-                     "<td>" + codigoPago + "</td>" +
-                     "<td>" + linkDropbox + "</td>" +
-                     "<td>" + origen + "</td>" +
-                  "</tr>";
+            "<td>" + pago.Concepto + "</td>" +
+            "<td>" + vencimiento + "</td>" +
+            "<td>" + pago.Monto + "</td>" +
+            "<td>" + pago.Pagado + "</td>" +
+            "<td>" + pago.EsPagoAnual + "</td>" +
+            "<td>" + codigoPago + "</td>" +
+            "<td>" + linkDropbox + "</td>" +
+            "<td>" + origen + "</td>" +
+            "</tr>";
 
-        return row;                  
+        return row;
     }
 
     /**
-     * Uploads a file to the appropiate path
+     * @param {string} file path
+     * @param {Div} dib object on which add the file uploader
      */
     function UploadComprobantePago(filePath, div) {
         var uploadURL = ServicesBaseAddress + DropBoxFileService + filePath;
 
-          $(div).uploadFile({
-                url:uploadURL,
-                multiple:false,
-                dragDrop:false,
-                fileName:"comprobantePago",
-                acceptFiles:".pdf"
-            });   
+        $(div).uploadFile({
+            url: uploadURL,
+            multiple: false,
+            dragDrop: false,
+            fileName: "comprobantePago",
+            acceptFiles: ".pdf"
+        });
     }
 
 })(GastosMensuales || (GastosMensuales = {}));

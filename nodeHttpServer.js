@@ -1,4 +1,3 @@
-
 // This is an example of a web server without any modules involved
 /*
 var http = require('http')
@@ -20,7 +19,7 @@ http.createServer(function (request, response) {
 var path = require('path');
 var express = require('express');
 var fs = require("fs");
-var googleDriveAPI = require('./Services/GastosMensuales/GoogleDriveAPI');
+var googleDriveAPINew = require('./Services/GastosMensuales/GoogleDriveAPI-new');
 var dropboxAPI = require('./Services/DropBox/DropboxAPI');
 var bodyParser = require('body-parser');
 var multer = require('multer'); //To handle file uploads
@@ -30,23 +29,29 @@ var staticPath = path.resolve(__dirname, '.');
 var app = express();
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 app.use(express.static(staticPath));
 
-var router = express.Router();              // get an instance of the express Router
+var router = express.Router(); // get an instance of the express Router
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+  res.json({
+    message: 'hooray! welcome to our api!'
+  });
 });
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
-    // do logging
-    console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
+  // do logging
+  console.log('Something is happening.');
+  next(); // make sure we go to the next routes and don't stop here
 });
 
-var upload = multer({dest: './uploads/'});
+var upload = multer({
+  dest: './uploads/'
+});
 
 // **** REGISTER OUR ROUTES ***************************************************************************************************************/
 // all of our routes will be prefixed with /api
@@ -54,60 +59,59 @@ app.use('/api', router);
 
 
 //Pages
-app.get('/GastosMensuales', function (req, res) {
-   fs.readFile( staticPath + "/GastosMensuales/index.html", 'utf8', function (err, data) {
-      if (err) {
-      	console.log(err);
-      }
-      else {
-      	res.end(data);
-      }
-   });
+app.get('/GastosMensuales', function(req, res) {
+  fs.readFile(staticPath + "/GastosMensuales/index.html", 'utf8', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.end(data);
+    }
+  });
 });
 
 /**** WEB PAGES ROUTES ****************************************************************************************************************/
 // on routes that end in /gastosMensuales
 router.route('/gastosMensuales')
-    // get all the gastos mensuales (accessed at GET http://localhost:9090/api/gastosMensuales)
-    .get(function(req, res) {
-       googleDriveAPI.DownloadSpreadsheet(function(result) {
-        res.json(result);
-      });
+  // get all the gastos mensuales (accessed at GET http://localhost:9090/api/gastosMensuales)
+  .get(function(req, res) {
+    googleDriveAPINew.DownloadSpreadsheet(function(result) {
+      res.json(result);
     });
+  });
 
 /**** SERVICES ROUTES ****************************************************************************************************************/
 router.route('/dropBox/file/:file_path')
-    // get a file (accessed at GET http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
-    .get(function(req, res) {
-      var fullFilePath = req.params.file_path.replace(/--/g, "/");
-      console.log(fullFilePath);
-      var pathParts = fullFilePath.split ("/"); 
-      console.log(JSON.stringify(pathParts));
-      dropboxAPI.DownloadFileRequest(res, fullFilePath + ".pdf", function(result) {
-        res.writeHead(200, {
-          'Content-Type': 'application/pdf',
-          'Content-Disposition': 'attachment; filename=' + pathParts[pathParts.length-1] +'.pdf',
-          'Content-Length': result.length
-        });
-        res.end(result);
+  // get a file (accessed at GET http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
+  .get(function(req, res) {
+    var fullFilePath = req.params.file_path.replace(/--/g, "/");
+    console.log(fullFilePath);
+    var pathParts = fullFilePath.split("/");
+    console.log(JSON.stringify(pathParts));
+    dropboxAPI.DownloadFileRequest(res, fullFilePath + ".pdf", function(result) {
+      res.writeHead(200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=' + pathParts[pathParts.length - 1] + '.pdf',
+        'Content-Length': result.length
       });
+      res.end(result);
+    });
+  })
+  //uploads a file (accessed at POST http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
+  .post(upload.single("comprobantePago"), function(req, res) {
+    var fullFilePath = req.params.file_path.replace(/--/g, "/");
+    console.log(fullFilePath);
+    console.log(JSON.stringify(req.file));
+    dropboxAPI.UploadFile(res, req.file.path, fullFilePath + '.pdf', function(result) {
+      res.end("File uploaded successfully");
     })
-    //uploads a file (accessed at POST http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
-    .post(upload.single("comprobantePago"), function(req, res) {
-      var fullFilePath = req.params.file_path.replace(/--/g, "/");
-      console.log(fullFilePath);
-      console.log(JSON.stringify(req.file));
-      dropboxAPI.UploadFile(res, req.file.path, fullFilePath +'.pdf', function(result) {
-        res.end("File uploaded successfully");  
-      })
-    });
-   
+  });
+
 router.route('/dropBox/auth-callback')
-    // authenticates the application and stores the token for later usage (accessed at GET http://localhost:9090/api/dropBox/auth-callback)
-    .get(function(req, res) {
-      var code = req.query.code;
-      dropboxAPI.AuthenticateCallback(code, res);
-    });
+  // authenticates the application and stores the token for later usage (accessed at GET http://localhost:9090/api/dropBox/auth-callback)
+  .get(function(req, res) {
+    var code = req.query.code;
+    dropboxAPI.AuthenticateCallback(code, res);
+  });
 
 /**** CATCH-ALL ROUTE ***************************************************************************************************************/
 app.get('*', function(req, res) {

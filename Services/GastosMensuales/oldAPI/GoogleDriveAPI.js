@@ -4,6 +4,7 @@ var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var utils = require('./Utils');
+var GoogleSpreadsheet = require('google-spreadsheet');
 
 // ***** LOCAL VARIABLES ******************************************************************************************************************************************
 //Converter Class 
@@ -19,6 +20,7 @@ var SEPARADOR = "***";
 var MES_PAGADO = "-p";
 var PAGO_ANUAL = "-a";
 var CONCEPTO = "Concepto";
+
 // ***** PRIVATE FUNCTIONS *****************************************************************************************************************************************
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
