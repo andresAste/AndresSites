@@ -28,6 +28,10 @@ var GastosMensuales;
             UpdateTableForMonth(true);
         });
 
+        $("#vencimiento").datepicker();
+        
+        GastosMensuales.EditPago.Initialize();
+
         $(document).on({
             ajaxStart: function() {
                 $("body").addClass("gm-loading");
@@ -36,6 +40,68 @@ var GastosMensuales;
                 $("body").removeClass("gm-loading");
             }
         });
+    };
+
+    GastosMensuales.EditPago = {
+        /**
+         * Initializes the dialog
+         */
+        Initialize: function() {
+            GastosMensuales.EditPago.EditPagoDialog = $("#editPago").dialog({
+              autoOpen: false,
+              height: 300,
+              width: 350,
+              modal: true,
+              buttons: {
+                'Actualizar': function(){
+                    GastosMensuales.EditPago.ActualizarPago($(this).data('cellRow'), $(this).data('cellColumn'));
+                    $(this).dialog("close");
+                },
+                'Cancelar': function() {
+                  $(this).dialog("close");
+                }
+              },
+              close: function() {
+                $(this).dialog("close");
+              }
+            });
+        },
+        /**
+          * Clears the form
+          */
+        ClearPagoPopup : function() {
+            $("#vencimiento").val("");
+            $("#tentativo").prop('checked', false);
+            $("#monto").val("");
+            $("#pagado").prop('checked', false);
+            $("#pagoAnual").prop('checked', false);        
+        },
+        /**
+          * Updates a Pago
+          * @param {int} cellRow  Row index for the cell
+          * @param {int} cellColumn Column index for the cell
+          * @param {Object} information Object containing the information to update
+          */
+        ActualizarPago: function (cellRow, cellColumn){
+            var result = {
+                Vencimiento:  $("#vencimiento").val(),
+                Tentativo: $("#tentativo").prop('checked'),
+                Monto:  $("#monto").val(),
+                Pagado:  $("#pagado").prop('checked'),
+                PagoAnual:$("#pagoAnual").prop('checked'),
+                CeldaFila: cellRow,
+                CeldaColumna: cellColumn
+            };
+
+            console.log(result);
+        },
+        Open: function(cellRow, cellColumn) {
+            GastosMensuales.EditPago.ClearPagoPopup();
+            GastosMensuales.EditPago.EditPagoDialog
+                .data('cellRow', cellRow)
+                .data('cellColumn', cellColumn)
+                .dialog('open');
+        }
     };
 
     /**
@@ -56,6 +122,8 @@ var GastosMensuales;
     };
 
     // *** private methods ****************************************************************
+
+    
 
     /**
      * Gets next or previous month
@@ -109,6 +177,12 @@ var GastosMensuales;
         $(".gm-btunUploadComprobantePago").each(function(divIndex, div) {
             var filePath = $(div).attr('data-path');
             UploadComprobantePago(filePath, div);
+        });
+
+        $(".btn-EditPago").each(function(index, button) {
+            $(button).button().on("click", function() {
+                GastosMensuales.EditPago.Open($(this).attr('data-row'), $(this).attr('data-column'));
+            });    
         });
     }
 
@@ -172,11 +246,11 @@ var GastosMensuales;
         return itemFound;
     }
 
-   /**
-    * Generates a html table row for a given Pago
-    * @param {Pago} pago a procesar
-    * @param {String} String representation of a month
-    */
+    /**
+     * Generates a html table row for a given Pago
+     * @param {Pago} pago a procesar
+     * @param {String} String representation of a month
+     */
     function GeneratePagoRow(pago, mes) {
         var codigoPago = pago.ConceptoObject !== null ? pago.ConceptoObject.CodigoPago : "";
         var origen = pago.ConceptoObject !== null ? pago.ConceptoObject.Origen : "";
@@ -200,6 +274,7 @@ var GastosMensuales;
         }
 
         var row = "<tr class=" + cssCustom + ">" +
+            "<td><button class='btn-EditPago' data-row='" + pago.CeldaFila + "' data-column='" + pago.CeldaColumna + "'>Edit</button></td>" + 
             "<td>" + pago.Concepto + "</td>" +
             "<td>" + vencimiento + "</td>" +
             "<td>" + pago.Monto + "</td>" +
