@@ -28,7 +28,7 @@ var GastosMensuales;
             UpdateTableForMonth(true);
         });
 
-        $("#vencimiento").datepicker();
+        $("#vencimiento").datepicker($.datepicker.regional[ "es" ]);
         
         GastosMensuales.EditPago.Initialize();
 
@@ -97,10 +97,27 @@ var GastosMensuales;
         },
         Open: function(cellRow, cellColumn) {
             GastosMensuales.EditPago.ClearPagoPopup();
-            GastosMensuales.EditPago.EditPagoDialog
-                .data('cellRow', cellRow)
-                .data('cellColumn', cellColumn)
-                .dialog('open');
+
+            //Get cell being edited
+            var pagoToEdit = null;
+            $.each(GastosMensuales.GastosMensualesJSON.gastosMensuales.Meses[GastosMensuales.MesActual].Pagos, function(index, pago) {
+                if (pago.CeldaFila == cellRow && pago.CeldaColumna == cellColumn) {
+                    pagoToEdit = pago;
+                };
+            }); 
+
+            if (pagoToEdit !== null) {
+                $("#vencimiento").val((new Date(pagoToEdit.Vencimiento)).toLocaleDateString("es-ar"));
+                $("#tentativo").prop('checked', pagoToEdit.FechaTentativa);
+                $("#monto").val(pagoToEdit.Monto);
+                $("#pagado").prop('checked', pagoToEdit.Pagado);
+                $("#pagoAnual").prop('checked', pagoToEdit.EsPagoAnual);   
+
+                 GastosMensuales.EditPago.EditPagoDialog
+                    .data('cellRow', cellRow)
+                    .data('cellColumn', cellColumn)
+                    .dialog('open');
+            };
         }
     };
 
