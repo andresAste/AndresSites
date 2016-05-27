@@ -2,6 +2,7 @@ var GastosMensuales;
 (function(GastosMensuales) {
     var ServicesBaseAddress = "http://localhost:9090/api/";
     var DropBoxFileService = "dropBox/file/";
+    var GoogleDriveService = "gastosMensuales/";
 
     // *** PROPERTIES ****************************************************************
     GastosMensuales.GastosMensualesJSON = null;
@@ -93,7 +94,16 @@ var GastosMensuales;
                 CeldaColumna: cellColumn
             };
 
-            console.log(result);
+            $.post(ServicesBaseAddress + GoogleDriveService + "pago", 
+                   result, 
+                   function(data, textStatus, xhr) {
+                     
+                   },
+                    "json")
+            .fail(function(data) {
+                alert("error");
+                console.log(data);
+            });
         },
         Open: function(cellRow, cellColumn) {
             GastosMensuales.EditPago.ClearPagoPopup();
@@ -125,8 +135,7 @@ var GastosMensuales;
      * Get all Gastos Mensuales
      */
     GastosMensuales.GetAllGastosMensuales = function() {
-        var getCall = ServicesBaseAddress + "gastosMensuales";
-        console.log(getCall);
+        var getCall = ServicesBaseAddress + GoogleDriveService;
         $.get(getCall, function(data) {
                 GastosMensuales.GastosMensualesJSON = data;
                 CreateTableForMesCorriente(data, GastosMensuales.MesActual);
@@ -139,8 +148,6 @@ var GastosMensuales;
     };
 
     // *** private methods ****************************************************************
-
-    
 
     /**
      * Gets next or previous month

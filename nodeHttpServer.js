@@ -69,7 +69,7 @@ app.get('/GastosMensuales', function(req, res) {
   });
 });
 
-/**** WEB PAGES ROUTES ****************************************************************************************************************/
+/**** GASTOS MENSUALES SERVICES ROUTES *******************************************************************************************************/
 // on routes that end in /gastosMensuales
 router.route('/gastosMensuales')
   // get all the gastos mensuales (accessed at GET http://localhost:9090/api/gastosMensuales)
@@ -79,7 +79,14 @@ router.route('/gastosMensuales')
     });
   });
 
-/**** SERVICES ROUTES ****************************************************************************************************************/
+router.route('/gastosMensuales/pago')
+  .post(function(req, res) {
+    googleDriveAPINew.UpdateCell(req.body, function(result) {
+      res.json(result);
+    });
+  });
+
+/**** DROPBOX SERVICES ROUTES ****************************************************************************************************************/
 router.route('/dropBox/file/:file_path')
   // get a file (accessed at GET http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
   .get(function(req, res) {
@@ -103,7 +110,7 @@ router.route('/dropBox/file/:file_path')
     console.log(JSON.stringify(req.file));
     dropboxAPI.UploadFile(res, req.file.path, fullFilePath + '.pdf', function(result) {
       res.end("File uploaded successfully");
-    })
+    });
   });
 
 router.route('/dropBox/auth-callback')

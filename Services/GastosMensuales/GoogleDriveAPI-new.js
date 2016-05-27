@@ -16,37 +16,17 @@ var CONCEPTO = "Concepto";
 // ***** PRIVATE FUNCTIONS *****************************************************************************************************************************************
 
 /**
- * Download the spreadhseeet
- * @param {function} callbackOK    callback method when processing was successful
- * @param {function} callbackError callback method when an error was found
- */
-function DownloadSpreadsheet(callbackOK, callbackError) {
-  var fileInfo = require(__dirname + "/keyFile.json");
-  var creds = require(__dirname +'/claveGastosMensuales.json');
-  
-  var doc = new GoogleSpreadsheet(fileInfo.key);
-  var sheet;
-  console.log("here");
-  doc.useServiceAccountAuth(creds, function() {
-     doc.getInfo(function(err, info) {
-      console.log('Loaded doc: '+info.title+' by '+info.author.email);
-      info.worksheets.forEach(function(worksheet, index) {
-        sheet = info.worksheets[index];
-        console.log('sheet : '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);  
-        if (sheet.title == "Gastos 2016") {
-          ParseGastosMensuales(sheet, callbackOK, callbackError);
-        }
-      });
-    });
-  });
-}
-
-/**
  * Reads the cells contents and returns a JSON object
- * @param {function} callbackOK The callback to call with the authorized client, for a sucessful action
- * @param {function} callbackError The callback to call with the authorized client, for a failed action
+ * @param {object} parameters object with these parameters:
+ *   - sheet
+ *   - callbackOK
+ *   - callbackError
  */
-function ParseGastosMensuales(sheet, callbackOK, callbackError) {
+function ParseGastosMensuales(parameters) {
+  var sheet = parameters.Sheet;
+  var callbackOK = parameters.CallbackOK;
+  var callbackError = parameters.CallbackError;
+
   var parsedObject = {
     Meses: [{Mes: "Enero", Pagos:[] }, {Mes: "Febrero", Pagos:[] }, {Mes: "Marzo", Pagos:[] }, {Mes: "Abril", Pagos:[] }, {Mes: "Mayo", Pagos:[] }, {Mes: "Junio", Pagos:[] }, 
             {Mes: "Julio", Pagos:[] }, {Mes: "Agosto", Pagos:[] }, {Mes: "Septiembre", Pagos:[] }, {Mes: "Octubre", Pagos:[] }, {Mes: "Noviembre", Pagos:[] }, 
@@ -127,6 +107,90 @@ function ParseGastosMensuales(sheet, callbackOK, callbackError) {
     });
 }
 
+/**
+ * Updates a given Pago
+ * @param {object} parameters object with these parameters:
+ *   - sheet
+ *   - pago
+ *   - callbackOK
+ *   - callbackError
+ */
+function UpdatePago(parameters) {
+  parameters.Pago.Tentativo = (parameters.Pago.Tentativo.toLowerCase() === "true")
+  parameters.Pago.Pagado = (parameters.Pago.Pagado.toLowerCase() === "true");
+  parameters.Pago.PagoAnual = (parameters.Pago.PagoAnual.toLowerCase() === "true");
+  parameters.Pago.CeldaFila = parseInt(parameters.Pago.CeldaFila);
+  parameters.Pago.CeldaColumna = parseInt(parameters.Pago.CeldaColumna);
+
+  console.log(JSON.stringify(parameters.Pago));
+  var pago = parameters.Pago;
+
+  var getCellsParameters = { 'min-row':pago.CeldaFila, //Here is the Vencimiento date
+                              'max-row':pago.CeldaFila + 1, //here is the Monto
+                              'min-col':pago.CeldaColumna, 
+                              'max-col':pago.CeldaColumna,
+                              'return-empty': true 
+                            };
+  console.log(JSON.stringify(getCellsParameters));                            
+  parameters.Sheet.getCells(getCellsParameters, function(err, cells) {
+     if (err) {
+        console.log('Error reading cells: ' + err);
+        parameters.CallbackError('Error loading client secret file: ' + err);
+      } else {
+        cells.forEach(function(cell, index, array){
+          if (cell.row == pago.CeldaFila && cell.col == pago.CeldaColumna) { //Vencimiento cell
+            var splittedDate = pago.Vencimiento.split("/");
+            var newDay = splittedDate[0];
+            if (pago.Tentativo === true) {
+              newDay = newDay + "?";
+            }
+            else if (pago.PagoAnual === true) {
+              newDay = newDay + PAGO_ANUAL;
+            } else if (pago.Pagado === true) {
+              newDay = newDay + MES_PAGADO;
+            }
+            cell.value = newDay;
+          }
+          else if (cell.row == pago.CeldaFila + 1 && cell.col == pago.CeldaColumna) { //Monto cell
+            var value = pago.Monto;
+            cell.value = value;
+          }
+        });
+        console.log("updating cells");
+        console.log(JSON.stringify(cells));
+        parameters.Sheet.bulkUpdateCells(cells, function() {
+          parameters.CallbackOK(pago);  
+        });
+      }
+  });
+}
+
+/**
+ * Authenticate the users, and then proceeds with action
+ * @param {function} action         function to call after authentication
+ * @param {Array} actionParameters  parameters to pass to action method
+ */
+function Authenticate(action, actionParameters) {
+  var fileInfo = require(__dirname + "/keyFile.json");
+  var creds = require(__dirname +'/claveGastosMensuales.json');
+  
+  var doc = new GoogleSpreadsheet(fileInfo.key);
+  var sheet;
+  doc.useServiceAccountAuth(creds, function() {
+     doc.getInfo(function(err, info) {
+      console.log('Loaded doc: '+info.title+' by '+info.author.email);
+      info.worksheets.forEach(function(worksheet, index) {
+        sheet = info.worksheets[index];
+        console.log('sheet : '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);  
+        if (sheet.title == "Gastos 2016") {
+          actionParameters.Sheet = sheet;
+          action(actionParameters);
+        }
+      });
+    });
+  });
+}
+
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
 module.exports = {
   DownloadSpreadsheet: function(callback) {
@@ -134,16 +198,36 @@ module.exports = {
       errors : [],
       gastosMensuales: {}
     };
+    Authenticate(ParseGastosMensuales, 
+                {
+                  CallbackOK:  function (content){
+                      result.gastosMensuales = content;
+                      callback(result);
+                    },
+                  CallbackError: function (err){
+                      result.errors.push(err);
+                      callback(result);
+                    }
+                });
+  },
+  UpdateCell: function(pago, callback) {
+    var result = {
+      errors : [],
+      pago: {}
+    };
 
-    DownloadSpreadsheet( 
-        function (content){
-          result.gastosMensuales = content;
-          callback(result);
-        },
-        function (err){
-          result.errors.push(err);
-          callback(result);
-        });
+    Authenticate(UpdatePago, 
+                {
+                  Pago: pago,
+                  CallbackOK:  function (content){
+                      result.pago = content;
+                      callback(result);
+                    },
+                  CallbackError: function (err){
+                      result.errors.push(err);
+                      callback(result);
+                    }
+                });
   }
 };
 
