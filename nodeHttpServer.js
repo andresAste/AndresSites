@@ -57,7 +57,6 @@ var upload = multer({
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
-
 //Pages
 app.get('/GastosMensuales', function(req, res) {
   fs.readFile(staticPath + "/GastosMensuales/index.html", 'utf8', function(err, data) {

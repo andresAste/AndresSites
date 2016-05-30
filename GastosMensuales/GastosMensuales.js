@@ -55,7 +55,7 @@ var GastosMensuales;
               modal: true,
               buttons: {
                 'Actualizar': function(){
-                    GastosMensuales.EditPago.ActualizarPago($(this).data('cellRow'), $(this).data('cellColumn'));
+                    GastosMensuales.EditPago.ActualizarPago($(this).data('pago'));
                     $(this).dialog("close");
                 },
                 'Cancelar': function() {
@@ -79,25 +79,30 @@ var GastosMensuales;
         },
         /**
           * Updates a Pago
-          * @param {int} cellRow  Row index for the cell
-          * @param {int} cellColumn Column index for the cell
+          * @param {Object} pago  Pago to edit
           * @param {Object} information Object containing the information to update
           */
-        ActualizarPago: function (cellRow, cellColumn){
+        ActualizarPago: function (pago){
             var result = {
                 Vencimiento:  $("#vencimiento").val(),
                 Tentativo: $("#tentativo").prop('checked'),
                 Monto:  $("#monto").val(),
                 Pagado:  $("#pagado").prop('checked'),
                 PagoAnual:$("#pagoAnual").prop('checked'),
-                CeldaFila: cellRow,
-                CeldaColumna: cellColumn
+                CeldaFila: pago.CeldaFila,
+                CeldaColumna: pago.CeldaColumna
             };
 
             $.post(ServicesBaseAddress + GoogleDriveService + "pago", 
                    result, 
                    function(data, textStatus, xhr) {
-                     
+                     pago.Vencimiento = result.Vencimiento;
+                     pago.FechaTentativa = result.Tentativo;
+                     pago.Monto = result.Monto;
+                     pago.Pagado = result.Pagado;
+                     pago.EsPagoAnual =  result.PagoAnual;
+
+                     CreateTableForMesCorriente(GastosMensuales.GastosMensualesJSON, GastosMensuales.MesActual);
                    },
                     "json")
             .fail(function(data) {
@@ -105,6 +110,11 @@ var GastosMensuales;
                 console.log(data);
             });
         },
+        /**
+         * Opens the popup to edit a Pag
+         * @param {int} cellRow    number of row
+         * @param {int} cellColumn number of column
+         */
         Open: function(cellRow, cellColumn) {
             GastosMensuales.EditPago.ClearPagoPopup();
 
@@ -124,8 +134,7 @@ var GastosMensuales;
                 $("#pagoAnual").prop('checked', pagoToEdit.EsPagoAnual);   
 
                  GastosMensuales.EditPago.EditPagoDialog
-                    .data('cellRow', cellRow)
-                    .data('cellColumn', cellColumn)
+                    .data('pago', pagoToEdit)
                     .dialog('open');
             };
         }
