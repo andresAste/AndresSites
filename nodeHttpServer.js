@@ -78,12 +78,21 @@ router.route('/gastosMensuales')
     });
   });
 
+router.route('/gastosMensuales/compras')
+  // get all the gastos mensuales (accessed at GET http://localhost:9090/api/gastosMensuales/compras)
+  .get(function(req, res) {
+    googleDriveAPINew.DownloadCompras(function(result) {
+      res.json(result);
+    });
+  });
+
 router.route('/gastosMensuales/pago')
   .post(function(req, res) {
     googleDriveAPINew.UpdateCell(req.body, function(result) {
       res.json(result);
     });
   });
+
 
 /**** DROPBOX SERVICES ROUTES ****************************************************************************************************************/
 router.route('/dropBox/file/:file_path')

@@ -116,7 +116,7 @@ function ParseGastosMensuales(parameters) {
  *   - callbackError
  */
 function UpdatePago(parameters) {
-  parameters.Pago.Tentativo = (parameters.Pago.Tentativo.toLowerCase() === "true")
+  parameters.Pago.Tentativo = (parameters.Pago.Tentativo.toLowerCase() === "true");
   parameters.Pago.Pagado = (parameters.Pago.Pagado.toLowerCase() === "true");
   parameters.Pago.PagoAnual = (parameters.Pago.PagoAnual.toLowerCase() === "true");
   parameters.Pago.CeldaFila = parseInt(parameters.Pago.CeldaFila);
@@ -168,9 +168,10 @@ function UpdatePago(parameters) {
 /**
  * Authenticate the users, and then proceeds with action
  * @param {function} action         function to call after authentication
+ * @param {string} sheetTitle  title of the sheet to pass to the action
  * @param {Array} actionParameters  parameters to pass to action method
  */
-function Authenticate(action, actionParameters) {
+function Authenticate(action, sheetTitle, actionParameters) {
   var fileInfo = require(__dirname + "/keyFile.json");
   var creds = require(__dirname +'/claveGastosMensuales.json');
   
@@ -182,13 +183,69 @@ function Authenticate(action, actionParameters) {
       info.worksheets.forEach(function(worksheet, index) {
         sheet = info.worksheets[index];
         console.log('sheet : '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);  
-        if (sheet.title == "Gastos 2016") {
+        if (sheet.title == sheetTitle) {
           actionParameters.Sheet = sheet;
           action(actionParameters);
         }
       });
     });
   });
+}
+
+/**
+ * Returns a Compras object after reading data from the Spreadsheet
+ * @param {object} parameters object with these parameters:
+ *   - Sheet
+ *   - CallbackOK
+ *   - CallbackError
+ */
+function ParseCompras(parameters) {
+  var compras = [];
+  var maxCol = 24;
+  var maxRow = 90;
+ //get the cells and transform them into a two-dimensional array
+  var arraySheet = [];
+  for(var x = 0; x < parameters.Sheet.rowCount; x++){
+      arraySheet[x] = [];    
+      for(var y = 0; y < parameters.Sheet.colCount; y++){ 
+          arraySheet[x][y] = x*y;    
+      }    
+  }
+
+  parameters.Sheet.getCells({ 'max-row':maxRow,'max-col':maxCol,'return-empty': true }, function(err, cells) {
+      if (err) {
+        console.log('Error reading cells: ' + err);
+        parameters.CallbackError('Error on method ParseCompras: ' + err);
+      } else {
+        cells.forEach(function(cell, index, array){
+          arraySheet[cell.row-1][cell.col-1] = cell.value;
+        });
+       
+        var currentCol = 0;
+        while (currentCol < maxCol && arraySheet[0][currentCol] !== "" ){
+            var splittedDate = arraySheet[0][currentCol].split("-");
+            var compra = {
+              Mes: splittedDate[0],
+              Anio:splittedDate[1],
+              Detalle:[]
+            };
+
+            var currentRow = 9;
+            while (currentRow < maxRow && arraySheet[currentRow][currentCol] !== "") {
+              compra.Detalle.push({
+                TipoGasto: arraySheet[currentRow][currentCol],
+                Monto:  arraySheet[currentRow][currentCol+1],
+              });
+              currentRow = currentRow + 1;
+            }
+
+            compras.push(compra);
+            currentCol = currentCol + 2;
+        }
+
+        parameters.CallbackOK(compras);
+      }
+    });
 }
 
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
@@ -199,6 +256,7 @@ module.exports = {
       gastosMensuales: {}
     };
     Authenticate(ParseGastosMensuales, 
+                 "Gastos 2016",
                 {
                   CallbackOK:  function (content){
                       result.gastosMensuales = content;
@@ -217,6 +275,7 @@ module.exports = {
     };
 
     Authenticate(UpdatePago, 
+                 "Gastos 2016",
                 {
                   Pago: pago,
                   CallbackOK:  function (content){
@@ -228,6 +287,24 @@ module.exports = {
                       callback(result);
                     }
                 });
-  }
+  },
+  DownloadCompras: function(callback) {
+     var result = {
+      errors : [],
+      compras:[]
+    };
+    Authenticate(ParseCompras, 
+                 "Compras",
+                {
+                  CallbackOK:  function (content){
+                      result.compras = content;
+                      callback(result);
+                    },
+                  CallbackError: function (err){
+                      result.errors.push(err);
+                      callback(result);
+                    }
+                });
+  },
 };
 
