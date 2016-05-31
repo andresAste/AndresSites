@@ -184,9 +184,9 @@ var GastosMensuales;
                 var pagosNotPaidForThisMonth = [];
                 $.each(mes.Pagos, function(pagoIndex, pago) {
                     pago.ConceptoObject = GetItemByProperty(gastosMensualesJSON.gastosMensuales.Conceptos, "Concepto", pago.Concepto);
-                    if (pago.Vencimiento !== "" && pago.Pagado) {
+                    if (pago.Vencimiento !== "" && (pago.Pagado || pago.EsPagoAnual)) {
                         pagosPaidForThisMonth.push(pago);
-                    } else if (pago.Vencimiento !== "" && !pago.Pagado) {
+                    } else if (pago.Vencimiento !== "" && !(pago.Pagado || pago.EsPagoAnual)) {
                         pagosNotPaidForThisMonth.push(pago);
                     }
                 });
@@ -206,7 +206,6 @@ var GastosMensuales;
         $("#tbMesCorriente .gm-MonthName").html(GastosMensuales.MonthName[currenMonth]);
         $("#tbMesCorriente").find("tr:gt(1)").remove();
         $('#tbMesCorriente').append(rows);
-        $(".gm-Pago").addClass("gm-PagoRealizado");
         $(".gm-btunUploadComprobantePago").each(function(divIndex, div) {
             var filePath = $(div).attr('data-path');
             UploadComprobantePago(filePath, div);
@@ -289,7 +288,10 @@ var GastosMensuales;
         var origen = pago.ConceptoObject !== null ? pago.ConceptoObject.Origen : "";
         var fechaTentativaSuffix = pago.FechaTentativa ? "(?)" : "";
         var vencimiento = (new Date(pago.Vencimiento)).toLocaleDateString("es-ar") + fechaTentativaSuffix;
-        var cssCustom = pago.Pagado ? "gm-Pago" : "";
+        var cssCustom = "";
+
+        if (pago.Pagado) { cssCustom = "gm-PagoRealizado"}
+        else if (pago.EsPagoAnual) { cssCustom = "gm-PagoAnualRealizado"};
 
         //generate link to download comprobante de pago
         var linkDropbox = "";
