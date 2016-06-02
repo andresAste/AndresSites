@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Compras</title>
+	<link type="text/css" rel="stylesheet" href="libs/jquery-ui-1.11.4/jquery-ui.min.css" />
+	<link type="text/css" rel="stylesheet" href="css/Common.css" />
+	<script src="Compras.js" type="text/javascript"></script>
+	<script src="libs/jquery-1.12.3.min.js" type="text/javascript"></script>
+	<script src="libs/jquery-ui-1.11.4/jquery-ui.min.js"></script> 
+	<script src="libs/jquery-ui-1.11.4/datepicker-es.js"></script> 
+	<script type="text/javascript">
+		$(document).ready(function () {
+			GastosMensuales.Compras.Initialize();
+		});
+	</script>
+</head>
+<body>
+	<button id="btnGeCompras">Get Compras</button>
+	<br/>
+	<div class="result">
+		<table id="tbComprasDetalle">
+			<tr>
+				<td class="gm-PeriodoAnterior gm-nextPreviousButton"><button id="btnPeriodoAnterior">Período anterior</button></td>
+				<td><table id="tbPeriodoCorriente" border="1">
+						<tr><td colspan="4" class="gm-Fecha">Fecha</td></tr>
+						<tr class="gm-header">
+							<th class="gm-editar">Editar</th>
+							<th>TipoGasto</th>
+							<th>Monto</th>
+						</tr>
+					</table>
+				</td>
+				<td class="gm-PeriodoSiguiente gm-nextPreviousButton"><button id="btnPeriodoSiguiente">Período siguiente</button></td>
+			</tr>
+		</table>
+	</div>
+	<div class="gm-modal">
+	</div>
+</body>
+</html>
