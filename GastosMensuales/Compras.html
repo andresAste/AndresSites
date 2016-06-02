@@ -15,18 +15,34 @@
 	</script>
 </head>
 <body>
-	<button id="btnGeCompras">Get Compras</button>
+	<button id="btnGeCompras">Get Compras</button> <a href="index.html">Gastos mensuales</a>
 	<br/>
 	<div class="result">
 		<table id="tbComprasDetalle">
 			<tr>
 				<td class="gm-PeriodoAnterior gm-nextPreviousButton"><button id="btnPeriodoAnterior">Período anterior</button></td>
 				<td><table id="tbPeriodoCorriente" border="1">
-						<tr><td colspan="4" class="gm-Fecha">Fecha</td></tr>
-						<tr class="gm-header">
-							<th class="gm-editar">Editar</th>
-							<th>TipoGasto</th>
-							<th>Monto</th>
+						<tr><td colspan="3" class="gm-Fecha">Fecha</td></tr>
+						<tr>
+							<td colspan="3">
+								<table id="tbTotales">
+									<tr class="gm-header">
+										<th>TipoGasto</th>
+										<th>Total</th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<table id="tbDetalle">
+									<tr class="gm-header">
+										<th class="gm-editar">Editar</th>
+										<th>TipoGasto</th>
+										<th>Monto</th>
+									</tr>
+								</table>
+							</td>
 						</tr>
 					</table>
 				</td>

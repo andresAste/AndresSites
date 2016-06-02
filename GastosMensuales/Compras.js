@@ -45,7 +45,7 @@ var GastosMensuales;
             $.get(getCall, function(data) {
                     GastosMensuales.Compras.ComprasEfectuadas= data;
                     GastosMensuales.Compras.CurrenIndex = data.compras.length - 1;
-                    CreateTableForMesCorriente(data.compras[GastosMensuales.Compras.CurrenIndex]);
+                    CreateTableForPeriodoCorriente(data.compras[GastosMensuales.Compras.CurrenIndex]);
                 })
                 .fail(function(data) {
                     alert("error");
@@ -59,30 +59,37 @@ var GastosMensuales;
         function  UpdateTableForPeriodo(previousPeriodo) {
             if (previousPeriodo === false && GastosMensuales.Compras.CurrenIndex + 1 < GastosMensuales.Compras.ComprasEfectuadas.compras.length) {
                 GastosMensuales.Compras.CurrenIndex = GastosMensuales.Compras.CurrenIndex + 1;
-                CreateTableForMesCorriente(GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex]);
+                CreateTableForPeriodoCorriente(GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex]);
             }
             else if (previousPeriodo === true && GastosMensuales.Compras.CurrenIndex > 0) {
                 GastosMensuales.Compras.CurrenIndex = GastosMensuales.Compras.CurrenIndex - 1;
-                CreateTableForMesCorriente(GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex]);
-            };
+                CreateTableForPeriodoCorriente(GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex]);
+            }
         }
 
         /**
          * Creates HTML  table with the current period
          */
-        function CreateTableForMesCorriente(compras, index) {
+        function CreateTableForPeriodoCorriente(compras, index) {
             var rows = "";
+            var totalRows = "";
 
             $.each(compras.Detalle, function(compraIndex, compra) {
                rows = rows + GenerateDetalleRow(compra);
             });
 
+            $.each(compras.Totals, function(totalIndex, total) {
+               totalRows = totalRows + GenerateTotalRow(total);
+            });
+
             $("#tbComprasDetalle .gm-Fecha").html(compras.Mes + " - " + compras.Anio);
-            $("#tbPeriodoCorriente").find("tr:gt(1)").remove();
-            $('#tbPeriodoCorriente').append(rows);
+            $("#tbDetalle").find("tr:gt(0)").remove();
+            $('#tbDetalle').append(rows);
+            $("#tbTotales").find("tr:gt(0)").remove();
+            $('#tbTotales').append(totalRows);
         }
 
-         /**
+        /**
          * Generates a html table row for a given Compra
          * @param {Object} compra a procesar
          */
@@ -91,6 +98,19 @@ var GastosMensuales;
                 "<td></td>" + 
                 "<td>" + compra.TipoGasto + "</td>" +
                 "<td>" + compra.Monto + "</td>" +
+                "</tr>";
+
+            return row;
+        }
+
+        /**
+         * Generates a html table row for a given Total
+         * @param {Object} total Total to process
+         */
+        function GenerateTotalRow(total) {
+             var row = "<tr>" +
+                "<td>" + total.TipoGasto + "</td>" +
+                "<td>" + total.Total + "</td>" +
                 "</tr>";
 
             return row;

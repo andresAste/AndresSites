@@ -235,9 +235,13 @@ function ParseCompras(parameters) {
               compra.Detalle.push({
                 TipoGasto: arraySheet[currentRow][currentCol],
                 Monto:  arraySheet[currentRow][currentCol+1],
+                CeldaFila: currentRow + 1,
+                CeldaColumna: currentCol
               });
               currentRow = currentRow + 1;
             }
+            
+            compra.Totals = CalculateTotals(compra.Detalle);
 
             compras.push(compra);
             currentCol = currentCol + 2;
@@ -246,6 +250,35 @@ function ParseCompras(parameters) {
         parameters.CallbackOK(compras);
       }
     });
+}
+
+/**
+ * Calculate the totals for each type of Compra
+ * @param {object} detalles All compras done in a given month
+ */
+function CalculateTotals(detalles) {
+  var totals = [];
+  var categories = ["super", "ropa", "cosas casa", "otros gastos"];
+
+  detalles.forEach(function(detalle, index, array) {
+    
+    var tipoGasto = categories[categories.length-1]; //otros gastos by default
+    if (categories.indexOf(detalle.TipoGasto.toLowerCase()) > -1){
+      tipoGasto = categories[categories.indexOf(detalle.TipoGasto.toLowerCase())];
+    } 
+
+    var comprasForTheTipoGasto = utils.GetItemByProperty(totals, "TipoGasto", tipoGasto);
+    if (comprasForTheTipoGasto === null) {
+      comprasForTheTipoGasto = {
+        TipoGasto: tipoGasto,
+        Total: 0
+      };
+      totals.push(comprasForTheTipoGasto);
+    }
+    comprasForTheTipoGasto.Total += parseInt(detalle.Monto);
+  });
+
+  return totals;
 }
 
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
