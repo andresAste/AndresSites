@@ -326,6 +326,7 @@ module.exports = {
       errors : [],
       compras:[]
     };
+    
     Authenticate(ParseCompras, 
                  "Compras",
                 {

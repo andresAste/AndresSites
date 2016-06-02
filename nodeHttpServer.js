@@ -85,6 +85,11 @@ router.route('/gastosMensuales/compras')
       res.json(result);
     });
   });
+router.route('/gastosMensuales/compra')
+  .post(function(req, res) {
+    console.log(req.body);
+    res.json({"result" : "success"});
+  });
 
 router.route('/gastosMensuales/pago')
   .post(function(req, res) {

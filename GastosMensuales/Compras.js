@@ -12,20 +12,22 @@ var GastosMensuales;
          */
         Compras.Initialize = function() {
 
-            $("#btnGeCompras").click(function(event) {
-                event.preventDefault(); // cancel default behavior
+            $("#btnGeCompras").button().on("click", function() {
                 GastosMensuales.Compras.GetAllCompras();
             });    
 
-            $("#btnPeriodoAnterior").click(function(event) {
-                event.preventDefault(); // cancel default behavior
+            $("#btnPeriodoAnterior").button().on("click", function() {
                 UpdateTableForPeriodo(true);
             });
 
-            $("#btnPeriodoSiguiente").click(function(event) {
-                event.preventDefault(); // cancel default behavior
+            $("#btnPeriodoSiguiente").button().on("click", function() {
                 UpdateTableForPeriodo(false);
             });
+
+
+            $("#btnAddCompra").button().on("click", function() {
+                    GastosMensuales.Compras.EditCompra.Open();
+            });    
 
             $(document).on({
                 ajaxStart: function() {
@@ -35,6 +37,88 @@ var GastosMensuales;
                     $("body").removeClass("gm-loading");
                 }
             });
+
+            Compras.EditCompra.Initialize();
+        };
+
+        Compras.EditCompra = {
+            /**
+             * Initializes the dialog
+             */
+            Initialize: function() {
+                GastosMensuales.Compras.EditCompra.EditCompraDialog = $("#AddCompra").dialog({
+                  autoOpen: false,
+                  //height: 300,
+                  //width: 350,
+                  modal: true,
+                  buttons: {
+                    'Agregar': function(){
+                        GastosMensuales.Compras.EditCompra.AgregarCompra();
+                        $(this).dialog("close");
+                    },
+                    'Cancelar': function() {
+                      $(this).dialog("close");
+                    }
+                  },
+                  close: function() {
+                    $(this).dialog("close");
+                  }
+                });
+            },
+            /**
+              * Clears the form
+              */
+            ClearCompraPopup : function() {
+                $("#tipoPago").val("Super");
+                $("#otroTipoPago").val("");
+                $("#monto").val("");
+            },
+            /**
+              * Adds a compra
+              */
+            AgregarCompra: function (){
+                var tipoGasto = $("#otroTipoPago").val();
+                if ($("#tipoPago").val() != "Otro tipo") {
+                    tipoGasto = $("#tipoPago").val();
+                }
+
+                var lastCompraOfPeriod = null;
+                var detallesOfCurrentPeriod = GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex].Detalle;
+                if (detallesOfCurrentPeriod.length > 0)  {
+                    lastCompraOfPeriod = detallesOfCurrentPeriod[detallesOfCurrentPeriod.length - 1];
+                }
+
+                var result = {
+                    TipoGasto:  tipoGasto,
+                    Monto:  $("#monto").val(),
+                    CeldaFila: lastCompraOfPeriod.CeldaFila + 1,
+                    CeldaColumna: lastCompraOfPeriod.CeldaColumna,
+                    New: true
+                };
+
+                $.post(ServicesBaseAddress + GoogleDriveService + "compra", 
+                       result, 
+                       function(data, textStatus, xhr) {
+                        delete result.New;
+                        detallesOfCurrentPeriod.push(result);
+                        CreateTableForPeriodoCorriente(GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex]);
+                       },
+                        "json")
+                .fail(function(data) {
+                    alert("error");
+                    console.log(data);
+                });
+            },
+            /**
+             * Opens the popup to edit a Pag
+             * @param {int} cellRow    number of row
+             * @param {int} cellColumn number of column
+             */
+            Open: function() {
+                GastosMensuales.Compras.EditCompra.ClearCompraPopup();
+                GastosMensuales.Compras.EditCompra.EditCompraDialog
+                        .dialog('open');
+            }
         };
 
         /**

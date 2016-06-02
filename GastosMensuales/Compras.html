@@ -17,6 +17,10 @@
 <body>
 	<button id="btnGeCompras">Get Compras</button> <a href="index.html">Gastos mensuales</a>
 	<br/>
+	<br/>
+	<button id="btnAddCompra">Add Compra</button>
+	<br/>
+	<br/>
 	<div class="result">
 		<table id="tbComprasDetalle">
 			<tr>
@@ -51,6 +55,33 @@
 		</table>
 	</div>
 	<div class="gm-modal">
+	</div>
+	<div id="AddCompra">
+		<table>
+			<tr>
+				<td>
+					<label for="tipoPago">Tipo de pago</label>
+				    <select name="tipoPago" id="tipoPago" class="text ui-widget-content ui-corner-all">
+				      <option selected="selected">Super</option>
+				      <option>Cosas casa</option>
+				      <option>Ropa</option>
+				      <option>Otro tipo</option>
+				    </select>
+			    </td>
+			</tr>
+			<tr>
+				<td>
+					<label for="otroTipoPago">Otro tipo:</label>
+      				<input type="otroTipoPago" name="otroTipoPago" id="otroTipoPago" value="" class="text ui-widget-content ui-corner-all">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="monto">Monto</label>
+		        	<input type="number" name="monto" id="monto" class="text ui-widget-content ui-corner-all" step="0.01" min="0">
+			    </td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>
