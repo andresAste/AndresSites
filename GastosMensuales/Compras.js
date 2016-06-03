@@ -89,18 +89,21 @@ var GastosMensuales;
                 }
 
                 var result = {
+                    compras : [ {
                     TipoGasto:  tipoGasto,
                     Monto:  $("#monto").val(),
-                    CeldaFila: lastCompraOfPeriod.CeldaFila + 1,
-                    CeldaColumna: lastCompraOfPeriod.CeldaColumna,
+                    CeldaFila: parseInt(lastCompraOfPeriod.CeldaFila) + 1,
+                    CeldaColumna: parseInt(lastCompraOfPeriod.CeldaColumna),
                     New: true
+                    }]
                 };
 
                 $.post(ServicesBaseAddress + GoogleDriveService + "compra", 
                        result, 
                        function(data, textStatus, xhr) {
-                        delete result.New;
-                        detallesOfCurrentPeriod.push(result);
+                        var compra = result.compras[0];
+                        delete compra.New;
+                        detallesOfCurrentPeriod.push(compra);
                         CreateTableForPeriodoCorriente(GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex]);
                        },
                         "json")

@@ -236,7 +236,7 @@ function ParseCompras(parameters) {
                 TipoGasto: arraySheet[currentRow][currentCol],
                 Monto:  arraySheet[currentRow][currentCol+1],
                 CeldaFila: currentRow + 1,
-                CeldaColumna: currentCol
+                CeldaColumna: currentCol + 1
               });
               currentRow = currentRow + 1;
             }
@@ -279,6 +279,76 @@ function CalculateTotals(detalles) {
   });
 
   return totals;
+}
+
+/**
+ * Adds or updates compras
+ * @param {object} parameters parameters for the method:
+ *   - Sheet
+ *   - Compras: array
+ *   - CallbackOK
+ *   - CallbackError
+ */
+function UpdateCompras(parameters) {
+  
+  var column = 0;
+  var minRow = 50000;
+  var maxRow = 0;
+
+  parameters.Compras.forEach(function(compra, compraIndex, array) {
+    compra.New = (compra.New.toLowerCase() === "true");
+    compra.CeldaFila = parseInt(compra.CeldaFila);
+    compra.CeldaColumna = parseInt(compra.CeldaColumna);
+    
+    column = compra.CeldaColumna; //all should have the same column's value.
+    if (minRow > compra.CeldaFila) {
+      minRow = compra.CeldaFila;
+    };
+    if (maxRow < compra.CeldaFila) {
+      maxRow = compra.CeldaFila
+    };
+  });
+
+  console.log(parameters.Compras);
+
+  var getCompraByCellParameters = function(row, column, compras) {
+    var compraFound = null;
+    compras.forEach(function(compra, compraIndex, array) {
+      if (compra.CeldaFila == row && compra.CeldaColumna == column) { compraFound = compra };
+    });
+    return compraFound;
+  }  
+
+  var getCellsParameters = { 'min-row':minRow, 
+                          'max-row':maxRow, 
+                          'min-col':column, //here is the Tipo Pago
+                          'max-col':column + 1,  //here is the Monto
+                          'return-empty': true 
+                        };
+
+  parameters.Sheet.getCells(getCellsParameters, function(err, cells) {
+     if (err) {
+        console.log('Error reading cells: ' + err);
+        parameters.CallbackError('Error loading client secret file: ' + err);
+      } else {
+        cells.forEach(function(cell, index, array){
+          var compraToUpdate = getCompraByCellParameters(cell.row, cell.col, parameters.Compras);
+          if (compraToUpdate == null) {
+            compraToUpdate = getCompraByCellParameters(cell.row, cell.col-1, parameters.Compras); //in case the cell is for the second column
+          };
+          
+          if (compraToUpdate != null) {
+            cell.value = compraToUpdate.CeldaColumna + 1 == cell.col ? compraToUpdate.Monto : compraToUpdate.TipoGasto;
+          }
+        });
+
+        console.log("updating cells");
+        console.log(JSON.stringify(cells));
+        parameters.Sheet.bulkUpdateCells(cells, function() {
+          parameters.CallbackOK(parameters.Compras);  
+        });
+      }
+  });
 }
 
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
@@ -340,5 +410,29 @@ module.exports = {
                     }
                 });
   },
+  /**
+   * Add or Updates compras
+   * @param {Array of Object}   compras  Compras to update
+   * @param {Function} callback Callback method
+   */
+  UpdateCompras: function(compras, callback) {
+     var result = {
+      errors : [],
+      compras: []
+    };
+    Authenticate(UpdateCompras, 
+              "Compras",
+              {
+                Compras: compras,
+                CallbackOK:  function (content){
+                    result.compras = content;
+                    callback(result);
+                  },
+                CallbackError: function (err){
+                    result.errors.push(err);
+                    callback(result);
+                  }
+              });
+  }
 };
 

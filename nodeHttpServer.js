@@ -87,8 +87,9 @@ router.route('/gastosMensuales/compras')
   });
 router.route('/gastosMensuales/compra')
   .post(function(req, res) {
-    console.log(req.body);
-    res.json({"result" : "success"});
+    googleDriveAPINew.UpdateCompras(req.body.compras, function(result) {
+      res.json(result);
+    });
   });
 
 router.route('/gastosMensuales/pago')
