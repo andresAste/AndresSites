@@ -84,6 +84,7 @@ var GastosMensuales;
 
                 var lastCompraOfPeriod = null;
                 var detallesOfCurrentPeriod = GastosMensuales.Compras.ComprasEfectuadas.compras[GastosMensuales.Compras.CurrenIndex].Detalle;
+
                 if (detallesOfCurrentPeriod.length > 0)  {
                     lastCompraOfPeriod = detallesOfCurrentPeriod[detallesOfCurrentPeriod.length - 1];
                 }
@@ -130,6 +131,7 @@ var GastosMensuales;
         Compras.GetAllCompras = function() {
             var getCall = ServicesBaseAddress + GoogleDriveService + "compras";
             $.get(getCall, function(data) {
+
                     GastosMensuales.Compras.ComprasEfectuadas= data;
                     GastosMensuales.Compras.CurrenIndex = data.compras.length - 1;
                     CreateTableForPeriodoCorriente(data.compras[GastosMensuales.Compras.CurrenIndex]);
@@ -161,6 +163,12 @@ var GastosMensuales;
             var rows = "";
             var totalRows = "";
 
+            compras.Totals = CalculateTotals(compras.Detalle);
+            var total = 0;
+            compras.Totals.forEach(function (totalItem, totalItemIndex, array) {
+              total += totalItem.Total;
+            });
+
             $.each(compras.Detalle, function(compraIndex, compra) {
                rows = rows + GenerateDetalleRow(compra);
             });
@@ -169,7 +177,7 @@ var GastosMensuales;
                totalRows = totalRows + GenerateTotalRow(total);
             });
 
-            $("#tbComprasDetalle .gm-Fecha").html(compras.Mes + " - " + compras.Anio);
+            $("#tbComprasDetalle .gm-Fecha").html(compras.Mes + " - " + compras.Anio + " - Total:" + total);
             $("#tbDetalle").find("tr:gt(0)").remove();
             $('#tbDetalle').append(rows);
             $("#tbTotales").find("tr:gt(0)").remove();
@@ -201,6 +209,35 @@ var GastosMensuales;
                 "</tr>";
 
             return row;
+        }
+
+        /**
+         * Calculate the totals for each type of Compra
+         * @param {object} detalles All compras done in a given month
+         */
+        function CalculateTotals(detalles) {
+          var totals = [];
+          var categories = ["super", "ropa", "cosas casa", "otros gastos"];
+
+          detalles.forEach(function(detalle, index, array) {
+            
+            var tipoGasto = categories[categories.length-1]; //otros gastos by default
+            if (categories.indexOf(detalle.TipoGasto.toLowerCase()) > -1){
+              tipoGasto = categories[categories.indexOf(detalle.TipoGasto.toLowerCase())];
+            } 
+
+            var comprasForTheTipoGasto = GastosMensuales.Utils.GetItemByProperty(totals, "TipoGasto", tipoGasto);
+            if (comprasForTheTipoGasto === null) {
+              comprasForTheTipoGasto = {
+                TipoGasto: tipoGasto,
+                Total: 0
+              };
+              totals.push(comprasForTheTipoGasto);
+            }
+            comprasForTheTipoGasto.Total += parseInt(detalle.Monto);
+          });
+
+          return totals;
         }
 
     })(GastosMensuales.Compras || (GastosMensuales.Compras = {}));

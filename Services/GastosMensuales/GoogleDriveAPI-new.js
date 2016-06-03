@@ -241,8 +241,6 @@ function ParseCompras(parameters) {
               currentRow = currentRow + 1;
             }
             
-            compra.Totals = CalculateTotals(compra.Detalle);
-
             compras.push(compra);
             currentCol = currentCol + 2;
         }
@@ -250,35 +248,6 @@ function ParseCompras(parameters) {
         parameters.CallbackOK(compras);
       }
     });
-}
-
-/**
- * Calculate the totals for each type of Compra
- * @param {object} detalles All compras done in a given month
- */
-function CalculateTotals(detalles) {
-  var totals = [];
-  var categories = ["super", "ropa", "cosas casa", "otros gastos"];
-
-  detalles.forEach(function(detalle, index, array) {
-    
-    var tipoGasto = categories[categories.length-1]; //otros gastos by default
-    if (categories.indexOf(detalle.TipoGasto.toLowerCase()) > -1){
-      tipoGasto = categories[categories.indexOf(detalle.TipoGasto.toLowerCase())];
-    } 
-
-    var comprasForTheTipoGasto = utils.GetItemByProperty(totals, "TipoGasto", tipoGasto);
-    if (comprasForTheTipoGasto === null) {
-      comprasForTheTipoGasto = {
-        TipoGasto: tipoGasto,
-        Total: 0
-      };
-      totals.push(comprasForTheTipoGasto);
-    }
-    comprasForTheTipoGasto.Total += parseInt(detalle.Monto);
-  });
-
-  return totals;
 }
 
 /**
@@ -303,10 +272,10 @@ function UpdateCompras(parameters) {
     column = compra.CeldaColumna; //all should have the same column's value.
     if (minRow > compra.CeldaFila) {
       minRow = compra.CeldaFila;
-    };
+    }
     if (maxRow < compra.CeldaFila) {
-      maxRow = compra.CeldaFila
-    };
+      maxRow = compra.CeldaFila;
+    }
   });
 
   console.log(parameters.Compras);
@@ -314,10 +283,10 @@ function UpdateCompras(parameters) {
   var getCompraByCellParameters = function(row, column, compras) {
     var compraFound = null;
     compras.forEach(function(compra, compraIndex, array) {
-      if (compra.CeldaFila == row && compra.CeldaColumna == column) { compraFound = compra };
+      if (compra.CeldaFila == row && compra.CeldaColumna == column) { compraFound = compra; }
     });
     return compraFound;
-  }  
+  };  
 
   var getCellsParameters = { 'min-row':minRow, 
                           'max-row':maxRow, 
@@ -333,11 +302,11 @@ function UpdateCompras(parameters) {
       } else {
         cells.forEach(function(cell, index, array){
           var compraToUpdate = getCompraByCellParameters(cell.row, cell.col, parameters.Compras);
-          if (compraToUpdate == null) {
+          if (compraToUpdate === null) {
             compraToUpdate = getCompraByCellParameters(cell.row, cell.col-1, parameters.Compras); //in case the cell is for the second column
-          };
+          }
           
-          if (compraToUpdate != null) {
+          if (compraToUpdate !== null) {
             cell.value = compraToUpdate.CeldaColumna + 1 == cell.col ? compraToUpdate.Monto : compraToUpdate.TipoGasto;
           }
         });
