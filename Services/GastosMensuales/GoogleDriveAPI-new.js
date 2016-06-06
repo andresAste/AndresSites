@@ -182,7 +182,7 @@ function Authenticate(action, sheetTitle, actionParameters) {
       console.log('Loaded doc: '+info.title+' by '+info.author.email);
       info.worksheets.forEach(function(worksheet, index) {
         sheet = info.worksheets[index];
-        console.log('sheet : '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);  
+        console.log('sheet : '+sheet.title+'(' + sheet.url + '-' + sheet.id+ ') '+sheet.rowCount+'x'+sheet.colCount);  
         if (sheet.title == sheetTitle) {
           actionParameters.Sheet = sheet;
           action(actionParameters);

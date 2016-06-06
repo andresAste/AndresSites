@@ -217,7 +217,7 @@ var GastosMensuales;
          */
         function CalculateTotals(detalles) {
           var totals = [];
-          var categories = ["super", "ropa", "cosas casa", "otros gastos"];
+          var categories = ["super", "ropa", "cosas casa", "farmacia","otros gastos"];
 
           detalles.forEach(function(detalle, index, array) {
             
