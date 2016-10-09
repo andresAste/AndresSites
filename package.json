@@ -1,0 +1,30 @@
+{
+  "name": "AndresSites",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nodeHttpServer.js",
+  "scripts": {
+    "start": "node nodeHttpServer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andresAste/AndresSites.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andresAste/AndresSites/issues"
+  },
+  "homepage": "https://github.com/andresAste/AndresSites#readme",
+  "dependencies": {
+    "body-parser": ">=1.0.0",
+    "csvtojson": ">=0.5.5",
+    "dropbox": "^2.3.0",
+    "express": ">=4.13.4",
+    "google-auth-library": ">=0.9.7",
+    "google-spreadsheet": ">=2.0.3",
+    "googleapis": ">=5.2.1",
+    "multer": ">=1.1.0"
+  }
+}
