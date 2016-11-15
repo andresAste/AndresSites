@@ -4,7 +4,7 @@
   "description": "",
   "main": "nodeHttpServer.js",
   "scripts": {
-    "start": "node nodeHttpServer.js"
+    "start": "start http://localhost:9090/GastosMensuales & node nodeHttpServer.js"
   },
   "repository": {
     "type": "git",
