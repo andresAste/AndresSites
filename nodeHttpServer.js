@@ -59,7 +59,7 @@ app.use('/api', router);
 
 //Pages
 app.get('/GastosMensuales', function(req, res) {
-  fs.readFile(staticPath + "/GastosMensuales/index.html", 'utf8', function(err, data) {
+  fs.readFile(staticPath + "/GastosMensuales/indexOld.html", 'utf8', function(err, data) {
     if (err) {
       console.log(err);
     } else {

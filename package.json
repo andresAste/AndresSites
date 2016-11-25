@@ -4,7 +4,11 @@
   "description": "",
   "main": "nodeHttpServer.js",
   "scripts": {
-    "start": "start http://localhost:9090/GastosMensuales & node nodeHttpServer.js"
+    "start": "tsc && concurrently \"npm run tsc:w\" \"start firefox http://localhost:9090/GastosMensuales\" \"node nodeHttpServer.js\"",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings",
+    "postinstall": "typings install"
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,29 @@
     "google-auth-library": ">=0.9.7",
     "google-spreadsheet": ">=2.0.3",
     "googleapis": ">=5.2.1",
-    "multer": ">=1.1.0"
+    "multer": ">=1.1.0",
+    "@angular/common": "~2.0.2",
+    "@angular/compiler": "~2.0.2",
+    "@angular/core": "~2.0.2",
+    "@angular/forms": "~2.0.2",
+    "@angular/http": "~2.0.2",
+    "@angular/platform-browser": "~2.0.2",
+    "@angular/platform-browser-dynamic": "~2.0.2",
+    "@angular/router": "~3.0.2",
+    "@angular/upgrade": "~2.0.2",
+    "angular-in-memory-web-api": "~0.1.5",
+    "bootstrap": "^3.3.7",
+    "core-js": "^2.4.1",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "systemjs": "0.19.39",
+    "zone.js": "^0.6.25"
+  },
+  "devDependencies": {
+    "@types/core-js": "^0.9.34",
+    "@types/node": "^6.0.45",
+    "concurrently": "^3.0.0",
+    "typescript": "^2.0.3",
+    "typings":"^0.7.12"
   }
 }

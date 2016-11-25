@@ -1,0 +1,68 @@
+	<button id="btnGeCompras">Get Compras</button>
+	<br/>
+	<br/>
+	<button id="btnAddCompra">Add Compra</button>
+	<br/>
+	<br/>
+	<div class="result">
+		<table id="tbComprasDetalle">
+			<tr>
+				<td class="gm-PeriodoAnterior gm-nextPreviousButton"><button id="btnPeriodoAnterior">Período anterior</button></td>
+				<td><table id="tbPeriodoCorriente" border="1">
+						<tr><td colspan="3" class="gm-Fecha">Fecha</td></tr>
+						<tr>
+							<td colspan="3">
+								<table id="tbTotales">
+									<tr class="gm-header">
+										<th>TipoGasto</th>
+										<th>Total</th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3">
+								<table id="tbDetalle">
+									<tr class="gm-header">
+										<th class="gm-editar">Editar</th>
+										<th>TipoGasto</th>
+										<th>Monto</th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td class="gm-PeriodoSiguiente gm-nextPreviousButton"><button id="btnPeriodoSiguiente">Período siguiente</button></td>
+			</tr>
+		</table>
+	</div>
+	<div class="gm-modal">
+	</div>
+	<div id="AddCompra">
+		<table>
+			<tr>
+				<td>
+					<label for="tipoPago">Tipo de pago</label>
+				    <select name="tipoPago" id="tipoPago" class="text ui-widget-content ui-corner-all">
+				      <option selected="selected">Super</option>
+				      <option>Cosas casa</option>
+				      <option>Ropa</option>
+				      <option>Otro tipo</option>
+				    </select>
+			    </td>
+			</tr>
+			<tr>
+				<td>
+					<label for="otroTipoPago">Otro tipo:</label>
+      				<input type="otroTipoPago" name="otroTipoPago" id="otroTipoPago" value="" class="text ui-widget-content ui-corner-all">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="monto">Monto</label>
+		        	<input type="number" name="monto" id="monto" class="text ui-widget-content ui-corner-all" step="0.01" min="0">
+			    </td>
+			</tr>
+		</table>
+	</div>

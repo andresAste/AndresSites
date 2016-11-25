@@ -1,0 +1,38 @@
+<button id="btnGetGastosMensuales">Get Gastos Mensuales</button>
+<div class="result">
+    <table id="tbGastosMensuales">
+        <tr>
+            <div *ngIf="GastosMensuales && GastosMensuales.length > 0"> 
+                <td class="gm-MesAnterior gm-nextPreviousButton"><button id="btnMesAnterior">Mes anterior</button></td>
+                <td>
+                    <table id="tbMesCorriente" border="1">
+                        <tr><td colspan="9" class="gm-MonthName">Mes actual</td></tr>
+                        <tr class="gm-header">
+                            <th class="gm-editar">Editar</th>
+                            <th class="gm-concepto">Concepto</th>
+                            <th class="gm-vencimiento">Vencimiento</th>
+                            <th class="gm-monto">Monto</th>
+                            <th class="gm-pagado">Pagado</th>
+                            <th class="gm-esPagoAnual">Es Pago Anual</th>
+                            <th>Código Pago</th>
+                            <th>Comprobante de pago</th>
+                            <th>Origen</th>
+                        </tr>
+                        <tr *ngFor="let gastoMensual of GastosMensuales">
+                            <td>button coming soon...</td>
+                            <td>{{gastoMensual.Concepto}}</td>
+                            <td>{{gastoMensual.Vencimiento}}</td>
+                            <td>{{gastoMensual.Monto}}</td>
+                            <td>{{gastoMensual.Pagado}}</td>
+                            <td>{{gastoMensual.EsPagoAnual}}</td>
+                            <td>coming soon...</td>
+                            <td>coming soon...</td>
+                            <td>coming soon...</td>
+                        </tr>
+                    </table>
+                </td>
+            <td class="gm-MesSiguiente gm-nextPreviousButton"><button id="btnMesSiguiente">Mes siguiente</button></td>
+            </div>
+        </tr>
+    </table>
+</div>
