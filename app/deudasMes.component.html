@@ -1,8 +1,8 @@
 <button id="btnGetGastosMensuales">Get Gastos Mensuales</button>
 <div class="result">
     <table id="tbGastosMensuales">
-        <tr>
-            <div *ngIf="GastosMensuales && GastosMensuales.length > 0"> 
+        <tr> 
+            <div *ngIf="PagosMesActual && PagosMesActual.length > 0">
                 <td class="gm-MesAnterior gm-nextPreviousButton"><button id="btnMesAnterior">Mes anterior</button></td>
                 <td>
                     <table id="tbMesCorriente" border="1">
@@ -18,21 +18,21 @@
                             <th>Comprobante de pago</th>
                             <th>Origen</th>
                         </tr>
-                        <tr *ngFor="let gastoMensual of GastosMensuales">
+                        <tr *ngFor="let gastoMensual of PagosMesActual">
                             <td>button coming soon...</td>
-                            <td>{{gastoMensual.Concepto}}</td>
-                            <td>{{gastoMensual.Vencimiento}}</td>
+                            <td>{{gastoMensual.Concepto.Concepto}}</td>
+                            <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>
                             <td>{{gastoMensual.Monto}}</td>
                             <td>{{gastoMensual.Pagado}}</td>
                             <td>{{gastoMensual.EsPagoAnual}}</td>
-                            <td>coming soon...</td>
-                            <td>coming soon...</td>
-                            <td>coming soon...</td>
+                            <td>{{gastoMensual.Concepto.CodigoPago}}</td>
+                            <td>link coming soon...</td>
+                            <td>{{gastoMensual.Concepto.Origen}}</td>
                         </tr>
                     </table>
                 </td>
-            <td class="gm-MesSiguiente gm-nextPreviousButton"><button id="btnMesSiguiente">Mes siguiente</button></td>
-            </div>
+                <td class="gm-MesSiguiente gm-nextPreviousButton"><button id="btnMesSiguiente">Mes siguiente</button></td>
+           </div>
         </tr>
     </table>
 </div>

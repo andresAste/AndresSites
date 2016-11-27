@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit{
      
     // *** Properties *************************************************
     PlanillaGastosMensuales: PlanillaGastosMensuales;
+    Pagos:Array<PagoMensual>;
     // *** Constructor *************************************************
     /**
      * Creates an instance of HomeComponent.
@@ -30,7 +31,7 @@ export class HomeComponent implements OnInit{
      * @memberOf HomeComponent
      */
     constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService) {
-        this.PlanillaGastosMensuales = new PlanillaGastosMensuales();
+        this.PlanillaGastosMensuales = new PlanillaGastosMensuales(undefined, undefined, undefined);
     }
 
     // *** Public methods *************************************************
@@ -48,14 +49,10 @@ export class HomeComponent implements OnInit{
      * @memberOf HomeComponent
      */
     ObtenerPlanillaGastosMensuales(): void {
-        if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensuales.length === 0) {
-            console.log("recuperando planilla de gastos mensuales");
-            this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-                                               .then(planilla =>
-                                               {
-                                                   this.PlanillaGastosMensuales = planilla;
-                                               }); 
-            console.log("planilla de gastos mensuales recuperada");
+        if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
+         this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
+         .subscribe(planilla => this.PlanillaGastosMensuales = planilla, 
+                    error => { console.log(error); });                                      
         }
     }
 }
