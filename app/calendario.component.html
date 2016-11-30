@@ -1,6 +1,7 @@
-<div>
+<div *ngIf="PagosPorConcepto && PagosPorConcepto.length > 0">
     <table id="tbCalnedario" border="1">
         <tr class="gm-header">
+            <th>Concepto</th>
             <th>Enero</th>
             <th>Febrero</th>
             <th>Marzo</th>
@@ -13,6 +14,17 @@
             <th>Octubre</th>
             <th>Noviembre</th>
             <th>Diciembre</th>
+        </tr>
+        <tr *ngFor="let pagosConcepto of PagosPorConcepto">
+            <td>
+                {{pagosConcepto.Pagos[0].Concepto.Concepto}}
+            </td>
+            <td *ngFor="let pagoMensual of pagosConcepto.Pagos">
+                <div *ngIf="pagoMensual && pagoMensual.Vencimiento">
+                    {{pagoMensual.Vencimiento.toLocaleDateString("es-ar")}}
+                    {{pagoMensual.Monto}}
+                </div>
+            </td>
         </tr>
     </table>
 </div>

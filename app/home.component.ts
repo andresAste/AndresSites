@@ -5,8 +5,10 @@ import { CalendarioComponent } from './calendario.component';
 
 import { PlanillaGastosMensuales } from './model/planillaGastosMensuales';
 import { PagoMensual } from './model/pagoMensual';
+import { PagosAnualConcepto } from './model/pagosAnualConcepto';
 
 import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
+import { PlanillaGastosMensualesFactory } from './model/planillaGastosMensualesFactory';
 
 /**
  * @export
@@ -15,13 +17,14 @@ import { PlanillaGastosMensualesService } from './services/planillaGastosMensual
 @Component({
     selector: "home",
     templateUrl: "app/home.component.html",
-    providers: [ PlanillaGastosMensualesService ]
+    providers: [ PlanillaGastosMensualesService, PlanillaGastosMensualesFactory ]
 })
 export class HomeComponent implements OnInit{
      
     // *** Properties *************************************************
     PlanillaGastosMensuales: PlanillaGastosMensuales;
     Pagos:Array<PagoMensual>;
+    PagosPorConcepto: Array<PagosAnualConcepto>;
     // *** Constructor *************************************************
     /**
      * Creates an instance of HomeComponent.
@@ -30,8 +33,9 @@ export class HomeComponent implements OnInit{
      * 
      * @memberOf HomeComponent
      */
-    constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService) {
+    constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService, private planillaGastosMensualesFactory: PlanillaGastosMensualesFactory) {
         this.PlanillaGastosMensuales = new PlanillaGastosMensuales();
+        this.PagosPorConcepto = new Array<PagosAnualConcepto>();
     }
 
     // *** Public methods *************************************************
@@ -52,7 +56,11 @@ export class HomeComponent implements OnInit{
         console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
          this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-         .subscribe(planilla => this.PlanillaGastosMensuales = planilla, 
+         .subscribe(planilla => {
+                        this.PlanillaGastosMensuales = planilla;
+                        this.PagosPorConcepto = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(this.PlanillaGastosMensuales);
+                        console.log( this.PagosPorConcepto);
+                    }, 
                     error => { console.log(error); });                                      
         }
     }

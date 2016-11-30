@@ -52,11 +52,8 @@ var PlanillaGastosMensualesService = (function () {
         console.log("resultado sin convertir:");
         console.log(body);
         var planilla = this.planillaGastosMensualesFactory.ConstruirPlanillaGastosMensuales(body.errors, body.gastosMensuales.Meses, body.gastosMensuales.Conceptos);
-        var pagosAnuales = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(planilla);
         console.log("resultado convertido:");
         console.log(planilla);
-        console.log("pagos anuales:");
-        console.log(pagosAnuales);
         return planilla || {};
     };
     PlanillaGastosMensualesService = __decorate([

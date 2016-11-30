@@ -16,8 +16,20 @@ var core_1 = require('@angular/core');
  * @class CalendarioComponent
  */
 var CalendarioComponent = (function () {
+    // *** Constructor *************************************************
+    /**
+     * Creates an instance of CalendarioComponent.
+     *
+     *
+     * @memberOf CalendarioComponent
+     */
     function CalendarioComponent() {
+        this.PagosPorConcepto = new Array();
     }
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Array)
+    ], CalendarioComponent.prototype, "PagosPorConcepto", void 0);
     CalendarioComponent = __decorate([
         core_1.Component({
             selector: "calendario",

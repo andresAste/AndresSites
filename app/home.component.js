@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var planillaGastosMensuales_1 = require('./model/planillaGastosMensuales');
 var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
+var planillaGastosMensualesFactory_1 = require('./model/planillaGastosMensualesFactory');
 /**
  * @export
  * @class HomeComponent Main Component
@@ -24,9 +25,11 @@ var HomeComponent = (function () {
      *
      * @memberOf HomeComponent
      */
-    function HomeComponent(planillaGastosMensualesService) {
+    function HomeComponent(planillaGastosMensualesService, planillaGastosMensualesFactory) {
         this.planillaGastosMensualesService = planillaGastosMensualesService;
+        this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
         this.PlanillaGastosMensuales = new planillaGastosMensuales_1.PlanillaGastosMensuales();
+        this.PagosPorConcepto = new Array();
     }
     // *** Public methods *************************************************
     /**
@@ -46,16 +49,20 @@ var HomeComponent = (function () {
         console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
             this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-                .subscribe(function (planilla) { return _this.PlanillaGastosMensuales = planilla; }, function (error) { console.log(error); });
+                .subscribe(function (planilla) {
+                _this.PlanillaGastosMensuales = planilla;
+                _this.PagosPorConcepto = _this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(_this.PlanillaGastosMensuales);
+                console.log(_this.PagosPorConcepto);
+            }, function (error) { console.log(error); });
         }
     };
     HomeComponent = __decorate([
         core_1.Component({
             selector: "home",
             templateUrl: "app/home.component.html",
-            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService]
+            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, planillaGastosMensualesFactory_1.PlanillaGastosMensualesFactory]
         }), 
-        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService])
+        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, planillaGastosMensualesFactory_1.PlanillaGastosMensualesFactory])
     ], HomeComponent);
     return HomeComponent;
 }());

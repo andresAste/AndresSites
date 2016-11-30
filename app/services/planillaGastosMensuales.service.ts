@@ -63,13 +63,9 @@ export class PlanillaGastosMensualesService {
         console.log(body);
         
         let planilla = this.planillaGastosMensualesFactory.ConstruirPlanillaGastosMensuales(body.errors, body.gastosMensuales.Meses, body.gastosMensuales.Conceptos);
-        let pagosAnuales = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(planilla);
-
         console.log("resultado convertido:");
         console.log(planilla);
 
-        console.log("pagos anuales:");
-        console.log(pagosAnuales);
         return planilla || { }; 
     }
 }
