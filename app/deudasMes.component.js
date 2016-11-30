@@ -62,7 +62,8 @@ var DeudasMesComponent = (function () {
     DeudasMesComponent = __decorate([
         core_1.Component({
             selector: "deudasMes",
-            templateUrl: "app/deudasMes.component.html"
+            templateUrl: "app/deudasMes.component.html",
+            styleUrls: ['app/styles/default.css']
         }), 
         __metadata('design:paramtypes', [])
     ], DeudasMesComponent);

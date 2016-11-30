@@ -12,7 +12,8 @@ import { ConceptoPago } from './model/conceptoPago';
  */
 @Component({
     selector: "deudasMes",
-    templateUrl: "app/deudasMes.component.html"
+    templateUrl: "app/deudasMes.component.html",
+    styleUrls: ['app/styles/default.css']
 })
 export class DeudasMesComponent {
 

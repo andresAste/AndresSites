@@ -1,9 +1,8 @@
 <button id="btnGetGastosMensuales">Get Gastos Mensuales</button>
 <div class="result">
-    <table id="tbGastosMensuales">
+    <table id="tbGastosMensuales" cellspacing='0'>
         <tr> 
             <div *ngIf="PagosMesActual && PagosMesActual.length > 0">
-                <td class="gm-MesAnterior gm-nextPreviousButton"><button id="btnMesAnterior">Mes anterior</button></td>
                 <td>
                     <table id="tbMesCorriente" border="1">
                         <tr><td colspan="9" class="gm-MonthName">Mes actual</td></tr>
@@ -31,7 +30,6 @@
                         </tr>
                     </table>
                 </td>
-                <td class="gm-MesSiguiente gm-nextPreviousButton"><button id="btnMesSiguiente">Mes siguiente</button></td>
            </div>
         </tr>
     </table>

@@ -9,7 +9,8 @@ import { PagosAnualConcepto } from './model/pagosAnualConcepto';
  */
 @Component({
     selector: "calendario",
-    templateUrl: "app/calendario.component.html"
+    templateUrl: "app/calendario.component.html",
+    styleUrls: ['app/styles/default.css']
 })
 export class CalendarioComponent {
 
