@@ -43,13 +43,10 @@ var HomeComponent = (function () {
      */
     HomeComponent.prototype.ObtenerPlanillaGastosMensuales = function () {
         var _this = this;
-        if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensuales.length === 0) {
-            console.log("recuperando planilla de gastos mensuales");
+        console.log("ObtenerPlanillaGastosMensuales");
+        if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
             this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-                .then(function (planilla) {
-                _this.PlanillaGastosMensuales = planilla;
-            });
-            console.log("planilla de gastos mensuales recuperada");
+                .subscribe(function (planilla) { return _this.PlanillaGastosMensuales = planilla; }, function (error) { console.log(error); });
         }
     };
     HomeComponent = __decorate([

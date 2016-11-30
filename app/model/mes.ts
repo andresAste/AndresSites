@@ -14,22 +14,15 @@ export class Mes {
     Mes: string;
 
     // *** Constructor *************************************************
-    
+   
     /**
      * Creates an instance of Mes.
      * 
-     * @param {*} jsonObject Javascript JSON object
      * 
      * @memberOf Mes
      */
-    constructor(jsonObject: any, conceptos:Array<ConceptoPago>) {
+    constructor() {
         this.Pagos = new Array<PagoMensual>();
-        if (jsonObject !== undefined) {
-            this.Mes = jsonObject.Mes;
-            jsonObject.Pagos.forEach(jsonPago => {
-                this.Pagos.push(new PagoMensual(jsonPago, conceptos));
-            });
-        }
     } 
 
     // *** Public methods *************************************************
@@ -52,4 +45,15 @@ export class Mes {
         return result;
     }
 
+    /**
+     * Obtiene el numero correspondiente al mes
+     * 
+     * @returns {number}
+     * 
+     * @memberOf Mes
+     */
+    ObtenerNumeroMes():number {
+        let nombresMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        return nombresMeses.indexOf(this.Mes);
+    }
 }

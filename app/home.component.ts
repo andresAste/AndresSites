@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit{
      * @memberOf HomeComponent
      */
     constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService) {
-        this.PlanillaGastosMensuales = new PlanillaGastosMensuales(undefined, undefined, undefined);
+        this.PlanillaGastosMensuales = new PlanillaGastosMensuales();
     }
 
     // *** Public methods *************************************************
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit{
      * @memberOf HomeComponent
      */
     ngOnInit(): void {
-        this.ObtenerPlanillaGastosMensuales();
+        this.ObtenerPlanillaGastosMensuales(); 
     }
 
     /**
@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit{
      * @memberOf HomeComponent
      */
     ObtenerPlanillaGastosMensuales(): void {
+        console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
          this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
          .subscribe(planilla => this.PlanillaGastosMensuales = planilla, 

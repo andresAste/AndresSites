@@ -17,13 +17,48 @@ var core_1 = require('@angular/core');
  */
 var DeudasMesComponent = (function () {
     // *** constructors *************************************************
+    /**
+     * Creates an instance of DeudasMesComponent.
+     *
+     *
+     * @memberOf DeudasMesComponent
+     */
     function DeudasMesComponent() {
-        this.GastosMensuales = new Array();
+        /**
+         * Arreglo con los meses del año
+         *
+         *
+         * @memberOf DeudasMesComponent
+         */
+        this.NombresDeMes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        this.MesActual = this.NombresDeMes[(new Date()).getMonth()];
     }
+    Object.defineProperty(DeudasMesComponent.prototype, "GastosMensualesPorMes", {
+        get: function () {
+            if (this._gastosMensualesPorMes === undefined) {
+                this._gastosMensualesPorMes = new Array();
+            }
+            return this._gastosMensualesPorMes;
+        },
+        set: function (gastosObtenidos) {
+            var _this = this;
+            console.log("ya tenemos  los conceptos?");
+            this._gastosMensualesPorMes = gastosObtenidos;
+            this._gastosMensualesPorMes.forEach(function (gastoMensual) {
+                if (gastoMensual.Mes === _this.MesActual) {
+                    console.log("llamando para obtener los pagos reales");
+                    console.log(gastoMensual);
+                    _this.PagosMesActual = gastoMensual.ObtenerPagosDelMes();
+                }
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
-    ], DeudasMesComponent.prototype, "GastosMensuales", void 0);
+    ], DeudasMesComponent.prototype, "GastosMensualesPorMes", null);
     DeudasMesComponent = __decorate([
         core_1.Component({
             selector: "deudasMes",
