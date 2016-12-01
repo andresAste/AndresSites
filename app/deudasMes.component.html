@@ -1,36 +1,29 @@
-<button id="btnGetGastosMensuales">Get Gastos Mensuales</button>
-<div class="result">
-    <table id="tbGastosMensuales" cellspacing='0'>
-        <tr> 
-            <div *ngIf="PagosMesActual && PagosMesActual.length > 0">
-                <td>
-                    <table id="tbMesCorriente" border="1">
-                        <tr><td colspan="9" class="gm-MonthName">Mes actual</td></tr>
-                        <tr class="gm-header">
-                            <th class="gm-editar">Editar</th>
-                            <th class="gm-concepto">Concepto</th>
-                            <th class="gm-vencimiento">Vencimiento</th>
-                            <th class="gm-monto">Monto</th>
-                            <th class="gm-pagado">Pagado</th>
-                            <th class="gm-esPagoAnual">Es Pago Anual</th>
-                            <th>Código Pago</th>
-                            <th>Comprobante de pago</th>
-                            <th>Origen</th>
-                        </tr>
-                        <tr *ngFor="let gastoMensual of PagosMesActual">
-                            <td>button coming soon...</td>
-                            <td>{{gastoMensual.Concepto.Concepto}}</td>
-                            <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>
-                            <td>{{gastoMensual.Monto}}</td>
-                            <td>{{gastoMensual.Pagado}}</td>
-                            <td>{{gastoMensual.EsPagoAnual}}</td>
-                            <td>{{gastoMensual.Concepto.CodigoPago}}</td>
-                            <td>link coming soon...</td>
-                            <td>{{gastoMensual.Concepto.Origen}}</td>
-                        </tr>
-                    </table>
-                </td>
-           </div>
-        </tr>
-    </table>
+<div *ngIf="PagosMesActual && PagosMesActual.length > 0">
+    <td>
+        <table id="tbMesCorriente" border="1" cellspacing='0'>
+            <tr><td colspan="9" class="gm-MonthName">Mes actual</td></tr>
+            <tr class="gm-header">
+                <th class="gm-editar">Editar</th>
+                <th class="gm-concepto">Concepto</th>
+                <th class="gm-vencimiento">Vencimiento</th>
+                <th class="gm-monto">Monto</th>
+                <th class="gm-pagado">Pagado</th>
+                <th class="gm-esPagoAnual">Es Pago Anual</th>
+                <th>Código Pago</th>
+                <th>Comprobante de pago</th>
+                <th>Origen</th>
+            </tr>
+            <tr *ngFor="let gastoMensual of PagosMesActual">
+                <td>button coming soon...</td>
+                <td>{{gastoMensual.Concepto.Concepto}}</td>
+                <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>
+                <td>{{gastoMensual.Monto}}</td>
+                <td>{{gastoMensual.Pagado}}</td>
+                <td>{{gastoMensual.EsPagoAnual}}</td>
+                <td>{{gastoMensual.Concepto.CodigoPago}}</td>
+                <td>link coming soon...</td>
+                <td>{{gastoMensual.Concepto.Origen}}</td>
+            </tr>
+        </table>
+    </td>
 </div>
