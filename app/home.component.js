@@ -56,6 +56,10 @@ var HomeComponent = (function () {
             }, function (error) { console.log(error); });
         }
     };
+    // *** Event handlers ***************************************************
+    HomeComponent.prototype.log = function (selectedTab) {
+        console.log('Selected Tab with title: ' + selectedTab.TabTitle);
+    };
     HomeComponent = __decorate([
         core_1.Component({
             selector: "home",

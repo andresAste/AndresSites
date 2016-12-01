@@ -9,36 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-/**
- * Component para el Calendario
- *
- * @export
- * @class CalendarioComponent
- */
-var CalendarioComponent = (function () {
-    // *** Constructor *************************************************
-    /**
-     * Creates an instance of CalendarioComponent.
-     *
-     *
-     * @memberOf CalendarioComponent
-     */
-    function CalendarioComponent() {
-        this.PagosPorConcepto = [];
+var TabsComponent = (function () {
+    function TabsComponent() {
+        this.tabs = [];
+        this.selected = new core_1.EventEmitter();
     }
+    TabsComponent.prototype.addTab = function (tab) {
+        if (!this.tabs.length) {
+            tab.selected = true;
+        }
+        this.tabs.push(tab);
+    };
+    TabsComponent.prototype.selectTab = function (tab) {
+        this.tabs.map(function (tab) {
+            tab.selected = false;
+        });
+        tab.selected = true;
+        this.selected.emit({ selectedTab: tab });
+    };
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], CalendarioComponent.prototype, "PagosPorConcepto", void 0);
-    CalendarioComponent = __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], TabsComponent.prototype, "selected", void 0);
+    TabsComponent = __decorate([
         core_1.Component({
-            selector: "calendario",
-            templateUrl: "app/calendario.component.html",
-            styleUrls: ['app/styles/default.css']
+            selector: 'my-tabs',
+            templateUrl: 'app/framework/tabs.component.html'
         }), 
         __metadata('design:paramtypes', [])
-    ], CalendarioComponent);
-    return CalendarioComponent;
+    ], TabsComponent);
+    return TabsComponent;
 }());
-exports.CalendarioComponent = CalendarioComponent;
-//# sourceMappingURL=calendario.component.js.map
+exports.TabsComponent = TabsComponent;
+//# sourceMappingURL=tabs.component.js.map

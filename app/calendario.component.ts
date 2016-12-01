@@ -16,7 +16,7 @@ export class CalendarioComponent {
 
  // *** Properties *************************************************
     @Input()
-    PagosPorConcepto: Array<PagosAnualConcepto>;
+    PagosPorConcepto: PagosAnualConcepto[];
 
  // *** Constructor *************************************************
    /**
@@ -26,7 +26,7 @@ export class CalendarioComponent {
     * @memberOf CalendarioComponent
     */
    constructor() {
-        this.PagosPorConcepto = new Array<PagosAnualConcepto>();
+        this.PagosPorConcepto = [];
     }
 
 }

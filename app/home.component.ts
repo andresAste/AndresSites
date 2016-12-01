@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { DeudasMesComponent } from './deudasMes.component';
 import { CalendarioComponent } from './calendario.component';
+import { iTab } from './framework/tab/iTab.interface';
+import { TabsComponent } from './framework/tab/tabs.component';
+import { TabComponent } from './framework/tab/tab.component';
 
 import { PlanillaGastosMensuales } from './model/planillaGastosMensuales';
 import { PagoMensual } from './model/pagoMensual';
@@ -64,5 +67,10 @@ export class HomeComponent implements OnInit{
                     error => { console.log(error); });                                      
         }
     }
+
+    // *** Event handlers ***************************************************
+    log(selectedTab:iTab) {
+        console.log('Selected Tab with title: ' + selectedTab.TabTitle);
+  }
 }
  

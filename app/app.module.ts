@@ -9,6 +9,8 @@ import { HomeComponent } from './home.component';
 import { DeudasMesComponent } from './deudasMes.component';
 import { CalendarioComponent } from './calendario.component';
 import { ComprasComponent } from './compras.component';
+import { TabsComponent } from './framework/tab/tabs.component';
+import { TabComponent } from './framework/tab/tab.component';
 
 /**
  * @export
@@ -22,7 +24,7 @@ import { ComprasComponent } from './compras.component';
       { path: '', component: HomeComponent }
     ]) ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-  declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent],
+  declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, TabsComponent, TabComponent],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { } 

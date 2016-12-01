@@ -9,36 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-/**
- * Component para el Calendario
- *
- * @export
- * @class CalendarioComponent
- */
-var CalendarioComponent = (function () {
-    // *** Constructor *************************************************
-    /**
-     * Creates an instance of CalendarioComponent.
-     *
-     *
-     * @memberOf CalendarioComponent
-     */
-    function CalendarioComponent() {
-        this.PagosPorConcepto = [];
+var tabs_component_1 = require('./tabs.component');
+var TabComponent = (function () {
+    function TabComponent(tabsComponent) {
+        this.tabsComponent = tabsComponent;
     }
+    TabComponent.prototype.ngOnInit = function () {
+        this.tabsComponent.addTab(this);
+    };
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', Array)
-    ], CalendarioComponent.prototype, "PagosPorConcepto", void 0);
-    CalendarioComponent = __decorate([
+        __metadata('design:type', Object)
+    ], TabComponent.prototype, "tabTitle", void 0);
+    TabComponent = __decorate([
         core_1.Component({
-            selector: "calendario",
-            templateUrl: "app/calendario.component.html",
-            styleUrls: ['app/styles/default.css']
+            selector: 'my-tab',
+            templateUrl: 'app/framework/tab.component.html'
         }), 
-        __metadata('design:paramtypes', [])
-    ], CalendarioComponent);
-    return CalendarioComponent;
+        __metadata('design:paramtypes', [tabs_component_1.TabsComponent])
+    ], TabComponent);
+    return TabComponent;
 }());
-exports.CalendarioComponent = CalendarioComponent;
-//# sourceMappingURL=calendario.component.js.map
+exports.TabComponent = TabComponent;
+//# sourceMappingURL=tab.component.js.map

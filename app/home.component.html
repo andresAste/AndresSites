@@ -1,10 +1,8 @@
-<div>
-	<table>
-		<tr>
-			<td style="vertical-align:top;"><deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"></deudasMes>
-			</td>
-			<td style="vertical-align:top;"><calendario [PagosPorConcepto] = "PagosPorConcepto"></calendario></td>
-		</tr>
-	</table>
-</div>
-	
+<my-tabs (Selected)="log($event.selectedTab)">
+  <my-tab [TabTitle]="'Deudas del mes'">
+    <deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"> </deudasMes> 
+  </my-tab>
+  <my-tab [TabTitle]="'Calendario'">
+    <calendario [PagosPorConcepto] = "PagosPorConcepto"></calendario>
+  </my-tab>
+</my-tabs>

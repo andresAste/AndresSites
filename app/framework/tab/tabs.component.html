@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let tab of Tabs">
+    <a href="#" (click)="SelectTab(tab)">{{tab.TabTitle}}</a>
+  </li>
+</ul>
+<ng-content></ng-content>
