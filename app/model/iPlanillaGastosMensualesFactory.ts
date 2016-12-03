@@ -1,5 +1,4 @@
-import { PlanillaGastosMensuales } from './planillaGastosMensuales';
-import { PagosAnualConcepto } from './../model/pagosAnualConcepto';
+import { PlanillaGastosMensuales, PagosAnualConcepto} from './index';
 
 /**
  * Interface para la creación de una Planilla de Gastos Mensuales

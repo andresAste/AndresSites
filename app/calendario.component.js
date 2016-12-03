@@ -34,7 +34,7 @@ var CalendarioComponent = (function () {
         core_1.Component({
             selector: "calendario",
             templateUrl: "app/calendario.component.html",
-            styleUrls: ['app/styles/default.css']
+            styleUrls: ['app/styles/default.scss']
         }), 
         __metadata('design:paramtypes', [])
     ], CalendarioComponent);

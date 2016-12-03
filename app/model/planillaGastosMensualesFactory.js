@@ -9,11 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var planillaGastosMensuales_1 = require('./planillaGastosMensuales');
-var conceptoPago_1 = require('./conceptoPago');
-var mes_1 = require('./mes');
-var pagoMensual_1 = require('./pagoMensual');
-var pagosAnualConcepto_1 = require('./pagosAnualConcepto');
+var index_1 = require('./index');
 var PlanillaGastosMensualesFactory = (function () {
     function PlanillaGastosMensualesFactory() {
     }
@@ -28,22 +24,22 @@ var PlanillaGastosMensualesFactory = (function () {
      * @memberOf iPlanillaGastosMensualesFactory
      */
     PlanillaGastosMensualesFactory.prototype.ConstruirPlanillaGastosMensuales = function (jsonErrores, jsonGastos, jsonConceptos) {
-        var result = new planillaGastosMensuales_1.PlanillaGastosMensuales();
+        var result = new index_1.PlanillaGastosMensuales();
         if (jsonErrores !== undefined) {
             result.Errores = jsonErrores;
         }
         if (jsonConceptos !== undefined) {
             jsonConceptos.forEach(function (jsonConcepto) {
-                result.ConceptosPagos.push(new conceptoPago_1.ConceptoPago(jsonConcepto));
+                result.ConceptosPagos.push(new index_1.ConceptoPago(jsonConcepto));
             });
         }
         if (jsonGastos !== undefined) {
             jsonGastos.forEach(function (jsonGasto) {
-                var nuevoMes = new mes_1.Mes();
+                var nuevoMes = new index_1.Mes();
                 if (jsonGasto !== undefined) {
                     nuevoMes.Mes = jsonGasto.Mes;
                     jsonGasto.Pagos.forEach(function (jsonPago) {
-                        nuevoMes.Pagos.push(new pagoMensual_1.PagoMensual(jsonPago, result.ConceptosPagos));
+                        nuevoMes.Pagos.push(new index_1.PagoMensual(jsonPago, result.ConceptosPagos));
                     });
                 }
                 result.GastosMensualesPorMes.push(nuevoMes);
@@ -63,7 +59,7 @@ var PlanillaGastosMensualesFactory = (function () {
         var result = new Array(planillaGastos.ConceptosPagos.length);
         var index = 0;
         planillaGastos.ConceptosPagos.forEach(function (conceptoPago) {
-            result[index] = new pagosAnualConcepto_1.PagosAnualConcepto();
+            result[index] = new index_1.PagosAnualConcepto();
             //Por cada mes de la planilla, busco el pago para dicho concepto
             planillaGastos.GastosMensualesPorMes.forEach(function (gastoPorMes) {
                 var gastoDelMes = gastoPorMes.Pagos.find(function (pago) { return pago.Concepto.Concepto === conceptoPago.Concepto; });

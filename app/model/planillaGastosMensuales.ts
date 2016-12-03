@@ -1,5 +1,4 @@
-import { ConceptoPago } from './conceptoPago';
-import { Mes } from './mes';
+import { ConceptoPago, Mes } from './index';
 
 /**
  * Clase que contiene la información de una planilla de Gastos Mensuales

@@ -63,7 +63,7 @@ var DeudasMesComponent = (function () {
         core_1.Component({
             selector: "deudasMes",
             templateUrl: "app/deudasMes.component.html",
-            styleUrls: ['app/styles/default.css']
+            styleUrls: ['app/styles/default.scss']
         }), 
         __metadata('design:paramtypes', [])
     ], DeudasMesComponent);

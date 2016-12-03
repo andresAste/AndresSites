@@ -1,4 +1,4 @@
-import { PagoMensual } from './pagoMensual';
+import { PagoMensual } from './index';
 
 /**
  * Clase para mostrar la información en un calendario

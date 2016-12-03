@@ -1,17 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DeudasMesComponent } from './deudasMes.component';
+import { DeudasMesComponent,  } from './deudasMes.component';
 import { CalendarioComponent } from './calendario.component';
-import { iTab } from './framework/tab/iTab.interface';
-import { TabsComponent } from './framework/tab/tabs.component';
-import { TabComponent } from './framework/tab/tab.component';
+import { iTab, TabsComponent, TabComponent } from './framework/index';
 
-import { PlanillaGastosMensuales } from './model/planillaGastosMensuales';
-import { PagoMensual } from './model/pagoMensual';
-import { PagosAnualConcepto } from './model/pagosAnualConcepto';
+import { PlanillaGastosMensuales, PagoMensual, PagosAnualConcepto, PlanillaGastosMensualesFactory } from './model/index';
 
 import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
-import { PlanillaGastosMensualesFactory } from './model/planillaGastosMensualesFactory';
 
 /**
  * @export

@@ -1,4 +1,4 @@
-import { ConceptoPago } from './conceptoPago';
+import { ConceptoPago } from './index';
 
 /**
  * Pago Mensual

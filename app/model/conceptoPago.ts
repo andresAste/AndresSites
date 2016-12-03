@@ -1,4 +1,4 @@
-import { Origen } from './enums';
+import { Origen } from './index';
 
 /**
  * Clase para cada Concepto que se paga

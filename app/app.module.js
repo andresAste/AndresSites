@@ -18,8 +18,7 @@ var home_component_1 = require('./home.component');
 var deudasMes_component_1 = require('./deudasMes.component');
 var calendario_component_1 = require('./calendario.component');
 var compras_component_1 = require('./compras.component');
-var tabs_component_1 = require('./framework/tab/tabs.component');
-var tab_component_1 = require('./framework/tab/tab.component');
+var index_1 = require('./framework/index');
 /**
  * @export
  * @class AppModule Main Module, this defines an Angular application formed by Components.
@@ -36,7 +35,7 @@ var AppModule = (function () {
                     { path: '', component: home_component_1.HomeComponent }
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, tabs_component_1.TabsComponent, tab_component_1.TabComponent],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, index_1.TabsComponent, index_1.TabComponent],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

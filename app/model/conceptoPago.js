@@ -1,5 +1,5 @@
 "use strict";
-var enums_1 = require('./enums');
+var index_1 = require('./index');
 /**
  * Clase para cada Concepto que se paga
  *
@@ -20,7 +20,7 @@ var ConceptoPago = (function () {
         this.CodigoPago = jsonObject.CodigoPago;
         this.CarpetaDropbox = jsonObject.CarpetaDropbox;
         this.PalabraDropbox = jsonObject.PalabraDropbox;
-        this.Origen = this.ObtenerDescripcionDeOrigen(enums_1.Origen[jsonObject.Origen.replace(/\s+/g, '')]); //\s is the regex for "whitespace", and g is the "global" flag, meaning match ALL \s (whitespaces). 
+        this.Origen = this.ObtenerDescripcionDeOrigen(index_1.Origen[jsonObject.Origen.replace(/\s+/g, '')]); //\s is the regex for "whitespace", and g is the "global" flag, meaning match ALL \s (whitespaces). 
     }
     // *** Private methods *****************************************************
     /**
@@ -34,22 +34,22 @@ var ConceptoPago = (function () {
     ConceptoPago.prototype.ObtenerDescripcionDeOrigen = function (origen) {
         var descripcion = "";
         switch (origen) {
-            case enums_1.Origen.Casa:
+            case index_1.Origen.Casa:
                 descripcion = "Casa";
                 break;
-            case enums_1.Origen.Andres:
+            case index_1.Origen.Andres:
                 descripcion = "Andres";
                 break;
-            case enums_1.Origen.DepartamentoCordoba:
+            case index_1.Origen.DepartamentoCordoba:
                 descripcion = "Departamento Cordoba";
                 break;
-            case enums_1.Origen.DepartamentoMarcosPaz:
+            case index_1.Origen.DepartamentoMarcosPaz:
                 descripcion = "Departamento Marcos Paz";
                 break;
-            case enums_1.Origen.Natalia:
+            case index_1.Origen.Natalia:
                 descripcion = "Natalia";
                 break;
-            case enums_1.Origen.TerrenoBahia:
+            case index_1.Origen.TerrenoBahia:
                 descripcion = "Terreno Bahia";
                 break;
             default:

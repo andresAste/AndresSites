@@ -1,5 +1,4 @@
-import { PagoMensual } from './pagoMensual';
-import { ConceptoPago } from './conceptoPago';
+import { PagoMensual, ConceptoPago } from './index';
 
 /**
  * Clase para un mes

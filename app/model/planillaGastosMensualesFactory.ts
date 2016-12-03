@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { iPlanillaGastosMensualesFactory } from './iPlanillaGastosMensualesFactory';
-import { PlanillaGastosMensuales } from './planillaGastosMensuales';
-import { ConceptoPago } from './conceptoPago';
-import { Mes } from './mes';
-import { PagoMensual } from './pagoMensual';
-import { PagosAnualConcepto } from './pagosAnualConcepto';
+import { iPlanillaGastosMensualesFactory, PlanillaGastosMensuales, ConceptoPago, Mes, PagoMensual, PagosAnualConcepto } from './index';
 
 @Injectable()
 /**

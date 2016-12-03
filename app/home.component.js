@@ -9,9 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var planillaGastosMensuales_1 = require('./model/planillaGastosMensuales');
+var index_1 = require('./model/index');
 var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
-var planillaGastosMensualesFactory_1 = require('./model/planillaGastosMensualesFactory');
 /**
  * @export
  * @class HomeComponent Main Component
@@ -28,7 +27,7 @@ var HomeComponent = (function () {
     function HomeComponent(planillaGastosMensualesService, planillaGastosMensualesFactory) {
         this.planillaGastosMensualesService = planillaGastosMensualesService;
         this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
-        this.PlanillaGastosMensuales = new planillaGastosMensuales_1.PlanillaGastosMensuales();
+        this.PlanillaGastosMensuales = new index_1.PlanillaGastosMensuales();
         this.PagosPorConcepto = new Array();
     }
     // *** Public methods *************************************************
@@ -64,9 +63,9 @@ var HomeComponent = (function () {
         core_1.Component({
             selector: "home",
             templateUrl: "app/home.component.html",
-            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, planillaGastosMensualesFactory_1.PlanillaGastosMensualesFactory]
+            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory]
         }), 
-        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, planillaGastosMensualesFactory_1.PlanillaGastosMensualesFactory])
+        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory])
     ], HomeComponent);
     return HomeComponent;
 }());

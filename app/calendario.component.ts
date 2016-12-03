@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PagosAnualConcepto } from './model/pagosAnualConcepto';
+import { PagosAnualConcepto } from './model/index';
 
 /**
  * Component para el Calendario
@@ -10,7 +10,7 @@ import { PagosAnualConcepto } from './model/pagosAnualConcepto';
 @Component({
     selector: "calendario",
     templateUrl: "app/calendario.component.html",
-    styleUrls: ['app/styles/default.css']
+    styleUrls: ['app/styles/default.scss']
 })
 export class CalendarioComponent {
 
@@ -26,7 +26,7 @@ export class CalendarioComponent {
     * @memberOf CalendarioComponent
     */
    constructor() {
-        this.PagosPorConcepto = [];
+        this.PagosPorConcepto = []; 
     }
 
 }

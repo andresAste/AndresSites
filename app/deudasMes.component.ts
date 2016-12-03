@@ -1,8 +1,6 @@
 import { Component, Input  } from '@angular/core';
 
-import { Mes } from './model/mes';
-import { PagoMensual } from './model/pagoMensual';
-import { ConceptoPago } from './model/conceptoPago';
+import { Mes, PagoMensual,  ConceptoPago} from './model/index';
 
 /**
  * Component para Deudas Mes
@@ -13,7 +11,7 @@ import { ConceptoPago } from './model/conceptoPago';
 @Component({
     selector: "deudasMes",
     templateUrl: "app/deudasMes.component.html",
-    styleUrls: ['app/styles/default.css']
+    styleUrls: ['app/styles/default.scss']
 })
 export class DeudasMesComponent {
 
