@@ -8,6 +8,8 @@ import { PlanillaGastosMensuales, PagoMensual, PagosAnualConcepto, PlanillaGasto
 
 import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
 
+import {FadingCircleComponent} from 'ng2-spin-kit-new/app/spinner/fading-circle'
+
 /**
  * @export
  * @class HomeComponent Main Component
@@ -23,6 +25,7 @@ export class HomeComponent implements OnInit{
     PlanillaGastosMensuales: PlanillaGastosMensuales;
     Pagos:Array<PagoMensual>;
     PagosPorConcepto: Array<PagosAnualConcepto>;
+    MostrarSpinningIcon: boolean = false;
     // *** Constructor *************************************************
     /**
      * Creates an instance of HomeComponent.
@@ -53,13 +56,18 @@ export class HomeComponent implements OnInit{
     ObtenerPlanillaGastosMensuales(): void {
         console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
+         this.MostrarSpinningIcon = true;
          this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
          .subscribe(planilla => {
                         this.PlanillaGastosMensuales = planilla;
                         this.PagosPorConcepto = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(this.PlanillaGastosMensuales);
                         console.log( this.PagosPorConcepto);
+                         this.MostrarSpinningIcon = false;
                     }, 
-                    error => { console.log(error); });                                      
+                    error => { 
+                         this.MostrarSpinningIcon = false;
+                        console.log(error); 
+                    });                                      
         }
     }
 

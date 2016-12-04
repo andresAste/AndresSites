@@ -11,6 +11,8 @@ import { CalendarioComponent } from './calendario.component';
 import { ComprasComponent } from './compras.component';
 import { TabsComponent, TabComponent } from './framework/index';
 
+import * as spinner from 'ng2-spin-kit-new/app/spinners';
+
 /**
  * @export
  * @class AppModule Main Module, this defines an Angular application formed by Components.
@@ -23,7 +25,19 @@ import { TabsComponent, TabComponent } from './framework/index';
       { path: '', component: HomeComponent }
     ]) ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-  declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, TabsComponent, TabComponent],
+  declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, TabsComponent, TabComponent, 
+                spinner.RotatingPlaneComponent,
+                spinner.DoubleBounceComponent,
+                spinner.WaveComponent,
+                spinner.WanderingCubesComponent,
+                spinner.PulseComponent,
+                spinner.ChasingDotsComponent,
+                spinner.CircleComponent,
+                spinner.ThreeBounceComponent,
+                spinner.CubeGridComponent,
+                spinner.WordPressComponent,
+                spinner.FadingCircleComponent,
+                spinner.FoldingCubeComponent],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { } 

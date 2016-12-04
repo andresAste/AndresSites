@@ -19,6 +19,7 @@ var deudasMes_component_1 = require('./deudasMes.component');
 var calendario_component_1 = require('./calendario.component');
 var compras_component_1 = require('./compras.component');
 var index_1 = require('./framework/index');
+var spinner = require('ng2-spin-kit-new/app/spinners');
 /**
  * @export
  * @class AppModule Main Module, this defines an Angular application formed by Components.
@@ -35,7 +36,19 @@ var AppModule = (function () {
                     { path: '', component: home_component_1.HomeComponent }
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, index_1.TabsComponent, index_1.TabComponent],
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, index_1.TabsComponent, index_1.TabComponent,
+                spinner.RotatingPlaneComponent,
+                spinner.DoubleBounceComponent,
+                spinner.WaveComponent,
+                spinner.WanderingCubesComponent,
+                spinner.PulseComponent,
+                spinner.ChasingDotsComponent,
+                spinner.CircleComponent,
+                spinner.ThreeBounceComponent,
+                spinner.CubeGridComponent,
+                spinner.WordPressComponent,
+                spinner.FadingCircleComponent,
+                spinner.FoldingCubeComponent],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

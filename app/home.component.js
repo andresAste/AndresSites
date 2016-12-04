@@ -27,6 +27,7 @@ var HomeComponent = (function () {
     function HomeComponent(planillaGastosMensualesService, planillaGastosMensualesFactory) {
         this.planillaGastosMensualesService = planillaGastosMensualesService;
         this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
+        this.MostrarSpinningIcon = false;
         this.PlanillaGastosMensuales = new index_1.PlanillaGastosMensuales();
         this.PagosPorConcepto = new Array();
     }
@@ -47,12 +48,17 @@ var HomeComponent = (function () {
         var _this = this;
         console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
+            this.MostrarSpinningIcon = true;
             this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
                 .subscribe(function (planilla) {
                 _this.PlanillaGastosMensuales = planilla;
                 _this.PagosPorConcepto = _this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(_this.PlanillaGastosMensuales);
                 console.log(_this.PagosPorConcepto);
-            }, function (error) { console.log(error); });
+                _this.MostrarSpinningIcon = false;
+            }, function (error) {
+                _this.MostrarSpinningIcon = false;
+                console.log(error);
+            });
         }
     };
     // *** Event handlers ***************************************************
