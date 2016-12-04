@@ -1,6 +1,6 @@
 <my-tabs (Selected)="log($event.selectedTab)">
   <sk-fading-circle [isRunning]="MostrarSpinningIcon" [delay]="0"></sk-fading-circle>
-  <my-tab [TabTitle]="'Deudas del mes'">
+  <my-tab [TabTitle]="'Deudas del mes'" [Selected]="true">
     <deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"> </deudasMes> 
   </my-tab>
   <my-tab [TabTitle]="'Calendario'">

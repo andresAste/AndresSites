@@ -22,6 +22,7 @@ export class TabComponent implements OnInit, iTab {
    * @type {boolean}
    * @memberOf TabComponent
    */
+  @Input()
   Selected:boolean;
   
   /**
@@ -30,6 +31,14 @@ export class TabComponent implements OnInit, iTab {
    * @memberOf TabComponent
    */
   @Input() TabTitle;
+
+  /**
+   * clase css para el tab
+   * 
+   * @type {string}
+   * @memberOf TabComponent
+   */
+  CssClass:string;
   
   /// **** Constructor *****************************************************
   /**

@@ -9,7 +9,8 @@ import { iTab } from './iTab.interface';
  */
 @Component({
   selector: 'my-tabs',
-  templateUrl: 'app/framework/tab/tabs.component.html'
+  templateUrl: 'app/framework/tab/tabs.component.html',
+  styleUrls: ['app/framework/tab/tabs.css']
 })
 export class TabsComponent {
   /// *** Properties *****************************
@@ -28,7 +29,7 @@ export class TabsComponent {
    * @memberOf TabsComponent
    */
   @Output() Selected = new EventEmitter();
-  
+
   /// *** Metodos *****************************
   /**
    * Agrega un tab
@@ -38,9 +39,16 @@ export class TabsComponent {
    * @memberOf TabsComponent
    */
   AddTab(tab:iTab) {
+    if (tab.Selected === true) {
+      tab.CssClass = "current";
+    } else {
+      tab.CssClass = "";
+    }
+
     if (!this.Tabs.length) {
       tab.Selected = true;
     }
+
     this.Tabs.push(tab);
   }
   
@@ -54,8 +62,10 @@ export class TabsComponent {
   SelectTab(tab:iTab) {
     this.Tabs.map((tab) => {
       tab.Selected = false;
+      tab.CssClass = "";
     })
     tab.Selected = true;
+    tab.CssClass = "current";
     this.Selected.emit({selectedTab: tab});    
   }
 }

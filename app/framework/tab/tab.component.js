@@ -36,6 +36,10 @@ var TabComponent = (function () {
     };
     __decorate([
         core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], TabComponent.prototype, "Selected", void 0);
+    __decorate([
+        core_1.Input(), 
         __metadata('design:type', Object)
     ], TabComponent.prototype, "TabTitle", void 0);
     TabComponent = __decorate([

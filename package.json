@@ -53,6 +53,9 @@
     "@types/node": "^6.0.45",
     "concurrently": "^3.0.0",
     "typescript": "^2.0.3",
-    "typings": "^0.7.12"
+    "typings": "^0.7.12",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-typescript": "^2.13.6"
   }
 }

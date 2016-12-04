@@ -19,4 +19,12 @@ export interface iTab {
    * @memberOf iTab
    */
   Selected: boolean
+  /**
+   * clase css para el tab
+   * 
+   * @type {string}
+   * @memberOf TabComponent
+   */
+  CssClass:string;
+  
 }

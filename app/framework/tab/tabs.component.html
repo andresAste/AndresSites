@@ -1,6 +1,8 @@
-<ul>
-  <li *ngFor="let tab of Tabs">
-    <a href="#" (click)="SelectTab(tab)">{{tab.TabTitle}}</a>
-  </li>
-</ul>
-<ng-content></ng-content>
+<div id="tabContainer">
+  <ul id="topTab">
+    <li *ngFor="let tab of Tabs">
+      <a href="#" (click)="SelectTab(tab)" class="{{tab.CssClass}}">{{tab.TabTitle}}</a>
+    </li>
+  </ul>
+  <ng-content></ng-content>
+</div>  

@@ -42,6 +42,12 @@ var TabsComponent = (function () {
      * @memberOf TabsComponent
      */
     TabsComponent.prototype.AddTab = function (tab) {
+        if (tab.Selected === true) {
+            tab.CssClass = "current";
+        }
+        else {
+            tab.CssClass = "";
+        }
         if (!this.Tabs.length) {
             tab.Selected = true;
         }
@@ -57,8 +63,10 @@ var TabsComponent = (function () {
     TabsComponent.prototype.SelectTab = function (tab) {
         this.Tabs.map(function (tab) {
             tab.Selected = false;
+            tab.CssClass = "";
         });
         tab.Selected = true;
+        tab.CssClass = "current";
         this.Selected.emit({ selectedTab: tab });
     };
     __decorate([
@@ -68,7 +76,8 @@ var TabsComponent = (function () {
     TabsComponent = __decorate([
         core_1.Component({
             selector: 'my-tabs',
-            templateUrl: 'app/framework/tab/tabs.component.html'
+            templateUrl: 'app/framework/tab/tabs.component.html',
+            styleUrls: ['app/framework/tab/tabs.css']
         }), 
         __metadata('design:paramtypes', [])
     ], TabsComponent);
