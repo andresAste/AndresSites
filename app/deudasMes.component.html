@@ -13,7 +13,7 @@
                 <th>Comprobante de pago</th>
                 <th>Origen</th>
             </tr>
-            <tr *ngFor="let gastoMensual of PagosMesActual">
+            <tr *ngFor="let gastoMensual of PagosMesActual" [ngClass]="{'gm-PagoRealizado': gastoMensual.Pagado }">
                 <td>button coming soon...</td>
                 <td>{{gastoMensual.Concepto.Concepto}}</td>
                 <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>

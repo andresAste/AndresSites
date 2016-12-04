@@ -51,6 +51,11 @@ var DeudasMesComponent = (function () {
                     _this.PagosMesActual = gastoMensual.ObtenerPagosDelMes();
                 }
             });
+            if (!!this.PagosMesActual && this.PagosMesActual.length > 0) {
+                this.PagosMesActual.sort(function (pagoA, pagoB) {
+                    return (pagoA.Pagado === pagoB.Pagado) ? 0 : pagoA.Pagado ? 1 : -1; //si quiero los true primero, cambiar el final por -1:1
+                });
+            }
         },
         enumerable: true,
         configurable: true

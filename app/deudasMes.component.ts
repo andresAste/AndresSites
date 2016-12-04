@@ -42,6 +42,12 @@ export class DeudasMesComponent {
                 this.PagosMesActual = gastoMensual.ObtenerPagosDelMes();
             }
         });
+        if (!!this.PagosMesActual && this.PagosMesActual.length > 0) {
+             this.PagosMesActual.sort((pagoA: PagoMensual, pagoB: PagoMensual) => 
+            {
+                 return (pagoA.Pagado === pagoB.Pagado)? 0 : pagoA.Pagado? 1 : -1; //si quiero los true primero, cambiar el final por -1:1
+            }); 
+        }
     }
 
     /**
