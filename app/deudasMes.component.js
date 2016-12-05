@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var index_1 = require('./framework/index');
 /**
  * Component para Deudas Mes
  *
@@ -64,11 +65,15 @@ var DeudasMesComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Array)
     ], DeudasMesComponent.prototype, "GastosMensualesPorMes", null);
+    __decorate([
+        core_1.ViewChild(index_1.ModalComponent), 
+        __metadata('design:type', index_1.ModalComponent)
+    ], DeudasMesComponent.prototype, "modal", void 0);
     DeudasMesComponent = __decorate([
         core_1.Component({
             selector: "deudasMes",
             templateUrl: "app/deudasMes.component.html",
-            styleUrls: ['app/styles/default.scss']
+            styleUrls: ['app/styles/default.scss', 'node_modules/bootstrap/dist/css/bootstrap.min.css']
         }), 
         __metadata('design:paramtypes', [])
     ], DeudasMesComponent);

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var tabs_component_1 = require('./tabs.component');
+var index_1 = require('./../index');
 /**
  * Clase que representa un tab
  *
@@ -47,7 +47,7 @@ var TabComponent = (function () {
             selector: 'my-tab',
             templateUrl: 'app/framework/tab/tab.component.html'
         }), 
-        __metadata('design:paramtypes', [tabs_component_1.TabsComponent])
+        __metadata('design:paramtypes', [index_1.TabsComponent])
     ], TabComponent);
     return TabComponent;
 }());

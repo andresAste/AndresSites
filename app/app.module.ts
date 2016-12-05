@@ -9,7 +9,7 @@ import { HomeComponent } from './home.component';
 import { DeudasMesComponent } from './deudasMes.component';
 import { CalendarioComponent } from './calendario.component';
 import { ComprasComponent } from './compras.component';
-import { TabsComponent, TabComponent } from './framework/index';
+import { TabsComponent, TabComponent, ModalComponent } from './framework/index';
 
 import * as spinner from 'ng2-spin-kit-new/app/spinners';
 
@@ -25,7 +25,7 @@ import * as spinner from 'ng2-spin-kit-new/app/spinners';
       { path: '', component: HomeComponent }
     ]) ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-  declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, TabsComponent, TabComponent, 
+  declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, TabsComponent, TabComponent, ModalComponent,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,

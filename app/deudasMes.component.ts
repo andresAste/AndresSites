@@ -1,6 +1,8 @@
-import { Component, Input  } from '@angular/core';
+import { Component, Input, ViewChild   } from '@angular/core';
 
 import { Mes, PagoMensual,  ConceptoPago} from './model/index';
+
+import { ModalComponent } from './framework/index';
 
 /**
  * Component para Deudas Mes
@@ -11,7 +13,7 @@ import { Mes, PagoMensual,  ConceptoPago} from './model/index';
 @Component({
     selector: "deudasMes",
     templateUrl: "app/deudasMes.component.html",
-    styleUrls: ['app/styles/default.scss']
+    styleUrls: ['app/styles/default.scss', 'node_modules/bootstrap/dist/css/bootstrap.min.css']
 })
 export class DeudasMesComponent {
 
@@ -74,6 +76,9 @@ export class DeudasMesComponent {
      */
     NombresDeMes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     
+    @ViewChild(ModalComponent)
+    public readonly modal: ModalComponent;
+
     // *** constructors *************************************************
     /**
      * Creates an instance of DeudasMesComponent.

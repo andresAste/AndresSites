@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { iTab } from './iTab.interface';
-import { TabsComponent } from './tabs.component';
+import { iTab, TabsComponent } from './../index';
 
 /**
  * Clase que representa un tab

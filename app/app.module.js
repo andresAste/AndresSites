@@ -36,7 +36,7 @@ var AppModule = (function () {
                     { path: '', component: home_component_1.HomeComponent }
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, index_1.TabsComponent, index_1.TabComponent,
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, index_1.TabsComponent, index_1.TabComponent, index_1.ModalComponent,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,
