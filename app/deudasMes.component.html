@@ -1,16 +1,3 @@
-  <button type="button" (click)="modal.show()">test</button>
-  <app-modal>
-    <div class="app-modal-header">
-      header
-    </div>
-    <div class="app-modal-body">
-      Whatever content you like, form fields, anything
-    </div>
-    <div class="app-modal-footer">
-      <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
-      <button type="button" class="btn btn-primary">Save changes</button>
-    </div>
-  </app-modal>
 
 <div *ngIf="PagosMesActual && PagosMesActual.length > 0">
     <td>
@@ -28,7 +15,7 @@
                 <th>Origen</th>
             </tr>
             <tr *ngFor="let gastoMensual of PagosMesActual" [ngClass]="{'gm-PagoRealizado': gastoMensual.Pagado }">
-                <td>button coming soon...</td>
+                <td><button type="button" class="btn btn-default" (click)="EditarPago(gastoMensual)">Editar</button></td>
                 <td>{{gastoMensual.Concepto.Concepto}}</td>
                 <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>
                 <td>{{gastoMensual.Monto}}</td>
@@ -41,3 +28,4 @@
         </table>
     </td>
 </div>
+<editar-pago></editar-pago>

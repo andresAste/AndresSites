@@ -24,6 +24,6 @@ export class ModalComponent {
 
   public hide(): void {
     this.visibleAnimate = false;
-    setTimeout(() => this.visible = false, 300);
+    setTimeout(() => this.visible = false, 100);
   }
 }

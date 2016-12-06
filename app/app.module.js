@@ -13,11 +13,13 @@ var platform_browser_1 = require('@angular/platform-browser');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
 var http_1 = require('@angular/http');
+var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
 var home_component_1 = require('./home.component');
 var deudasMes_component_1 = require('./deudasMes.component');
 var calendario_component_1 = require('./calendario.component');
 var compras_component_1 = require('./compras.component');
+var editarPago_component_1 = require('./editarPago.component');
 var index_1 = require('./framework/index');
 var spinner = require('ng2-spin-kit-new/app/spinners');
 /**
@@ -29,14 +31,15 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, http_1.HttpModule,
+            imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule,
                 router_1.RouterModule.forRoot([
                     { path: 'home', component: home_component_1.HomeComponent },
                     { path: 'compras', component: compras_component_1.ComprasComponent },
                     { path: '', component: home_component_1.HomeComponent }
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, index_1.TabsComponent, index_1.TabComponent, index_1.ModalComponent,
+            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, editarPago_component_1.EditarPagoComponent,
+                index_1.TabsComponent, index_1.TabComponent, index_1.ModalComponent,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,

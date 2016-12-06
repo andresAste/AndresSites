@@ -30,7 +30,7 @@ var ModalComponent = (function () {
     ModalComponent.prototype.hide = function () {
         var _this = this;
         this.visibleAnimate = false;
-        setTimeout(function () { return _this.visible = false; }, 300);
+        setTimeout(function () { return _this.visible = false; }, 100);
     };
     ModalComponent = __decorate([
         core_1.Component({
