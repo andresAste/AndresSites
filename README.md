@@ -8,3 +8,4 @@ Start page to run web site:http://localhost:9090/GastosMensuales
 
 Troubleshooting:
 1. If dropbox is not installed correctly on "node_modules\dropbox" (you should get an error when trying to upload/download files), decompress it from dropboxLib.zip on root folder.
+2. Boostrap 2 components were installed and used following this page: https://ng-bootstrap.github.io/#/home

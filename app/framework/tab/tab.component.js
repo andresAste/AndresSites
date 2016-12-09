@@ -47,9 +47,10 @@ var TabComponent = (function () {
             selector: 'my-tab',
             templateUrl: 'app/framework/tab/tab.component.html'
         }), 
-        __metadata('design:paramtypes', [index_1.TabsComponent])
+        __metadata('design:paramtypes', [(typeof (_a = typeof index_1.TabsComponent !== 'undefined' && index_1.TabsComponent) === 'function' && _a) || Object])
     ], TabComponent);
     return TabComponent;
+    var _a;
 }());
 exports.TabComponent = TabComponent;
 //# sourceMappingURL=tab.component.js.map

@@ -1,9 +1,14 @@
-<my-tabs (Selected)="log($event.selectedTab)">
-  <sk-fading-circle [isRunning]="MostrarSpinningIcon" [delay]="0"></sk-fading-circle>
-  <my-tab [TabTitle]="'Deudas del mes'" [Selected]="true">
-    <deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"> </deudasMes> 
-  </my-tab>
-  <my-tab [TabTitle]="'Calendario'">
-    <calendario [PagosPorConcepto] = "PagosPorConcepto"></calendario>
-  </my-tab>
-</my-tabs>
+<sk-fading-circle [isRunning]="MostrarSpinningIcon" [delay]="0">
+  <ngb-tabset type="pills">
+    <ngb-tab title="Deudas del mes">
+      <template ngbTabContent>
+        <deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"> </deudasMes>
+      </template> 
+    </ngb-tab>
+    <ngb-tab title="Calendario">
+      <template ngbTabContent>
+        <calendario [PagosPorConcepto] = "PagosPorConcepto"></calendario>
+      </template>
+    </ngb-tab>
+  </ngb-tabset>
+</sk-fading-circle>

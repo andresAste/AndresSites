@@ -14,6 +14,7 @@ var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
 var http_1 = require('@angular/http');
 var forms_1 = require('@angular/forms');
+var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var app_component_1 = require('./app.component');
 var home_component_1 = require('./home.component');
 var deudasMes_component_1 = require('./deudasMes.component');
@@ -31,7 +32,7 @@ var AppModule = (function () {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule,
+            imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, ng_bootstrap_1.NgbModule.forRoot(),
                 router_1.RouterModule.forRoot([
                     { path: 'home', component: home_component_1.HomeComponent },
                     { path: 'compras', component: compras_component_1.ComprasComponent },
@@ -39,7 +40,7 @@ var AppModule = (function () {
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
             declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, editarPago_component_1.EditarPagoComponent,
-                index_1.TabsComponent, index_1.TabComponent, index_1.ModalComponent,
+                index_1.ModalComponent,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,
@@ -52,7 +53,7 @@ var AppModule = (function () {
                 spinner.WordPressComponent,
                 spinner.FadingCircleComponent,
                 spinner.FoldingCubeComponent],
-            bootstrap: [app_component_1.AppComponent]
+            bootstrap: [app_component_1.AppComponent],
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

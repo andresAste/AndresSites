@@ -4,6 +4,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { RouterModule, Routes }   from '@angular/router';
 import { HttpModule }    from '@angular/http';
 import { FormsModule }   from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home.component';
@@ -11,7 +12,7 @@ import { DeudasMesComponent } from './deudasMes.component';
 import { CalendarioComponent } from './calendario.component';
 import { ComprasComponent } from './compras.component';
 import { EditarPagoComponent } from './editarPago.component';
-import { TabsComponent, TabComponent, ModalComponent } from './framework/index';
+import { ModalComponent } from './framework/index';
 
 import * as spinner from 'ng2-spin-kit-new/app/spinners';
 
@@ -20,7 +21,7 @@ import * as spinner from 'ng2-spin-kit-new/app/spinners';
  * @class AppModule Main Module, this defines an Angular application formed by Components.
  */
 @NgModule({
-  imports: [ BrowserModule, HttpModule, FormsModule,
+  imports: [ BrowserModule, HttpModule, FormsModule, NgbModule.forRoot(),
   RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: 'compras', component: ComprasComponent },
@@ -28,7 +29,7 @@ import * as spinner from 'ng2-spin-kit-new/app/spinners';
     ]) ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, EditarPagoComponent,
-                 TabsComponent, TabComponent, ModalComponent,
+                 ModalComponent,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,
@@ -41,6 +42,6 @@ import * as spinner from 'ng2-spin-kit-new/app/spinners';
                 spinner.WordPressComponent,
                 spinner.FadingCircleComponent,
                 spinner.FoldingCubeComponent],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
 })
 export class AppModule { } 
