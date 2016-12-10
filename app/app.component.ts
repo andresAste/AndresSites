@@ -9,6 +9,7 @@
     	<a routerLink="/compras" routerLinkActive="active">Compras</a>
 	</nav>    	
     <router-outlet></router-outlet>
+    <template ngbModalContainer></template>
   `
 })
 export class AppComponent {

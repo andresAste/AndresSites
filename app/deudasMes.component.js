@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var editarPago_component_1 = require('./editarPago.component');
+var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 /**
  * Component para Deudas Mes
  *
@@ -24,7 +25,8 @@ var DeudasMesComponent = (function () {
      *
      * @memberOf DeudasMesComponent
      */
-    function DeudasMesComponent() {
+    function DeudasMesComponent(modalService) {
+        this.modalService = modalService;
         /**
          * Arreglo con los meses del año
          *
@@ -69,7 +71,8 @@ var DeudasMesComponent = (function () {
      * @memberOf DeudasMesComponent
      */
     DeudasMesComponent.prototype.EditarPago = function (pago) {
-        this.EditarPagoComponent.PagoMensual = pago;
+        var modalRef = this.modalService.open(editarPago_component_1.EditarPagoComponent);
+        modalRef.componentInstance.PagoMensual = pago;
     };
     __decorate([
         core_1.Input(), 
@@ -85,7 +88,7 @@ var DeudasMesComponent = (function () {
             templateUrl: "app/deudasMes.component.html",
             styleUrls: ['app/styles/default.scss']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [ng_bootstrap_1.NgbModal])
     ], DeudasMesComponent);
     return DeudasMesComponent;
 }());

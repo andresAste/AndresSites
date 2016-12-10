@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild   } from '@angular/core'; 
 import { FormsModule }   from '@angular/forms';
 
-import { ModalComponent } from './framework/index';
+import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { PagoMensual } from './model/index';
 
 
@@ -19,9 +19,6 @@ import { PagoMensual } from './model/index';
 export class EditarPagoComponent {
 
     /// *** Properties  *************************************************
-    @ViewChild(ModalComponent)
-    public readonly modal: ModalComponent;
-
     /**
      * Pago Mensual a editar
      * 
@@ -34,8 +31,7 @@ export class EditarPagoComponent {
     }
     set PagoMensual(pago: PagoMensual) {
         this._pagoMensual = pago;
-        this.modal.show();
     }
     /// *** Constructor *************************************************
-    
+    constructor(public activeModal: NgbActiveModal) {}
 }

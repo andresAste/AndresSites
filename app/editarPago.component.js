@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var index_1 = require('./framework/index');
+var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 /**
  * Clase para popup de edición de pagos
  *
@@ -17,7 +17,9 @@ var index_1 = require('./framework/index');
  * @class EditarPago
  */
 var EditarPagoComponent = (function () {
-    function EditarPagoComponent() {
+    /// *** Constructor *************************************************
+    function EditarPagoComponent(activeModal) {
+        this.activeModal = activeModal;
     }
     Object.defineProperty(EditarPagoComponent.prototype, "PagoMensual", {
         get: function () {
@@ -25,22 +27,17 @@ var EditarPagoComponent = (function () {
         },
         set: function (pago) {
             this._pagoMensual = pago;
-            this.modal.show();
         },
         enumerable: true,
         configurable: true
     });
-    __decorate([
-        core_1.ViewChild(index_1.ModalComponent), 
-        __metadata('design:type', index_1.ModalComponent)
-    ], EditarPagoComponent.prototype, "modal", void 0);
     EditarPagoComponent = __decorate([
         core_1.Component({
             selector: "editar-pago",
             templateUrl: 'app/editarPago.component.html',
             styleUrls: ['app/styles/default.scss', 'node_modules/bootstrap/dist/css/bootstrap.min.css']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [ng_bootstrap_1.NgbActiveModal])
     ], EditarPagoComponent);
     return EditarPagoComponent;
 }());

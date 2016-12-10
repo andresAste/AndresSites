@@ -16,7 +16,7 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'gastos-mensuales',
-            template: "\n    <h1>{{title}}</h1>\n    <nav>\n    \t<a routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\n    \t<a routerLink=\"/compras\" routerLinkActive=\"active\">Compras</a>\n\t</nav>    \t\n    <router-outlet></router-outlet>\n  "
+            template: "\n    <h1>{{title}}</h1>\n    <nav>\n    \t<a routerLink=\"/home\" routerLinkActive=\"active\">Home</a>\n    \t<a routerLink=\"/compras\" routerLinkActive=\"active\">Compras</a>\n\t</nav>    \t\n    <router-outlet></router-outlet>\n    <template ngbModalContainer></template>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

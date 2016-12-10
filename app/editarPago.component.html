@@ -1,45 +1,43 @@
-<div *ngIf="PagoMensual">
-    <app-modal>
-        <div class="app-modal-header">
-            Editar pago
-        </div>
-        <div class="app-modal-body">
-            <table>
-                <tr>
-                    <td>
-                        <label for="monto">Monto</label>
-                        <input type="number" [(ngModel)]="PagoMensual.Monto" placeholder="0" step="0.01" min="0" name="monto">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="vencimiento">Vencimiento</label>
-                        <input type="text" [(ngModel)]="PagoMensual.Vencimiento" name="vencimiento" id="vencimiento" placeholder="">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="tentativo">¿Tentativo?</label>
-                        <input type="checkbox" [(ngModel)]="PagoMensual.FechaTentativa" name="tentativo" id="tentativo">			
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="pagado">¿Pagado?</label>
-                        <input type="checkbox" [(ngModel)]="PagoMensual.Pagado" name="pagado" id="pagado">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="pagoAnual">¿Pago Anual?</label>
-                        <input type="checkbox" [(ngModel)]="PagoMensual.EsPagoAnual" name="pagoAnual" id="pagoAnual">
-                    </td>
-                </tr>
+<div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title">Hi there!</h4>
+    </div>
+    <div class="modal-body">
+       <table>
+            <tr>
+                <td>
+                    <label for="monto">Monto</label>
+                    <input type="number" [(ngModel)]="PagoMensual.Monto" placeholder="0" step="0.01" min="0" name="monto">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="vencimiento">Vencimiento</label>
+                    <input type="text" [(ngModel)]="PagoMensual.Vencimiento" name="vencimiento" id="vencimiento" placeholder="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="tentativo">¿Tentativo?</label>
+                    <input type="checkbox" [(ngModel)]="PagoMensual.FechaTentativa" name="tentativo" id="tentativo">			
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pagado">¿Pagado?</label>
+                    <input type="checkbox" [(ngModel)]="PagoMensual.Pagado" name="pagado" id="pagado">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pagoAnual">¿Pago Anual?</label>
+                    <input type="checkbox" [(ngModel)]="PagoMensual.EsPagoAnual" name="pagoAnual" id="pagoAnual">
+                </td>
+            </tr>
 		</table>
-        </div>
-        <div class="app-modal-footer">
-            <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-    </app-modal>
-</div>    
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+</div>

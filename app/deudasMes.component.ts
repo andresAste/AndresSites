@@ -2,6 +2,7 @@ import { Component, Input, ViewChild   } from '@angular/core';
 
 import { Mes, PagoMensual,  ConceptoPago} from './model/index';
 import { EditarPagoComponent } from './editarPago.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * Component para Deudas Mes
@@ -86,7 +87,8 @@ export class DeudasMesComponent {
      * @memberOf DeudasMesComponent
      */
     EditarPago(pago: PagoMensual): void {
-        this.EditarPagoComponent.PagoMensual = pago;
+        const modalRef = this.modalService.open(EditarPagoComponent);
+        modalRef.componentInstance.PagoMensual = pago;
     }
 
     // *** constructors *************************************************
@@ -96,8 +98,7 @@ export class DeudasMesComponent {
      * 
      * @memberOf DeudasMesComponent
      */
-    constructor() { 
+    constructor(private modalService: NgbModal) { 
         this.MesActual = this.NombresDeMes[(new Date()).getMonth()];
     }
-
 }
