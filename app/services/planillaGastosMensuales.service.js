@@ -42,6 +42,21 @@ var PlanillaGastosMensualesService = (function () {
             .map(this.ExtractPlanilla)
             .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });
     };
+    PlanillaGastosMensualesService.prototype.ActualizarPago = function (pago) {
+        var jsonObject = {
+            Vencimiento: pago.Vencimiento.toLocaleDateString("es-ar"),
+            Tentativo: pago.FechaTentativa.toString(),
+            Monto: pago.Monto.toString(),
+            Pagado: pago.Pagado.toString(),
+            PagoAnual: pago.EsPagoAnual.toString(),
+            CeldaFila: pago.CeldaFila.toString(),
+            CeldaColumna: pago.CeldaColumna.toString()
+        };
+        console.log("json de pago mensual a enviar:");
+        console.log(jsonObject);
+        return this.http.post(this.ServicesBaseAddress + this.GoogleDriveService + "pago", jsonObject)
+            .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });
+    };
     /*** private methods *************************************************************************/
     PlanillaGastosMensualesService.prototype.ExtractPlanilla = function (res) {
         //TODO: tengo que construir el factory acá, porque parece que el objecto que ejecuta la acción no es PlanillaGastosMensualesService

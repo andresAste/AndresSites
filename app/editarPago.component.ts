@@ -3,6 +3,8 @@ import { FormsModule }   from '@angular/forms';
 
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { PagoMensual } from './model/index';
+import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
+
 declare var $: any;
 
 
@@ -14,7 +16,8 @@ declare var $: any;
  */
 @Component({
     selector: "editar-pago",
-    templateUrl: 'app/editarPago.component.html'
+    templateUrl: 'app/editarPago.component.html',
+    providers: [ PlanillaGastosMensualesService ]
 })
 export class EditarPagoComponent {
 
@@ -37,7 +40,15 @@ export class EditarPagoComponent {
     private PagoMensualOriginal : PagoMensual;
 
     /// *** Constructor *************************************************
-    constructor(public activeModal: NgbActiveModal) {}
+    /**
+     * Creates an instance of EditarPagoComponent.
+     * 
+     * @param {NgbActiveModal} activeModal Modal donde mostrar los datos
+     * @param {PlanillaGastosMensualesService} planillaService servicio para actualizar pagos
+     * 
+     * @memberOf EditarPagoComponent
+     */
+    constructor(public activeModal: NgbActiveModal, private planillaService: PlanillaGastosMensualesService) {}
 
     /// *** Event handlers *************************************************
     /**
@@ -47,6 +58,12 @@ export class EditarPagoComponent {
      */
     GuardarCambios():void {
         this.activeModal.close();
+        this.planillaService.ActualizarPago(this.PagoMensual)
+         .subscribe(result => { }, 
+                    error => { 
+                         //this.MostrarSpinningIcon = false;
+                        console.log(error); 
+                    });  
     }
 
     /**

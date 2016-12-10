@@ -52,6 +52,22 @@ export class PlanillaGastosMensualesService {
                          .catch((error:any) => Observable.throw(error || 'Server error'));
     } 
 
+    ActualizarPago(pago:PagoMensual): Observable<any> {
+        let jsonObject: any = 
+        {
+            Vencimiento: pago.Vencimiento.toLocaleDateString("es-ar"),
+            Tentativo: pago.FechaTentativa.toString(),
+            Monto: pago.Monto.toString(),
+            Pagado: pago.Pagado.toString(),
+            PagoAnual: pago.EsPagoAnual.toString(),
+            CeldaFila: pago.CeldaFila.toString(),
+            CeldaColumna: pago.CeldaColumna.toString()
+        }
+        console.log("json de pago mensual a enviar:"); console.log(jsonObject);
+        return this.http.post(this.ServicesBaseAddress + this.GoogleDriveService + "pago", jsonObject )
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+
     /*** private methods *************************************************************************/
     private ExtractPlanilla(res: Response) {
         //TODO: tengo que construir el factory acá, porque parece que el objecto que ejecuta la acción no es PlanillaGastosMensualesService

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
+var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
 /**
  * Clase para popup de edición de pagos
  *
@@ -18,8 +19,17 @@ var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
  */
 var EditarPagoComponent = (function () {
     /// *** Constructor *************************************************
-    function EditarPagoComponent(activeModal) {
+    /**
+     * Creates an instance of EditarPagoComponent.
+     *
+     * @param {NgbActiveModal} activeModal Modal donde mostrar los datos
+     * @param {PlanillaGastosMensualesService} planillaService servicio para actualizar pagos
+     *
+     * @memberOf EditarPagoComponent
+     */
+    function EditarPagoComponent(activeModal, planillaService) {
         this.activeModal = activeModal;
+        this.planillaService = planillaService;
     }
     Object.defineProperty(EditarPagoComponent.prototype, "PagoMensual", {
         get: function () {
@@ -40,6 +50,11 @@ var EditarPagoComponent = (function () {
      */
     EditarPagoComponent.prototype.GuardarCambios = function () {
         this.activeModal.close();
+        this.planillaService.ActualizarPago(this.PagoMensual)
+            .subscribe(function (result) { }, function (error) {
+            //this.MostrarSpinningIcon = false;
+            console.log(error);
+        });
     };
     /**
      * Cierra el popup sin guardar cambios
@@ -54,9 +69,10 @@ var EditarPagoComponent = (function () {
     EditarPagoComponent = __decorate([
         core_1.Component({
             selector: "editar-pago",
-            templateUrl: 'app/editarPago.component.html'
+            templateUrl: 'app/editarPago.component.html',
+            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService]
         }), 
-        __metadata('design:paramtypes', [ng_bootstrap_1.NgbActiveModal])
+        __metadata('design:paramtypes', [ng_bootstrap_1.NgbActiveModal, planillaGastosMensuales_service_1.PlanillaGastosMensualesService])
     ], EditarPagoComponent);
     return EditarPagoComponent;
 }());
