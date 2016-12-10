@@ -42,6 +42,7 @@
     "google-auth-library": ">=0.9.7",
     "google-spreadsheet": ">=2.0.3",
     "googleapis": ">=5.2.1",
+    "jquery": "^3.1.1",
     "multer": ">=1.1.0",
     "ng2-spin-kit-new": "^1.0.3",
     "reflect-metadata": "^0.1.8",
@@ -53,10 +54,10 @@
     "@types/core-js": "^0.9.34",
     "@types/node": "^6.0.45",
     "concurrently": "^3.0.0",
-    "typescript": "^2.0.3",
-    "typings": "^0.7.12",
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.2",
-    "gulp-typescript": "^2.13.6"
+    "gulp-typescript": "^2.13.6",
+    "typescript": "^2.0.3",
+    "typings": "^0.7.12"
   }
 }

@@ -27,7 +27,7 @@ var EditarPagoComponent = (function () {
         },
         set: function (pago) {
             this._pagoMensual = pago;
-            // this.PagoMensualOriginal =$.extend(true, {}, pago);
+            this.PagoMensualOriginal = $.extend(true, {}, pago);
         },
         enumerable: true,
         configurable: true
@@ -39,6 +39,16 @@ var EditarPagoComponent = (function () {
      * @memberOf EditarPagoComponent
      */
     EditarPagoComponent.prototype.GuardarCambios = function () {
+        this.activeModal.close();
+    };
+    /**
+     * Cierra el popup sin guardar cambios
+     *
+     * @memberOf EditarPagoComponent
+     */
+    EditarPagoComponent.prototype.Cerrar = function () {
+        $.extend(true, this.PagoMensual, this.PagoMensualOriginal);
+        //this.PagoMensual = this.PagoMensualOriginal;
         this.activeModal.close();
     };
     EditarPagoComponent = __decorate([

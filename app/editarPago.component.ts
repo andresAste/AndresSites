@@ -3,6 +3,7 @@ import { FormsModule }   from '@angular/forms';
 
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { PagoMensual } from './model/index';
+declare var $: any;
 
 
 /**
@@ -30,7 +31,7 @@ export class EditarPagoComponent {
     }
     set PagoMensual(pago: PagoMensual) {
         this._pagoMensual = pago;
-       // this.PagoMensualOriginal =$.extend(true, {}, pago);
+        this.PagoMensualOriginal =$.extend(true, {}, pago);
     }
 
     private PagoMensualOriginal : PagoMensual;
@@ -45,6 +46,17 @@ export class EditarPagoComponent {
      * @memberOf EditarPagoComponent
      */
     GuardarCambios():void {
+        this.activeModal.close();
+    }
+
+    /**
+     * Cierra el popup sin guardar cambios
+     * 
+     * @memberOf EditarPagoComponent
+     */
+    Cerrar():void {
+        $.extend(true, this.PagoMensual, this.PagoMensualOriginal);
+        //this.PagoMensual = this.PagoMensualOriginal;
         this.activeModal.close();
     }
 }
