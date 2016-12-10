@@ -2,42 +2,54 @@
       <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
-      <h4 class="modal-title">Hi there!</h4>
+      <h4 class="modal-title">Editar pago mensual</h4>
     </div>
     <div class="modal-body">
-       <table>
-            <tr>
-                <td>
-                    <label for="monto">Monto</label>
-                    <input type="number" [(ngModel)]="PagoMensual.Monto" placeholder="0" step="0.01" min="0" name="monto">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="vencimiento">Vencimiento</label>
-                    <input type="text" [(ngModel)]="PagoMensual.Vencimiento" name="vencimiento" id="vencimiento" placeholder="">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="tentativo">¿Tentativo?</label>
-                    <input type="checkbox" [(ngModel)]="PagoMensual.FechaTentativa" name="tentativo" id="tentativo">			
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="pagado">¿Pagado?</label>
-                    <input type="checkbox" [(ngModel)]="PagoMensual.Pagado" name="pagado" id="pagado">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="pagoAnual">¿Pago Anual?</label>
-                    <input type="checkbox" [(ngModel)]="PagoMensual.EsPagoAnual" name="pagoAnual" id="pagoAnual">
-                </td>
-            </tr>
-		</table>
+        <form class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="monto">Monto</label>
+                                <input type="number" [(ngModel)]="PagoMensual.Monto" placeholder="0" step="0.01" min="0" name="monto">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="vencimiento">Vencimiento</label>
+                                <input class="date" placeholder="yyyy-mm-dd" name="vencimiento" ngbDatepicker #d="ngbDatepicker" id="vencimiento" disabled="true"
+                                         [(ngModel)]="PagoMensual.VencimientoModel" [maxDate] = "PagoMensual.MaximoDiaDelMes()" [minDate] ="PagoMensual.MinimoDiaDelMes()" 
+                                       >
+                                <div class="input-group-addon" (click)="d.toggle()" >
+                                    <img src="./app/styles/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="tentativo">¿Tentativo?</label>
+                                <input type="checkbox" [(ngModel)]="PagoMensual.FechaTentativa" name="tentativo" id="tentativo">			
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="pagado">¿Pagado?</label>
+                                <input type="checkbox" [(ngModel)]="PagoMensual.Pagado" name="pagado" id="pagado">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="pagoAnual">¿Pago Anual?</label>
+                                <input type="checkbox" [(ngModel)]="PagoMensual.EsPagoAnual" name="pagoAnual" id="pagoAnual">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>            
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+      <button type="button" class="btn btn-primary" (click)="GuardarCambios()">Guardar</button>
+      <button type="button" class="btn btn-primary" (click)="activeModal.close('Close click')">Cerrar</button>
 </div>

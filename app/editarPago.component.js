@@ -27,15 +27,24 @@ var EditarPagoComponent = (function () {
         },
         set: function (pago) {
             this._pagoMensual = pago;
+            // this.PagoMensualOriginal =$.extend(true, {}, pago);
         },
         enumerable: true,
         configurable: true
     });
+    /// *** Event handlers *************************************************
+    /**
+     * Guarda los cambios para el pago mensual
+     *
+     * @memberOf EditarPagoComponent
+     */
+    EditarPagoComponent.prototype.GuardarCambios = function () {
+        this.activeModal.close();
+    };
     EditarPagoComponent = __decorate([
         core_1.Component({
             selector: "editar-pago",
-            templateUrl: 'app/editarPago.component.html',
-            styleUrls: ['app/styles/default.scss', 'node_modules/bootstrap/dist/css/bootstrap.min.css']
+            templateUrl: 'app/editarPago.component.html'
         }), 
         __metadata('design:paramtypes', [ng_bootstrap_1.NgbActiveModal])
     ], EditarPagoComponent);

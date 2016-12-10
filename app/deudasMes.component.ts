@@ -76,9 +76,6 @@ export class DeudasMesComponent {
      */
     NombresDeMes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     
-    @ViewChild(EditarPagoComponent)
-    public readonly EditarPagoComponent: EditarPagoComponent;
-
     /**
      * Edita un pago
      * 

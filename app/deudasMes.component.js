@@ -78,10 +78,6 @@ var DeudasMesComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Array)
     ], DeudasMesComponent.prototype, "GastosMensualesPorMes", null);
-    __decorate([
-        core_1.ViewChild(editarPago_component_1.EditarPagoComponent), 
-        __metadata('design:type', editarPago_component_1.EditarPagoComponent)
-    ], DeudasMesComponent.prototype, "EditarPagoComponent", void 0);
     DeudasMesComponent = __decorate([
         core_1.Component({
             selector: "deudasMes",
