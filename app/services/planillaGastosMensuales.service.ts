@@ -23,8 +23,9 @@ import { PagosAnualConcepto } from './../model/pagosAnualConcepto';
 export class PlanillaGastosMensualesService {
 
     /*** Constants and properties *************************************************************************************/
-    private ServicesBaseAddress: string ="http://localhost:9090/api/";
-    private GoogleDriveService: string ="gastosMensuales/";
+    public ServicesBaseAddress: string ="http://localhost:9090/api/";
+    public GoogleDriveService: string ="gastosMensuales/";
+    public DropBoxFileService = "dropBox/file/";
     private planillaGastosMensualesFactory: iPlanillaGastosMensualesFactory;
 
     /**

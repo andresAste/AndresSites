@@ -28,6 +28,7 @@ var PlanillaGastosMensualesService = (function () {
         /*** Constants and properties *************************************************************************************/
         this.ServicesBaseAddress = "http://localhost:9090/api/";
         this.GoogleDriveService = "gastosMensuales/";
+        this.DropBoxFileService = "dropBox/file/";
     }
     /*** Services exposed  ********************************************************************************************/
     /**

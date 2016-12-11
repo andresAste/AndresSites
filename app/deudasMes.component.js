@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var editarPago_component_1 = require('./editarPago.component');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
+var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
 /**
  * Component para Deudas Mes
  *
@@ -25,8 +26,9 @@ var DeudasMesComponent = (function () {
      *
      * @memberOf DeudasMesComponent
      */
-    function DeudasMesComponent(modalService) {
+    function DeudasMesComponent(modalService, planillaService) {
         this.modalService = modalService;
+        this.planillaService = planillaService;
         /**
          * Arreglo con los meses del año
          *
@@ -79,6 +81,24 @@ var DeudasMesComponent = (function () {
         var modalRef = this.modalService.open(editarPago_component_1.EditarPagoComponent);
         modalRef.componentInstance.PagoMensual = pago;
     };
+    /**
+     * Genera un link de pago mensual
+     *
+     * @param {PagoMensual} pagoMensual
+     *
+     * @memberOf DeudasMesComponent
+     */
+    DeudasMesComponent.prototype.GenerarLinkDescargaComprobante = function (pagoMensual) {
+        var result = "";
+        if (pagoMensual.Concepto.CarpetaDropbox !== "") {
+            var pathArchivo = pagoMensual.Concepto.CarpetaDropbox.replace(/\//g, "--") + "--" + pagoMensual.Concepto.PalabraDropbox + this.MesActual + (new Date()).getFullYear();
+            if (pagoMensual.Pagado) {
+                //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
+                result = this.planillaService.ServicesBaseAddress + this.planillaService.DropBoxFileService + pathArchivo;
+            }
+        }
+        return result;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
@@ -87,9 +107,10 @@ var DeudasMesComponent = (function () {
         core_1.Component({
             selector: "deudasMes",
             templateUrl: "app/deudasMes.component.html",
-            styleUrls: ['app/styles/default.scss']
+            styleUrls: ['app/styles/default.scss'],
+            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService]
         }), 
-        __metadata('design:paramtypes', [ng_bootstrap_1.NgbModal])
+        __metadata('design:paramtypes', [ng_bootstrap_1.NgbModal, planillaGastosMensuales_service_1.PlanillaGastosMensualesService])
     ], DeudasMesComponent);
     return DeudasMesComponent;
 }());

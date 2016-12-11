@@ -22,7 +22,7 @@
                 <td>{{gastoMensual.Pagado}}</td>
                 <td>{{gastoMensual.EsPagoAnual}}</td>
                 <td>{{gastoMensual.Concepto.CodigoPago}}</td>
-                <td>link coming soon...</td>
+                <td><a *ngIf="GenerarLinkDescargaComprobante(gastoMensual)" href='{{GenerarLinkDescargaComprobante(gastoMensual)}}'>Descargar</a></td>
                 <td>{{gastoMensual.Concepto.Origen}}</td>
             </tr>
         </table>

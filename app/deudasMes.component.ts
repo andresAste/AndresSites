@@ -3,6 +3,7 @@ import { Component, Input, ViewChild   } from '@angular/core';
 import { Mes, PagoMensual,  ConceptoPago} from './model/index';
 import { EditarPagoComponent } from './editarPago.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
 
 /**
  * Component para Deudas Mes
@@ -13,7 +14,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: "deudasMes",
     templateUrl: "app/deudasMes.component.html",
-    styleUrls: ['app/styles/default.scss']
+    styleUrls: ['app/styles/default.scss'],
+    providers: [ PlanillaGastosMensualesService ]
 })
 export class DeudasMesComponent {
 
@@ -93,6 +95,26 @@ export class DeudasMesComponent {
         modalRef.componentInstance.PagoMensual = pago;
     }
 
+    /**
+     * Genera un link de pago mensual
+     * 
+     * @param {PagoMensual} pagoMensual
+     * 
+     * @memberOf DeudasMesComponent
+     */
+    GenerarLinkDescargaComprobante(pagoMensual: PagoMensual) {
+        let result = "";
+        if (pagoMensual.Concepto.CarpetaDropbox !== ""){
+            let pathArchivo = pagoMensual.Concepto.CarpetaDropbox.replace(/\//g, "--") + "--" + pagoMensual.Concepto.PalabraDropbox + this.MesActual + (new Date()).getFullYear(); 
+            if (pagoMensual.Pagado) {
+                //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
+                result = this.planillaService.ServicesBaseAddress + this.planillaService.DropBoxFileService + pathArchivo;
+            }
+        }
+
+        return result;
+    }
+
     // *** constructors *************************************************
     /**
      * Creates an instance of DeudasMesComponent.
@@ -100,7 +122,7 @@ export class DeudasMesComponent {
      * 
      * @memberOf DeudasMesComponent
      */
-    constructor(private modalService: NgbModal) { 
+    constructor(private modalService: NgbModal, private planillaService: PlanillaGastosMensualesService) { 
         this.MesActual = this.NombresDeMes[(new Date()).getMonth()];
     }
 }
