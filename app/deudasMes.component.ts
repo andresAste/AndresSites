@@ -47,7 +47,12 @@ export class DeudasMesComponent {
         if (!!this.PagosMesActual && this.PagosMesActual.length > 0) {
              this.PagosMesActual.sort((pagoA: PagoMensual, pagoB: PagoMensual) => 
             {
-                 return (pagoA.Pagado === pagoB.Pagado)? 0 : pagoA.Pagado? 1 : -1; //si quiero los true primero, cambiar el final por -1:1
+                if  (pagoA.Pagado === pagoB.Pagado)
+                {
+                    return pagoA.Vencimiento < pagoB.Vencimiento ? -1 : 1;
+                } else {
+                     return pagoA.Pagado? 1 : -1; //si quiero los true primero, cambiar el final por -1:1
+                }
             }); 
         }
     }
