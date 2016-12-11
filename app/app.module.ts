@@ -13,6 +13,7 @@ import { CalendarioComponent } from './calendario.component';
 import { ComprasComponent } from './compras.component';
 import { EditarPagoComponent } from './editarPago.component';
 
+import * as framework from './framework/index';
 import * as spinner from 'ng2-spin-kit-new/app/spinners';
 
 /**
@@ -28,6 +29,7 @@ import * as spinner from 'ng2-spin-kit-new/app/spinners';
     ]) ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   declarations: [ AppComponent, HomeComponent, DeudasMesComponent, CalendarioComponent, ComprasComponent, EditarPagoComponent,
+                framework.ProgresoModal,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,
@@ -40,7 +42,7 @@ import * as spinner from 'ng2-spin-kit-new/app/spinners';
                 spinner.WordPressComponent,
                 spinner.FadingCircleComponent,
                 spinner.FoldingCubeComponent],
-  entryComponents: [EditarPagoComponent],       //Needed as this a modal         
+  entryComponents: [EditarPagoComponent, framework.ProgresoModal],       //Needed as this a modal         
   bootstrap: [ AppComponent ],
 })
 export class AppModule { } 

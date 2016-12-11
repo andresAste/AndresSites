@@ -4,6 +4,7 @@ import { FormsModule }   from '@angular/forms';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import { PagoMensual } from './model/index';
 import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
+import * as framework from './framework/index';
 
 declare var $: any;
 
@@ -48,7 +49,8 @@ export class EditarPagoComponent {
      * 
      * @memberOf EditarPagoComponent
      */
-    constructor(public activeModal: NgbActiveModal, private planillaService: PlanillaGastosMensualesService) {}
+    constructor(public activeModal: NgbActiveModal, private planillaService: PlanillaGastosMensualesService,
+               private modalService: NgbModal) {}
 
     /// *** Event handlers *************************************************
     /**
@@ -58,10 +60,12 @@ export class EditarPagoComponent {
      */
     GuardarCambios():void {
         this.activeModal.close();
+        const modalRef = this.modalService.open(framework.ProgresoModal);
+        modalRef.componentInstance.Mensaje = "Guardando pago";
         this.planillaService.ActualizarPago(this.PagoMensual)
-         .subscribe(result => { }, 
+         .subscribe(result => { modalRef.close() }, 
                     error => { 
-                         //this.MostrarSpinningIcon = false;
+                         modalRef.close();
                         console.log(error); 
                     });  
     }

@@ -4,10 +4,10 @@ import { DeudasMesComponent,  } from './deudasMes.component';
 import { CalendarioComponent } from './calendario.component';
 
 import { PlanillaGastosMensuales, PagoMensual, PagosAnualConcepto, PlanillaGastosMensualesFactory } from './model/index';
+import * as framework from './framework/index';
 
 import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
-
-import {FadingCircleComponent} from 'ng2-spin-kit-new/app/spinner/fading-circle'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * @export
@@ -33,7 +33,9 @@ export class HomeComponent implements OnInit{
      * 
      * @memberOf HomeComponent
      */
-    constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService, private planillaGastosMensualesFactory: PlanillaGastosMensualesFactory) {
+    constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService, 
+                private planillaGastosMensualesFactory: PlanillaGastosMensualesFactory,
+                private modalService: NgbModal) {
         this.PlanillaGastosMensuales = new PlanillaGastosMensuales();
         this.PagosPorConcepto = new Array<PagosAnualConcepto>();
     }
@@ -55,16 +57,17 @@ export class HomeComponent implements OnInit{
     ObtenerPlanillaGastosMensuales(): void {
         console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
-         this.MostrarSpinningIcon = true;
+         const modalRef = this.modalService.open(framework.ProgresoModal);
+         modalRef.componentInstance.Mensaje = "Buscando planilla";
          this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
          .subscribe(planilla => {
                         this.PlanillaGastosMensuales = planilla;
                         this.PagosPorConcepto = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(this.PlanillaGastosMensuales);
                         console.log( this.PagosPorConcepto);
-                         this.MostrarSpinningIcon = false;
+                        modalRef.close();
                     }, 
                     error => { 
-                         this.MostrarSpinningIcon = false;
+                         modalRef.close();
                         console.log(error); 
                     });                                      
         }

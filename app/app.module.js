@@ -21,6 +21,7 @@ var deudasMes_component_1 = require('./deudasMes.component');
 var calendario_component_1 = require('./calendario.component');
 var compras_component_1 = require('./compras.component');
 var editarPago_component_1 = require('./editarPago.component');
+var framework = require('./framework/index');
 var spinner = require('ng2-spin-kit-new/app/spinners');
 /**
  * @export
@@ -39,6 +40,7 @@ var AppModule = (function () {
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
             declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, editarPago_component_1.EditarPagoComponent,
+                framework.ProgresoModal,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,
@@ -51,7 +53,7 @@ var AppModule = (function () {
                 spinner.WordPressComponent,
                 spinner.FadingCircleComponent,
                 spinner.FoldingCubeComponent],
-            entryComponents: [editarPago_component_1.EditarPagoComponent],
+            entryComponents: [editarPago_component_1.EditarPagoComponent, framework.ProgresoModal],
             bootstrap: [app_component_1.AppComponent],
         }), 
         __metadata('design:paramtypes', [])

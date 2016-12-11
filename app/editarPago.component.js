@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
+var framework = require('./framework/index');
 /**
  * Clase para popup de edición de pagos
  *
@@ -27,9 +28,10 @@ var EditarPagoComponent = (function () {
      *
      * @memberOf EditarPagoComponent
      */
-    function EditarPagoComponent(activeModal, planillaService) {
+    function EditarPagoComponent(activeModal, planillaService, modalService) {
         this.activeModal = activeModal;
         this.planillaService = planillaService;
+        this.modalService = modalService;
     }
     Object.defineProperty(EditarPagoComponent.prototype, "PagoMensual", {
         get: function () {
@@ -50,9 +52,11 @@ var EditarPagoComponent = (function () {
      */
     EditarPagoComponent.prototype.GuardarCambios = function () {
         this.activeModal.close();
+        var modalRef = this.modalService.open(framework.ProgresoModal);
+        modalRef.componentInstance.Mensaje = "Guardando pago";
         this.planillaService.ActualizarPago(this.PagoMensual)
-            .subscribe(function (result) { }, function (error) {
-            //this.MostrarSpinningIcon = false;
+            .subscribe(function (result) { modalRef.close(); }, function (error) {
+            modalRef.close();
             console.log(error);
         });
     };
@@ -72,7 +76,7 @@ var EditarPagoComponent = (function () {
             templateUrl: 'app/editarPago.component.html',
             providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService]
         }), 
-        __metadata('design:paramtypes', [ng_bootstrap_1.NgbActiveModal, planillaGastosMensuales_service_1.PlanillaGastosMensualesService])
+        __metadata('design:paramtypes', [ng_bootstrap_1.NgbActiveModal, planillaGastosMensuales_service_1.PlanillaGastosMensualesService, ng_bootstrap_1.NgbModal])
     ], EditarPagoComponent);
     return EditarPagoComponent;
 }());

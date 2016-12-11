@@ -10,7 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var index_1 = require('./model/index');
+var framework = require('./framework/index');
 var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
+var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 /**
  * @export
  * @class HomeComponent Main Component
@@ -24,9 +26,10 @@ var HomeComponent = (function () {
      *
      * @memberOf HomeComponent
      */
-    function HomeComponent(planillaGastosMensualesService, planillaGastosMensualesFactory) {
+    function HomeComponent(planillaGastosMensualesService, planillaGastosMensualesFactory, modalService) {
         this.planillaGastosMensualesService = planillaGastosMensualesService;
         this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
+        this.modalService = modalService;
         this.MostrarSpinningIcon = false;
         this.PlanillaGastosMensuales = new index_1.PlanillaGastosMensuales();
         this.PagosPorConcepto = new Array();
@@ -48,15 +51,16 @@ var HomeComponent = (function () {
         var _this = this;
         console.log("ObtenerPlanillaGastosMensuales");
         if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
-            this.MostrarSpinningIcon = true;
+            var modalRef_1 = this.modalService.open(framework.ProgresoModal);
+            modalRef_1.componentInstance.Mensaje = "Buscando planilla";
             this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
                 .subscribe(function (planilla) {
                 _this.PlanillaGastosMensuales = planilla;
                 _this.PagosPorConcepto = _this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(_this.PlanillaGastosMensuales);
                 console.log(_this.PagosPorConcepto);
-                _this.MostrarSpinningIcon = false;
+                modalRef_1.close();
             }, function (error) {
-                _this.MostrarSpinningIcon = false;
+                modalRef_1.close();
                 console.log(error);
             });
         }
@@ -67,7 +71,7 @@ var HomeComponent = (function () {
             templateUrl: "app/home.component.html",
             providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory]
         }), 
-        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory])
+        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory, ng_bootstrap_1.NgbModal])
     ], HomeComponent);
     return HomeComponent;
 }());
