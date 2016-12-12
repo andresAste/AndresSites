@@ -4,7 +4,7 @@
   "description": "",
   "main": "nodeHttpServer.js",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"node nodeHttpServer.js\" \"start firefox http://localhost:9090/",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"gulp\" \"start firefox http://localhost:9090/",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",
@@ -55,9 +55,11 @@
     "@types/core-js": "^0.9.34",
     "@types/node": "^6.0.45",
     "concurrently": "^3.0.0",
-    "gulp": "^3.9.1",
-    "gulp-sass": "^2.3.2",
-    "gulp-typescript": "^2.13.6",
+    "gulp": ">=3.9.1",
+    "gulp-sass": ">=2.3.2",
+    "gulp-typescript": ">=2.13.6",
+    "gulp-develop-server": ">=0.5.0",
+    "gulp-jshint": ">=1.12.0",
     "typescript": "^2.0.3",
     "typings": "^0.7.12"
   }

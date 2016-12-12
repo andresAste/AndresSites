@@ -66,7 +66,7 @@ app.get('/GastosMensuales', function(req, res) {
       res.end(data);
     }
   });
-});
+}); 
 
 /**** GASTOS MENSUALES SERVICES ROUTES *******************************************************************************************************/
 // on routes that end in /gastosMensuales
