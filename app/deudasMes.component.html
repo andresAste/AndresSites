@@ -23,10 +23,12 @@
                 <td>{{gastoMensual.EsPagoAnual}}</td>
                 <td>{{gastoMensual.Concepto.CodigoPago}}</td>
                 <td>
-                    <a *ngIf="GenerarLinkDescargaComprobante(gastoMensual)" href='{{GenerarLinkDescargaComprobante(gastoMensual)}}'>Descargar</a>
-                    <button type="button" class="btn btn-success btn-xs" (click)="SubirArchivo(gastoMensual)" >
-                        <span class="glyphicon glyphicon-upload"></span> Subir Archivo
-                    </button>
+                    <div *ngIf="TieneLinksParaSubirArchivos(gastoMensual)">
+                        <a  href='{{GenerarLinkDescargaComprobante(gastoMensual)}}'>Descargar</a>
+                        <button type="button" class="btn btn-success btn-xs" (click)="SubirArchivo(gastoMensual)" >
+                            <span class="glyphicon glyphicon-upload"></span> Subir Archivo
+                        </button>
+                    </div>
                 </td>
                 <td>{{gastoMensual.Concepto.Origen}}</td>
             </tr>

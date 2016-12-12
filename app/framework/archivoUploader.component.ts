@@ -64,4 +64,16 @@ export class ArchivoUploader {
         this.BaseUrl =  planillaService.ServicesBaseAddress + planillaService.DropBoxFileService;
     }
 
+    /// *** Methods *************************************************
+
+    /**
+     * Remueve archivos encolados
+     * @memberOf ArchivoUploader
+     */
+    RemoverArchivosEncolados() {
+        this.uploader.queue.forEach(element => {
+            element.remove();
+        });
+    }
+
 }

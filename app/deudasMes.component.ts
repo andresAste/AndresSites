@@ -129,6 +129,18 @@ export class DeudasMesComponent {
         return result;
     }
 
+   /**
+    * Indica si hay tiene link para archivos
+    * 
+    * @param {PagoMensual} pagoMensual
+    * @returns
+    * 
+    * @memberOf DeudasMesComponent
+    */
+    TieneLinksParaSubirArchivos(pagoMensual: PagoMensual){
+        return (pagoMensual.Concepto.CarpetaDropbox !== "");
+    }
+
     /**
      * Abre el popup para subir un archivo
      * 

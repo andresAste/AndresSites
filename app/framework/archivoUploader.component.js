@@ -45,6 +45,16 @@ var ArchivoUploader = (function () {
         enumerable: true,
         configurable: true
     });
+    /// *** Methods *************************************************
+    /**
+     * Remueve archivos encolados
+     * @memberOf ArchivoUploader
+     */
+    ArchivoUploader.prototype.RemoverArchivosEncolados = function () {
+        this.uploader.queue.forEach(function (element) {
+            element.remove();
+        });
+    };
     ArchivoUploader = __decorate([
         core_1.Component({
             selector: 'file-upload',

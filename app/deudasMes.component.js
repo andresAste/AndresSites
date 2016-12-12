@@ -102,6 +102,17 @@ var DeudasMesComponent = (function () {
         return result;
     };
     /**
+     * Indica si hay tiene link para archivos
+     *
+     * @param {PagoMensual} pagoMensual
+     * @returns
+     *
+     * @memberOf DeudasMesComponent
+     */
+    DeudasMesComponent.prototype.TieneLinksParaSubirArchivos = function (pagoMensual) {
+        return (pagoMensual.Concepto.CarpetaDropbox !== "");
+    };
+    /**
      * Abre el popup para subir un archivo
      *
      * @param {PagoMensual} pagoMensual
