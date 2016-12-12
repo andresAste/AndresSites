@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var editarPago_component_1 = require('./editarPago.component');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
+var index_1 = require('./framework/index');
 /**
  * Component para Deudas Mes
  *
@@ -70,6 +71,7 @@ var DeudasMesComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    // *** Public methods *************************************************
     /**
      * Edita un pago
      *
@@ -91,13 +93,24 @@ var DeudasMesComponent = (function () {
     DeudasMesComponent.prototype.GenerarLinkDescargaComprobante = function (pagoMensual) {
         var result = "";
         if (pagoMensual.Concepto.CarpetaDropbox !== "") {
-            var pathArchivo = pagoMensual.Concepto.CarpetaDropbox.replace(/\//g, "--") + "--" + pagoMensual.Concepto.PalabraDropbox + this.MesActual + (new Date()).getFullYear();
+            var pathArchivo = pagoMensual.Concepto.ObtenerPathArchivo(this.MesActual);
             if (pagoMensual.Pagado) {
                 //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
                 result = this.planillaService.ServicesBaseAddress + this.planillaService.DropBoxFileService + pathArchivo;
             }
         }
         return result;
+    };
+    /**
+     * Abre el popup para subir un archivo
+     *
+     * @param {PagoMensual} pagoMensual
+     *
+     * @memberOf DeudasMesComponent
+     */
+    DeudasMesComponent.prototype.SubirArchivo = function (pagoMensual) {
+        var modalRef = this.modalService.open(index_1.ArchivoUploader);
+        modalRef.componentInstance.PathArchivo = pagoMensual.Concepto.ObtenerPathArchivo(this.MesActual);
     };
     __decorate([
         core_1.Input(), 

@@ -25,7 +25,8 @@
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
       'ng2-spin-kit-new': 'npm:ng2-spin-kit-new',
-      '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js'
+      '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
+      'ng2-file-upload' : 'npm:ng2-file-upload'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -44,6 +45,10 @@
          main: './main.js',
          defaultExtension: 'js'
        },
+      'ng2-file-upload' : { 
+        main: './ng2-file-upload.js',
+        defaultExtension: 'js'
+      }
     }
   });
 })(this);

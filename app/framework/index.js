@@ -4,5 +4,5 @@ function __export(m) {
 }
 //Exporta todos los elementos del framework
 __export(require('./progresoModal.component'));
-;
+__export(require('./archivoUploader.component'));
 //# sourceMappingURL=index.js.map

@@ -23,6 +23,7 @@ var compras_component_1 = require('./compras.component');
 var editarPago_component_1 = require('./editarPago.component');
 var framework = require('./framework/index');
 var spinner = require('ng2-spin-kit-new/app/spinners');
+var ng2_file_upload_1 = require('ng2-file-upload');
 /**
  * @export
  * @class AppModule Main Module, this defines an Angular application formed by Components.
@@ -40,7 +41,8 @@ var AppModule = (function () {
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
             declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, editarPago_component_1.EditarPagoComponent,
-                framework.ProgresoModal,
+                framework.ProgresoModal, framework.ArchivoUploader,
+                ng2_file_upload_1.FileSelectDirective,
                 spinner.RotatingPlaneComponent,
                 spinner.DoubleBounceComponent,
                 spinner.WaveComponent,
@@ -53,7 +55,7 @@ var AppModule = (function () {
                 spinner.WordPressComponent,
                 spinner.FadingCircleComponent,
                 spinner.FoldingCubeComponent],
-            entryComponents: [editarPago_component_1.EditarPagoComponent, framework.ProgresoModal],
+            entryComponents: [editarPago_component_1.EditarPagoComponent, framework.ProgresoModal, framework.ArchivoUploader],
             bootstrap: [app_component_1.AppComponent],
         }), 
         __metadata('design:paramtypes', [])

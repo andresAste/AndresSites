@@ -8,7 +8,6 @@ import * as framework from './framework/index';
 
 declare var $: any;
 
-
 /**
  * Clase para popup de edición de pagos
  * 

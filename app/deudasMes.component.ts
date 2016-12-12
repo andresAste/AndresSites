@@ -4,6 +4,7 @@ import { Mes, PagoMensual,  ConceptoPago} from './model/index';
 import { EditarPagoComponent } from './editarPago.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
+import { ArchivoUploader } from './framework/index';
 
 /**
  * Component para Deudas Mes
@@ -82,6 +83,19 @@ export class DeudasMesComponent {
      * @memberOf DeudasMesComponent
      */
     NombresDeMes = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+    // *** constructors *************************************************
+    /**
+     * Creates an instance of DeudasMesComponent.
+     * 
+     * 
+     * @memberOf DeudasMesComponent
+     */
+    constructor(private modalService: NgbModal, private planillaService: PlanillaGastosMensualesService) { 
+        this.MesActual = this.NombresDeMes[(new Date()).getMonth()];
+    }
+
+    // *** Public methods *************************************************
     
     /**
      * Edita un pago
@@ -105,7 +119,7 @@ export class DeudasMesComponent {
     GenerarLinkDescargaComprobante(pagoMensual: PagoMensual) {
         let result = "";
         if (pagoMensual.Concepto.CarpetaDropbox !== ""){
-            let pathArchivo = pagoMensual.Concepto.CarpetaDropbox.replace(/\//g, "--") + "--" + pagoMensual.Concepto.PalabraDropbox + this.MesActual + (new Date()).getFullYear(); 
+            let pathArchivo = pagoMensual.Concepto.ObtenerPathArchivo(this.MesActual); 
             if (pagoMensual.Pagado) {
                 //Generates an url as follows:  http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016
                 result = this.planillaService.ServicesBaseAddress + this.planillaService.DropBoxFileService + pathArchivo;
@@ -115,14 +129,15 @@ export class DeudasMesComponent {
         return result;
     }
 
-    // *** constructors *************************************************
     /**
-     * Creates an instance of DeudasMesComponent.
+     * Abre el popup para subir un archivo
      * 
+     * @param {PagoMensual} pagoMensual
      * 
      * @memberOf DeudasMesComponent
      */
-    constructor(private modalService: NgbModal, private planillaService: PlanillaGastosMensualesService) { 
-        this.MesActual = this.NombresDeMes[(new Date()).getMonth()];
+    SubirArchivo(pagoMensual: PagoMensual): void {
+        const modalRef = this.modalService.open(ArchivoUploader);
+        modalRef.componentInstance.PathArchivo = pagoMensual.Concepto.ObtenerPathArchivo(this.MesActual);
     }
 }

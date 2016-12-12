@@ -31,6 +31,19 @@ export class ConceptoPago {
         this.Origen = this.ObtenerDescripcionDeOrigen(Origen[(<string>jsonObject.Origen).replace(/\s+/g, '')]); //\s is the regex for "whitespace", and g is the "global" flag, meaning match ALL \s (whitespaces). 
     } 
 
+    // *** Public methods *****************************************************
+    /**
+     * Path para subir o descargar el archivo, dado un mes
+     * 
+     * @param {string} mes Mes
+     * @returns {string}
+     * 
+     * @memberOf ConceptoPago
+     */
+    ObtenerPathArchivo(mes: string): string {
+        return this.CarpetaDropbox.replace(/\//g, "--") + "--" + this.PalabraDropbox + mes + (new Date()).getFullYear();
+    }
+
     // *** Private methods *****************************************************
     /**
      * Genera un string a partir de un valor de Origen
