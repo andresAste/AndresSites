@@ -28,10 +28,6 @@ var staticPath = path.resolve(__dirname, '.');
 
 var app = express();
 // configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
 app.use(bodyParser.json());
 app.use(express.static(staticPath));
 
@@ -118,7 +114,7 @@ router.route('/dropBox/file/:file_path')
     });
   })
   //uploads a file (accessed at POST http://localhost:9090/api/dropBox/file/Pagos--ABSA--ABSA_Mayo2016)
-  .post(upload.single("comprobantePago"), function(req, res) {
+  .post(upload.single("file"), function(req, res) {
     var fullFilePath = req.params.file_path.replace(/--/g, "/");
     console.log(fullFilePath);
     console.log(JSON.stringify(req.file));

@@ -4,7 +4,7 @@ Both services requires some json files with credentials not uploaded.
 To install package dependencies run "npm install" from the root folder of this app.
 Then run npm 
 
-Start page to run web site:http://localhost:9090/GastosMensuales
+Start page to run web site:http://localhost:9090/
 
 NodeJS: to start and run the server, I follow the steps here: https://code.ciphertrick.com/2016/10/24/file-upload-with-angular2-nodejs/, which involves:
   1. Adding Gulp references on package.json
