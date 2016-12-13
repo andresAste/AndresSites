@@ -137,7 +137,7 @@ export class DeudasMesComponent {
     * 
     * @memberOf DeudasMesComponent
     */
-    TieneLinksParaSubirArchivos(pagoMensual: PagoMensual){
+   TieneLinksParaSubirArchivos(pagoMensual: PagoMensual){
         return (pagoMensual.Concepto.CarpetaDropbox !== "");
     }
 
@@ -151,5 +151,17 @@ export class DeudasMesComponent {
     SubirArchivo(pagoMensual: PagoMensual): void {
         const modalRef = this.modalService.open(ArchivoUploader);
         modalRef.componentInstance.PathArchivo = pagoMensual.Concepto.ObtenerPathArchivo(this.MesActual);
+    }
+
+    /**
+     * Actualiza el mes que se muestra en la pantalla
+     * 
+     * @param {string} mes
+     * 
+     * @memberOf DeudasMesComponent
+     */
+    ActualizarMes(mes:string) {
+        this.MesActual = mes;
+        this.GastosMensualesPorMes = this._gastosMensualesPorMes; //esto refresca la propiedad PagosMesActual
     }
 }

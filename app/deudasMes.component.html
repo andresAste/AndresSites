@@ -1,8 +1,10 @@
 
 <div *ngIf="PagosMesActual && PagosMesActual.length > 0">
+    <ul>
+        <li *ngFor="let mes of NombresDeMes"><span [ngClass]="{'active': mes === MesActual }" (click)="ActualizarMes(mes)">{{mes}}</span></li>
+    </ul>
     <td>
         <table id="tbMesCorriente" border="1" cellspacing='0'>
-            <tr><td colspan="9" class="gm-MonthName">Mes actual</td></tr>
             <tr class="gm-header">
                 <th class="gm-editar">Editar</th>
                 <th class="gm-concepto">Concepto</th>

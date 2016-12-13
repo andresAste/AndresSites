@@ -123,6 +123,17 @@ var DeudasMesComponent = (function () {
         var modalRef = this.modalService.open(index_1.ArchivoUploader);
         modalRef.componentInstance.PathArchivo = pagoMensual.Concepto.ObtenerPathArchivo(this.MesActual);
     };
+    /**
+     * Actualiza el mes que se muestra en la pantalla
+     *
+     * @param {string} mes
+     *
+     * @memberOf DeudasMesComponent
+     */
+    DeudasMesComponent.prototype.ActualizarMes = function (mes) {
+        this.MesActual = mes;
+        this.GastosMensualesPorMes = this._gastosMensualesPorMes; //esto refresca la propiedad PagosMesActual
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
