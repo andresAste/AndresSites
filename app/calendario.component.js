@@ -9,6 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var editarPago_component_1 = require('./editarPago.component');
+var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 /**
  * Component para el Calendario
  *
@@ -23,9 +25,22 @@ var CalendarioComponent = (function () {
      *
      * @memberOf CalendarioComponent
      */
-    function CalendarioComponent() {
+    function CalendarioComponent(modalService) {
+        this.modalService = modalService;
         this.PagosPorConcepto = [];
     }
+    // *** Metodos *************************************************
+    /**
+    * Edita un pago
+    *
+    * @param {PagoMensual} pago
+    *
+    * @memberOf DeudasMesComponent
+    */
+    CalendarioComponent.prototype.EditarPago = function (pago) {
+        var modalRef = this.modalService.open(editarPago_component_1.EditarPagoComponent);
+        modalRef.componentInstance.PagoMensual = pago;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
@@ -36,7 +51,7 @@ var CalendarioComponent = (function () {
             templateUrl: "app/calendario.component.html",
             styleUrls: ['app/styles/default.scss']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [ng_bootstrap_1.NgbModal])
     ], CalendarioComponent);
     return CalendarioComponent;
 }());

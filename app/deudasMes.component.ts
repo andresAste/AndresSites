@@ -137,7 +137,7 @@ export class DeudasMesComponent {
     * 
     * @memberOf DeudasMesComponent
     */
-   TieneLinksParaSubirArchivos(pagoMensual: PagoMensual){
+   TieneLinksParaSubirArchivos(pagoMensual: PagoMensual) {
         return (pagoMensual.Concepto.CarpetaDropbox !== "");
     }
 

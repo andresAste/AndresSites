@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { PagosAnualConcepto } from './model/index';
+import { PagosAnualConcepto, PagoMensual } from './model/index';
+import { EditarPagoComponent } from './editarPago.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * Component para el Calendario
@@ -18,15 +20,28 @@ export class CalendarioComponent {
     @Input()
     PagosPorConcepto: PagosAnualConcepto[];
 
- // *** Constructor *************************************************
+  // *** Constructor *************************************************
    /**
     * Creates an instance of CalendarioComponent.
     * 
     * 
     * @memberOf CalendarioComponent
     */
-   constructor() {
+   constructor(private modalService: NgbModal) {
         this.PagosPorConcepto = []; 
+    }
+
+    // *** Metodos *************************************************
+     /**
+     * Edita un pago
+     * 
+     * @param {PagoMensual} pago
+     * 
+     * @memberOf DeudasMesComponent
+     */
+    EditarPago(pago: PagoMensual): void {
+        const modalRef = this.modalService.open(EditarPagoComponent);
+        modalRef.componentInstance.PagoMensual = pago;
     }
 
 }
