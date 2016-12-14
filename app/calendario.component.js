@@ -31,15 +31,34 @@ var CalendarioComponent = (function () {
     }
     // *** Metodos *************************************************
     /**
-    * Edita un pago
-    *
-    * @param {PagoMensual} pago
-    *
-    * @memberOf DeudasMesComponent
-    */
+     * Edita un pago
+     *
+     * @param {PagoMensual} pago
+     *
+     * @memberOf DeudasMesComponent
+     */
     CalendarioComponent.prototype.EditarPago = function (pago) {
         var modalRef = this.modalService.open(editarPago_component_1.EditarPagoComponent);
         modalRef.componentInstance.PagoMensual = pago;
+    };
+    /**
+     * Dado un pago mensual, indica que estilo aplicar
+     *
+     * @param {PagoMensual} pago
+     * @returns {string}
+     *
+     * @memberOf CalendarioComponent
+     */
+    CalendarioComponent.prototype.EstiloDePago = function (pago) {
+        if (pago.Pagado === true) {
+            return "gm-card-pagoRealizado";
+        }
+        else if (pago.EsPagoAnual == true) {
+            return "gm-card-pagoAnual";
+        }
+        else {
+            return "gm-card-pagoFaltante";
+        }
     };
     __decorate([
         core_1.Input(), 

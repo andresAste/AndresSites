@@ -17,7 +17,7 @@ table {
 	font-family:Arial, Helvetica, sans-serif;
 	color:#666;
 	font-size:12px;
-	text-shadow: 1px 1px 0px #fff;
+	//text-shadow: 1px 1px 0px #fff;
 	background:#eaebec;
 	margin:20px;
 	border:#ccc 1px solid;
@@ -101,6 +101,11 @@ table tr:hover td {
     color: #000000;
 }
 
+.gm-PagoFaltante {
+	background: #ff4d4d;
+	color: #000000;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -130,9 +135,35 @@ li span:hover:not(.active) {
     background-color: #4CAF50;
 }
 
+.gm-card-pagoRealizado {
+	 background: #66ff66;
+	 color: #000000;
+}
 
 /* On mouse-over, add a deeper shadow */
-.card:hover {
+.gm-card-pagoRealizado:hover {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	cursor: pointer; 
+}
+
+.gm-card-pagoAnual {
+	 background: #3399ff;
+	 color: #000000;
+}
+
+/* On mouse-over, add a deeper shadow */
+.gm-card-pagoAnual:hover {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	cursor: pointer; 
+}
+
+.gm-card-pagoFaltante {
+	 background: #ff4d4d;
+	 color: #000000;
+}
+
+/* On mouse-over, add a deeper shadow */
+.gm-card-pagoFaltante:hover {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 	cursor: pointer; 
 }

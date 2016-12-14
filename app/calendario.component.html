@@ -21,7 +21,7 @@
             </td>
             <td *ngFor="let pagoMensual of pagosConcepto.Pagos">
                 <div *ngIf="pagoMensual && pagoMensual.Vencimiento">
-                     <div class="card" (click)="EditarPago(pagoMensual)">
+                     <div [className]="EstiloDePago(pagoMensual)" (click)="EditarPago(pagoMensual)">
                         <div>
                             <p><b>{{pagoMensual.Vencimiento.toLocaleDateString("es-ar")}}</b></p>
                             <p><b>{{pagoMensual.Monto}}</b></p>
