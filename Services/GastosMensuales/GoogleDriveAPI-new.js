@@ -175,7 +175,7 @@ function Authenticate(action, sheetTitle, actionParameters) {
   var fileInfo = require(__dirname + "/keyFile.json");
   var creds = require(__dirname +'/claveGastosMensuales.json');
   
-  var doc = new GoogleSpreadsheet(fileInfo.key);
+  var doc = new GoogleSpreadsheet(fileInfo.files[0].key);
   var sheet;
   doc.useServiceAccountAuth(creds, function() {
      doc.getInfo(function(err, info) {
