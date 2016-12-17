@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit{
     Pagos:Array<PagoMensual>;
     PagosPorConcepto: Array<PagosAnualConcepto>;
     MostrarSpinningIcon: boolean = false;
+    AniosDisponibles = [2016, 2017];
     // *** Constructor *************************************************
     /**
      * Creates an instance of HomeComponent.

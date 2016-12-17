@@ -68,9 +68,10 @@ table td {
 	border-bottom:1px solid #e0e0e0;
 	border-left: 1px solid #e0e0e0;
 
-	background: #fafafa;
+	/*background: #fafafa;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
 	background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+	*/
 }
 table tr.even td {
 	background: #f6f6f6;
@@ -97,7 +98,7 @@ table tr:hover td {
 }
 
 .gm-PagoRealizado {
-    background: #66ff66;
+    background: #80ffbf;
     color: #000000;
 }
 

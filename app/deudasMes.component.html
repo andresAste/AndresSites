@@ -16,7 +16,7 @@
                 <th>Comprobante de pago</th>
                 <th>Origen</th>
             </tr>
-            <tr *ngFor="let gastoMensual of PagosMesActual" [ngClass]="{'gm-PagoRealizado': gastoMensual.Pagado }">
+            <tr *ngFor="let gastoMensual of PagosMesActual" [className]="EstiloDePago(gastoMensual)" >
                 <td><button type="button" class="btn btn-default" (click)="EditarPago(gastoMensual)">Editar</button></td>
                 <td>{{gastoMensual.Concepto.Concepto}}</td>
                 <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>

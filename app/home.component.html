@@ -1,16 +1,27 @@
 <sk-fading-circle [isRunning]="MostrarSpinningIcon" [delay]="0">
 </sk-fading-circle>
 
-  <ngb-tabset type="pills">
-    <ngb-tab title="Deudas del mes">
-      <template ngbTabContent>
-        <deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"> </deudasMes>
-      </template> 
-    </ngb-tab>
-    <ngb-tab title="Calendario">
-      <template ngbTabContent>
-        <calendario [PagosPorConcepto] = "PagosPorConcepto"></calendario>
-      </template>
-    </ngb-tab>
-  </ngb-tabset>
+<div class="row">
+  <div class="col-xs-6">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownMenu1" ngbDropdownToggle>Años disponibles</button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <button class="dropdown-item"   *ngFor="let anio of AniosDisponibles">{{anio}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngb-tabset type="pills">
+  <ngb-tab title="Deudas del mes">
+    <template ngbTabContent>
+      <deudasMes [GastosMensualesPorMes]="PlanillaGastosMensuales.GastosMensualesPorMes"> </deudasMes>
+    </template> 
+  </ngb-tab>
+  <ngb-tab title="Calendario">
+    <template ngbTabContent>
+      <calendario [PagosPorConcepto] = "PagosPorConcepto"></calendario>
+    </template>
+  </ngb-tab>
+</ngb-tabset>
 

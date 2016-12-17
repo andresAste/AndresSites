@@ -164,4 +164,25 @@ export class DeudasMesComponent {
         this.MesActual = mes;
         this.GastosMensualesPorMes = this._gastosMensualesPorMes; //esto refresca la propiedad PagosMesActual
     }
+
+      /**
+     * Dado un pago mensual, indica que estilo aplicar
+     * 
+     * @param {PagoMensual} pago
+     * @returns {string}
+     * 
+     * @memberOf CalendarioComponent
+     */
+    EstiloDePago(pago: PagoMensual): string {
+        if (pago.Pagado === true) {
+            return "gm-card-pagoRealizado";
+        }
+        else if (pago.EsPagoAnual == true) {
+            return "gm-card-pagoAnual";
+        }
+        else {
+            return "gm-card-pagoFaltante";
+        }
+    }
+
 }

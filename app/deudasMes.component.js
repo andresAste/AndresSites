@@ -134,6 +134,25 @@ var DeudasMesComponent = (function () {
         this.MesActual = mes;
         this.GastosMensualesPorMes = this._gastosMensualesPorMes; //esto refresca la propiedad PagosMesActual
     };
+    /**
+   * Dado un pago mensual, indica que estilo aplicar
+   *
+   * @param {PagoMensual} pago
+   * @returns {string}
+   *
+   * @memberOf CalendarioComponent
+   */
+    DeudasMesComponent.prototype.EstiloDePago = function (pago) {
+        if (pago.Pagado === true) {
+            return "gm-card-pagoRealizado";
+        }
+        else if (pago.EsPagoAnual == true) {
+            return "gm-card-pagoAnual";
+        }
+        else {
+            return "gm-card-pagoFaltante";
+        }
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)

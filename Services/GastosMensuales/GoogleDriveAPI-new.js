@@ -169,27 +169,35 @@ function UpdatePago(parameters) {
  * Authenticate the users, and then proceeds with action
  * @param {function} action         function to call after authentication
  * @param {string} sheetTitle  title of the sheet to pass to the action
- * @param {Array} actionParameters  parameters to pass to action method
+ * @param {Object} actionParameters  parameters to pass to action method
+ * @param {number} year  spreadsheet's year
  */
-function Authenticate(action, sheetTitle, actionParameters) {
+function Authenticate(action, sheetTitle, actionParameters, year) {
   var fileInfo = require(__dirname + "/keyFile.json");
   var creds = require(__dirname +'/claveGastosMensuales.json');
   
-  var doc = new GoogleSpreadsheet(fileInfo.files[0].key);
-  var sheet;
-  doc.useServiceAccountAuth(creds, function() {
-     doc.getInfo(function(err, info) {
-      console.log('Loaded doc: '+info.title+' by '+info.author.email);
-      info.worksheets.forEach(function(worksheet, index) {
-        sheet = info.worksheets[index];
-        console.log('sheet : '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);  
-        if (sheet.title == sheetTitle) {
-          actionParameters.Sheet = sheet;
-          action(actionParameters);
-        }
-      });
-    });
-  });
+  var fileForYear= utils.GetItemByProperty(fileInfo.files,"year", year);
+  if (fileForYear === null) {
+    actionParameters.CallbackError('Error on method Authenticate: No spreadsheet was found for year ' + year.toString());
+  }
+  else {
+     var doc = new GoogleSpreadsheet(fileForYear.key);
+     var sheet;
+     doc.useServiceAccountAuth(creds, function() {
+       doc.getInfo(function(err, info) {
+         console.log('Loaded doc: '+info.title+' by '+info.author.email);
+         actionParameters.Worksheets = info.worksheets;
+         info.worksheets.forEach(function(worksheet, index) {
+           sheet = info.worksheets[index];
+           console.log('sheet : '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);  
+           if (sheet.title == sheetTitle) {
+             actionParameters.Sheet = sheet;
+             action(actionParameters);
+           }
+         });
+       });
+     });
+  }
 }
 
 /**
@@ -338,7 +346,8 @@ module.exports = {
                       result.errors.push(err);
                       callback(result);
                     }
-                });
+                },
+                2016);
   },
   UpdateCell: function(pago, callback) {
     var result = {
@@ -358,7 +367,21 @@ module.exports = {
                       result.errors.push(err);
                       callback(result);
                     }
-                });
+                },
+                2016);
+  },
+  /**
+   * Retornar todas las hojas de cálculo disponibles
+   * 
+   * @param {any} callback Función a llamar cuando se termine de procesar esta funcion
+   */
+  RetrieveAvailableFiles: function(callback) {
+      var fileInfo = require(__dirname + "/keyFile.json");
+      var result = {
+        errors : [],
+        filesFound: fileInfo.files
+      };
+      callback(result);
   },
   DownloadCompras: function(callback) {
      var result = {
@@ -377,7 +400,8 @@ module.exports = {
                       result.errors.push(err);
                       callback(result);
                     }
-                });
+                },
+                2016);
   },
   /**
    * Add or Updates compras
@@ -401,7 +425,8 @@ module.exports = {
                     result.errors.push(err);
                     callback(result);
                   }
-              });
+              },
+              2016);
   }
 }; 
 

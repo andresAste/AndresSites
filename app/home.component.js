@@ -31,6 +31,7 @@ var HomeComponent = (function () {
         this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
         this.modalService = modalService;
         this.MostrarSpinningIcon = false;
+        this.AniosDisponibles = [2016, 2017];
         this.PlanillaGastosMensuales = new index_1.PlanillaGastosMensuales();
         this.PagosPorConcepto = new Array();
     }
