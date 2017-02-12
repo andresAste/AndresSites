@@ -31,7 +31,7 @@ var GastosComponent = (function () {
         this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
         this.modalService = modalService;
         this.MostrarSpinningIcon = false;
-        this.AniosDisponibles = [2016, 2017];
+        this.IDPlanillaSeleccionada = null;
         this.PlanillaGastosMensuales = new index_1.PlanillaGastosMensuales();
         this.PagosPorConcepto = new Array();
         this.Planillas = [];
@@ -84,12 +84,13 @@ var GastosComponent = (function () {
      *
      * @memberOf GastosComponent
      */
-    GastosComponent.prototype.ObtenerPlanillaAnioActual = function (planilla) {
+    GastosComponent.prototype.ObtenerPlanillaAnioActual = function (planillaElegida) {
         var _this = this;
         console.log("ObtenerPlanillaGastosMensuales");
         var modalRef = this.modalService.open(framework.ProgresoModal);
-        modalRef.componentInstance.Mensaje = "Buscando planilla del año " + planilla.Anio.toString();
-        this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
+        this.IDPlanillaSeleccionada = planillaElegida.Clave;
+        modalRef.componentInstance.Mensaje = "Buscando planilla del año " + planillaElegida.Anio.toString();
+        this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales(planillaElegida)
             .subscribe(function (planilla) {
             _this.PlanillaGastosMensuales = planilla;
             _this.PagosPorConcepto = _this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(_this.PlanillaGastosMensuales);

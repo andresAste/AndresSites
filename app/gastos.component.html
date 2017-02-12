@@ -13,6 +13,7 @@
 </div>
 
 <div *ngIf="PlanillaGastosMensuales && PlanillaGastosMensuales.GastosMensualesPorMes.length > 0">
+  <a target="_blank" href="https://docs.google.com/spreadsheets/d/{{IDPlanillaSeleccionada}}">Link a Google Drive</a>
   <ngb-tabset type="pills">
     <ngb-tab title="Deudas del mes">
       <template ngbTabContent>

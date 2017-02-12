@@ -38,8 +38,8 @@ var PlanillaGastosMensualesService = (function () {
      *
      * @memberOf PlanillaGastosMensualesService
      */
-    PlanillaGastosMensualesService.prototype.ObtenerPlanillaGastosMensuales = function () {
-        return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService)
+    PlanillaGastosMensualesService.prototype.ObtenerPlanillaGastosMensuales = function (planilla) {
+        return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService + "planilla/" + planilla.Anio)
             .map(this.ExtractPlanilla)
             .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });
     };

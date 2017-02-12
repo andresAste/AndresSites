@@ -25,8 +25,8 @@ export class GastosComponent implements OnInit{
     Pagos:Array<PagoMensual>;
     PagosPorConcepto: Array<PagosAnualConcepto>;
     MostrarSpinningIcon: boolean = false;
-    AniosDisponibles = [2016, 2017];
     Planillas: Planilla[];
+    IDPlanillaSeleccionada: string = null;
     // *** Constructor *************************************************
     /**
      * Creates an instance of GastosComponent.
@@ -95,12 +95,13 @@ export class GastosComponent implements OnInit{
      * 
      * @memberOf GastosComponent
      */
-    ObtenerPlanillaAnioActual(planilla: Planilla) : void {
+    ObtenerPlanillaAnioActual(planillaElegida: Planilla) : void {
         console.log("ObtenerPlanillaGastosMensuales");
         const modalRef = this.modalService.open(framework.ProgresoModal);
-         modalRef.componentInstance.Mensaje = "Buscando planilla del año " + planilla.Anio.toString();
-         this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-         .subscribe(planilla => {
+        this.IDPlanillaSeleccionada = planillaElegida.Clave;
+        modalRef.componentInstance.Mensaje = "Buscando planilla del año " + planillaElegida.Anio.toString();
+        this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales(planillaElegida)
+        .subscribe(planilla => {
                         this.PlanillaGastosMensuales = planilla;
                         this.PagosPorConcepto = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(this.PlanillaGastosMensuales);
                         console.log( this.PagosPorConcepto);

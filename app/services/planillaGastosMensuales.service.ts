@@ -40,10 +40,10 @@ export class PlanillaGastosMensualesService {
      * 
      * @returns {Observable<model.PlanillaGastosMensuales>}
      * 
-     * @memberOf PlanillaGastosMensualesService
+     * @memberOf PlanillaGastosMensualesService 
      */
-    ObtenerPlanillaGastosMensuales(): Observable<model.PlanillaGastosMensuales> {
-         return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService)
+    ObtenerPlanillaGastosMensuales(planilla: model.Planilla): Observable<model.PlanillaGastosMensuales> {
+         return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService + "planilla/" + planilla.Anio)
                          .map(this.ExtractPlanilla )
                          .catch((error:any) => Observable.throw(error || 'Server error'));
     } 

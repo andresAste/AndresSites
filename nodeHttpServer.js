@@ -66,10 +66,11 @@ app.get('/GastosMensuales', function(req, res) {
 
 /**** GASTOS MENSUALES SERVICES ROUTES *******************************************************************************************************/
 // on routes that end in /gastosMensuales
-router.route('/gastosMensuales')
-  // get all the gastos mensuales (accessed at GET http://localhost:9090/api/gastosMensuales)
+router.route('/gastosMensuales/planilla/:year')
+  // get all the gastos mensuales (accessed at GET http://localhost:9090/api/gastosMensuales/2017)
   .get(function(req, res) {
-    googleDriveAPINew.DownloadSpreadsheet(function(result) {
+    console.log("Obteniendo planilla para año: " + req.params.year);
+    googleDriveAPINew.DownloadSpreadsheet(req.params.year, function(result) {
       res.json(result);
     });
   });

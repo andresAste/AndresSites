@@ -330,7 +330,7 @@ function UpdateCompras(parameters) {
 
 // ***** PUBLIC FUNCTIONS ****************************************************************************************************************************************
 module.exports = {
-  DownloadSpreadsheet: function(callback) {
+  DownloadSpreadsheet: function(year, callback) {
      var result = {
       errors : [],
       gastosMensuales: {}
@@ -347,7 +347,7 @@ module.exports = {
                       callback(result);
                     }
                 },
-                2017);
+                year);
   },
   UpdateCell: function(pago, callback) {
     var result = {
