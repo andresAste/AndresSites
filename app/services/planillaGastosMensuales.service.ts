@@ -83,12 +83,11 @@ export class PlanillaGastosMensualesService {
         return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService + "files")
             .map(function (res: Response) {
                 let body = res.json();
-                let result = model.Planilla[body.filesFound.length];
-                for (let index = 0; index < body.fileFound.length; index++) {
-                    result[index] = new model.Planilla(body.fileFound.year, body.fileFound.key);
-                }
-                console.log("Planillas encontradas:");
+                let result = new Array<model.Planilla>(body.filesFound.length);
                 console.log(result);
+                for (let index = 0; index < body.filesFound.length; index++) {
+                    result[index] = new model.Planilla(body.filesFound[index].year, body.filesFound[index].key);
+                }
                 return result;
             })
             .catch((error:any) => Observable.throw(error || 'Server error'));

@@ -77,12 +77,11 @@ var PlanillaGastosMensualesService = (function () {
         return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService + "files")
             .map(function (res) {
             var body = res.json();
-            var result = model.Planilla[body.filesFound.length];
-            for (var index = 0; index < body.fileFound.length; index++) {
-                result[index] = new model.Planilla(body.fileFound.year, body.fileFound.key);
-            }
-            console.log("Planillas encontradas:");
+            var result = new Array(body.filesFound.length);
             console.log(result);
+            for (var index = 0; index < body.filesFound.length; index++) {
+                result[index] = new model.Planilla(body.filesFound[index].year, body.filesFound[index].key);
+            }
             return result;
         })
             .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });

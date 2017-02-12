@@ -6,6 +6,11 @@
  * @class Planilla
  */
 export class Planilla {
+
+    // *** Properties *************************************************
+    Anio: number;
+    Clave: string;
+
     // *** Constructor ***************************************************
     
     /**
@@ -16,7 +21,8 @@ export class Planilla {
      * 
      * @memberOf Planilla
      */
-    constructor(Anio: number, Clave: string) {
-
+    constructor(anio: number, clave: string) {
+        this.Anio = anio;
+        this.Clave = clave;
     }
 }

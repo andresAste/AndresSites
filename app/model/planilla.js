@@ -15,7 +15,9 @@ var Planilla = (function () {
      *
      * @memberOf Planilla
      */
-    function Planilla(Anio, Clave) {
+    function Planilla(anio, clave) {
+        this.Anio = anio;
+        this.Clave = clave;
     }
     return Planilla;
 }());
