@@ -9,70 +9,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var index_1 = require('./model/index');
-var framework = require('./framework/index');
 var planillaGastosMensuales_service_1 = require('./services/planillaGastosMensuales.service');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
+var framework = require('./framework/index');
 /**
+ * Home component
+ *
  * @export
- * @class HomeComponent Main Component
+ * @class HomeComponent
  */
 var HomeComponent = (function () {
-    // *** Constructor *************************************************
-    /**
-     * Creates an instance of HomeComponent.
-     *
-     * @param {PlanillaGastosMensualesService} planillaGastosMensualesService
-     *
-     * @memberOf HomeComponent
-     */
-    function HomeComponent(planillaGastosMensualesService, planillaGastosMensualesFactory, modalService) {
+    // *** Constructor ******************************************************************************
+    function HomeComponent(planillaGastosMensualesService, modalService) {
         this.planillaGastosMensualesService = planillaGastosMensualesService;
-        this.planillaGastosMensualesFactory = planillaGastosMensualesFactory;
         this.modalService = modalService;
-        this.MostrarSpinningIcon = false;
-        this.AniosDisponibles = [2016, 2017];
-        this.PlanillaGastosMensuales = new index_1.PlanillaGastosMensuales();
-        this.PagosPorConcepto = new Array();
     }
-    // *** Public methods *************************************************
+    // *** Methods **********************************************************************************ç
     /**
-     * implement OnInit's `ngOnInit` method
-     *
-     * @memberOf HomeComponent
-     */
+    * implement OnInit's `ngOnInit` method
+    *
+    * @memberOf HomeComponent
+    */
     HomeComponent.prototype.ngOnInit = function () {
-        this.ObtenerPlanillaGastosMensuales();
-    };
-    /**
-     * Recupera la planilla de gastos mensuales
-     * @memberOf HomeComponent
-     */
-    HomeComponent.prototype.ObtenerPlanillaGastosMensuales = function () {
         var _this = this;
-        console.log("ObtenerPlanillaGastosMensuales");
-        if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
-            var modalRef_1 = this.modalService.open(framework.ProgresoModal);
-            modalRef_1.componentInstance.Mensaje = "Buscando planilla";
-            this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-                .subscribe(function (planilla) {
-                _this.PlanillaGastosMensuales = planilla;
-                _this.PagosPorConcepto = _this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(_this.PlanillaGastosMensuales);
-                console.log(_this.PagosPorConcepto);
-                modalRef_1.close();
-            }, function (error) {
-                modalRef_1.close();
-                console.log(error);
-            });
-        }
+        var modalRef = this.modalService.open(framework.ProgresoModal);
+        modalRef.componentInstance.Mensaje = "Buscando planillas";
+        this.planillaGastosMensualesService.ObtenerPlanillasDisponibles()
+            .subscribe(function (planillas) {
+            _this.PlanillasDisponibles = planillas;
+            modalRef.close();
+        }, function (error) {
+            console.log(error);
+            modalRef.close();
+        });
     };
     HomeComponent = __decorate([
         core_1.Component({
-            selector: "home",
-            templateUrl: "app/home.component.html",
-            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory]
+            selector: 'home',
+            template: "\n    <div class=\"row\" *ngIf=\"PlanillasDisponibles && PlanillasDisponibles.length > 0\">\n        <div class=\"col-xs-6\">\n            <div ngbDropdown class=\"d-inline-block\">\n                A\u00F1o : \n                <button class=\"btn btn-outline-primary\" id=\"dropdownMenu1\" ngbDropdownToggle>A\u00F1os disponibles</button>\n                <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                    <button class=\"dropdown-item\" *ngFor=\"let planilla of PlanillasDisponibles\">{{planilla.Anio}}</button>\n                </div>\n            </div>\n        </div>\n         <nav>\n    \t    <a routerLink=\"/gastos\" routerLinkActive=\"active\">Gastos</a>\n    \t    <a routerLink=\"/compras\" routerLinkActive=\"active\">Compras</a>\n \t    </nav>    \t\n        <router-outlet></router-outlet>\n    </div>\n    <template ngbModalContainer></template>\n  ",
+            providers: [planillaGastosMensuales_service_1.PlanillaGastosMensualesService]
         }), 
-        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, index_1.PlanillaGastosMensualesFactory, ng_bootstrap_1.NgbModal])
+        __metadata('design:paramtypes', [planillaGastosMensuales_service_1.PlanillaGastosMensualesService, ng_bootstrap_1.NgbModal])
     ], HomeComponent);
     return HomeComponent;
 }());

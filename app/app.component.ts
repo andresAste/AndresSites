@@ -5,9 +5,9 @@
   template: `
     <h1>{{title}}</h1>
     <nav>
-    	<a routerLink="/home" routerLinkActive="active">Home</a>
+    	<a routerLink="/gastos" routerLinkActive="active">Gastos</a>
     	<a routerLink="/compras" routerLinkActive="active">Compras</a>
-	</nav>    	
+ 	  </nav>    	
     <router-outlet></router-outlet>
     <template ngbModalContainer></template>
   `

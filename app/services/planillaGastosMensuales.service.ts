@@ -6,12 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { PlanillaGastosMensuales } from './../model/planillaGastosMensuales';
-import { PagoMensual } from './../model/pagoMensual';
-import { Mes } from './../model/mes';
-import { PlanillaGastosMensualesFactory } from './../model/planillaGastosMensualesFactory';
-import { iPlanillaGastosMensualesFactory } from './../model/iPlanillaGastosMensualesFactory';
-import { PagosAnualConcepto } from './../model/pagosAnualConcepto';
+import * as model from './../model/index';
 
 @Injectable()
 /**
@@ -26,7 +21,7 @@ export class PlanillaGastosMensualesService {
     public ServicesBaseAddress: string ="http://localhost:9090/api/";
     public GoogleDriveService: string ="gastosMensuales/";
     public DropBoxFileService = "dropBox/file/";
-    private planillaGastosMensualesFactory: iPlanillaGastosMensualesFactory;
+    private planillaGastosMensualesFactory: model.iPlanillaGastosMensualesFactory;
 
     /**
      * Creates an instance of PlanillaGastosMensualesService.
@@ -43,17 +38,25 @@ export class PlanillaGastosMensualesService {
     /**
      * Retorna la planilla de gastos mensuales
      * 
-     * @returns {Observable<PlanillaGastosMensuales>}
+     * @returns {Observable<model.PlanillaGastosMensuales>}
      * 
      * @memberOf PlanillaGastosMensualesService
      */
-    ObtenerPlanillaGastosMensuales(): Observable<PlanillaGastosMensuales> {
+    ObtenerPlanillaGastosMensuales(): Observable<model.PlanillaGastosMensuales> {
          return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService)
                          .map(this.ExtractPlanilla )
                          .catch((error:any) => Observable.throw(error || 'Server error'));
     } 
 
-    ActualizarPago(pago:PagoMensual): Observable<any> {
+    /**
+     * Actualiza el pago
+     * 
+     * @param {model.PagoMensual} pago pago a actualizar
+     * @returns {Observable<any>}
+     * 
+     * @memberOf PlanillaGastosMensualesService
+     */
+    ActualizarPago(pago:model.PagoMensual): Observable<any> {
         let jsonObject: any = 
         {
             Vencimiento: pago.Vencimiento.toLocaleDateString("es-ar"),
@@ -69,11 +72,33 @@ export class PlanillaGastosMensualesService {
             .catch((error:any) => Observable.throw(error || 'Server error'));
     }
 
+    /**
+     * Obtiene un arreglo con las planillas disponibles
+     * 
+     * @returns {Observable<model.Planilla[]>}
+     * 
+     * @memberOf PlanillaGastosMensualesService
+     */
+    ObtenerPlanillasDisponibles(): Observable<model.Planilla[]>{
+        return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService + "files")
+            .map(function (res: Response) {
+                let body = res.json();
+                let result = model.Planilla[body.filesFound.length];
+                for (let index = 0; index < body.fileFound.length; index++) {
+                    result[index] = new model.Planilla(body.fileFound.year, body.fileFound.key);
+                }
+                console.log("Planillas encontradas:");
+                console.log(result);
+                return result;
+            })
+            .catch((error:any) => Observable.throw(error || 'Server error'));
+    }
+
     /*** private methods *************************************************************************/
     private ExtractPlanilla(res: Response) {
         //TODO: tengo que construir el factory acá, porque parece que el objecto que ejecuta la acción no es PlanillaGastosMensualesService
         if (this.planillaGastosMensualesFactory === undefined) {
-            this.planillaGastosMensualesFactory = new PlanillaGastosMensualesFactory();
+            this.planillaGastosMensualesFactory = new model.PlanillaGastosMensualesFactory();
         }
         let body = res.json();
         console.log("resultado sin convertir:");

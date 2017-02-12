@@ -1,77 +1,64 @@
-import { Component, OnInit } from '@angular/core';
-
-import { DeudasMesComponent,  } from './deudasMes.component';
-import { CalendarioComponent } from './calendario.component';
-
-import { PlanillaGastosMensuales, PagoMensual, PagosAnualConcepto, PlanillaGastosMensualesFactory } from './model/index';
-import * as framework from './framework/index';
-
-import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+ import { Component, OnInit } from '@angular/core';
+ 
+ import { PlanillaGastosMensualesService } from './services/planillaGastosMensuales.service';
+ import { Planilla } from './model/index';
+ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+ import * as framework from './framework/index';
 /**
+ * Home component
+ * 
  * @export
- * @class HomeComponent Main Component
+ * @class HomeComponent
  */
 @Component({
-    selector: "home",
-    templateUrl: "app/home.component.html",
-    providers: [ PlanillaGastosMensualesService, PlanillaGastosMensualesFactory ]
+  selector: 'home',
+  template: `
+    <div class="row" *ngIf="PlanillasDisponibles && PlanillasDisponibles.length > 0">
+        <div class="col-xs-6">
+            <div ngbDropdown class="d-inline-block">
+                Año : 
+                <button class="btn btn-outline-primary" id="dropdownMenu1" ngbDropdownToggle>Años disponibles</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <button class="dropdown-item" *ngFor="let planilla of PlanillasDisponibles">{{planilla.Anio}}</button>
+                </div>
+            </div>
+        </div>
+         <nav>
+    	    <a routerLink="/gastos" routerLinkActive="active">Gastos</a>
+    	    <a routerLink="/compras" routerLinkActive="active">Compras</a>
+ 	    </nav>    	
+        <router-outlet></router-outlet>
+    </div>
+    <template ngbModalContainer></template>
+  `,
+  providers: [ PlanillaGastosMensualesService ]
 })
-export class HomeComponent implements OnInit{
-     
-    // *** Properties *************************************************
-    PlanillaGastosMensuales: PlanillaGastosMensuales;
-    Pagos:Array<PagoMensual>;
-    PagosPorConcepto: Array<PagosAnualConcepto>;
-    MostrarSpinningIcon: boolean = false;
-    AniosDisponibles = [2016, 2017];
-    // *** Constructor *************************************************
-    /**
-     * Creates an instance of HomeComponent.
-     * 
-     * @param {PlanillaGastosMensualesService} planillaGastosMensualesService
-     * 
-     * @memberOf HomeComponent
-     */
+export class HomeComponent {
+    // *** Properties ******************************************************************************
+    PlanillasDisponibles: Planilla[];
+
+    // *** Constructor ******************************************************************************
     constructor(private planillaGastosMensualesService: PlanillaGastosMensualesService, 
-                private planillaGastosMensualesFactory: PlanillaGastosMensualesFactory,
                 private modalService: NgbModal) {
-        this.PlanillaGastosMensuales = new PlanillaGastosMensuales();
-        this.PagosPorConcepto = new Array<PagosAnualConcepto>();
     }
 
-    // *** Public methods *************************************************
-    /**
+    // *** Methods **********************************************************************************ç
+     /**
      * implement OnInit's `ngOnInit` method
      * 
      * @memberOf HomeComponent
      */
     ngOnInit(): void {
-        this.ObtenerPlanillaGastosMensuales(); 
-    }
-
-    /**
-     * Recupera la planilla de gastos mensuales
-     * @memberOf HomeComponent
-     */
-    ObtenerPlanillaGastosMensuales(): void {
-        console.log("ObtenerPlanillaGastosMensuales");
-        if (this.PlanillaGastosMensuales === undefined || this.PlanillaGastosMensuales.GastosMensualesPorMes.length === 0) {
-         const modalRef = this.modalService.open(framework.ProgresoModal);
-         modalRef.componentInstance.Mensaje = "Buscando planilla";
-         this.planillaGastosMensualesService.ObtenerPlanillaGastosMensuales()
-         .subscribe(planilla => {
-                        this.PlanillaGastosMensuales = planilla;
-                        this.PagosPorConcepto = this.planillaGastosMensualesFactory.ConstruirPagosAnualConcepto(this.PlanillaGastosMensuales);
-                        console.log( this.PagosPorConcepto);
+        const modalRef = this.modalService.open(framework.ProgresoModal);
+        modalRef.componentInstance.Mensaje = "Buscando planillas";
+        this.planillaGastosMensualesService.ObtenerPlanillasDisponibles()
+         .subscribe(planillas => { 
+                        this.PlanillasDisponibles = planillas;
                         modalRef.close();
                     }, 
                     error => { 
-                         modalRef.close();
                         console.log(error); 
+                        modalRef.close(); 
                     });                                      
         }
-    }
 }
- 

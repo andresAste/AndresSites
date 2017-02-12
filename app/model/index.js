@@ -10,4 +10,5 @@ __export(require('./pagoMensual'));
 __export(require('./pagosAnualConcepto'));
 __export(require('./planillaGastosMensuales'));
 __export(require('./planillaGastosMensualesFactory'));
+__export(require('./planilla'));
 //# sourceMappingURL=index.js.map

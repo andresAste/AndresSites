@@ -14,7 +14,7 @@ var Rx_1 = require('rxjs/Rx');
 // Import RxJs required methods
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
-var planillaGastosMensualesFactory_1 = require('./../model/planillaGastosMensualesFactory');
+var model = require('./../model/index');
 var PlanillaGastosMensualesService = (function () {
     /**
      * Creates an instance of PlanillaGastosMensualesService.
@@ -34,7 +34,7 @@ var PlanillaGastosMensualesService = (function () {
     /**
      * Retorna la planilla de gastos mensuales
      *
-     * @returns {Observable<PlanillaGastosMensuales>}
+     * @returns {Observable<model.PlanillaGastosMensuales>}
      *
      * @memberOf PlanillaGastosMensualesService
      */
@@ -43,6 +43,14 @@ var PlanillaGastosMensualesService = (function () {
             .map(this.ExtractPlanilla)
             .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });
     };
+    /**
+     * Actualiza el pago
+     *
+     * @param {model.PagoMensual} pago pago a actualizar
+     * @returns {Observable<any>}
+     *
+     * @memberOf PlanillaGastosMensualesService
+     */
     PlanillaGastosMensualesService.prototype.ActualizarPago = function (pago) {
         var jsonObject = {
             Vencimiento: pago.Vencimiento.toLocaleDateString("es-ar"),
@@ -58,11 +66,32 @@ var PlanillaGastosMensualesService = (function () {
         return this.http.post(this.ServicesBaseAddress + this.GoogleDriveService + "pago", jsonObject)
             .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });
     };
+    /**
+     * Obtiene un arreglo con las planillas disponibles
+     *
+     * @returns {Observable<model.Planilla[]>}
+     *
+     * @memberOf PlanillaGastosMensualesService
+     */
+    PlanillaGastosMensualesService.prototype.ObtenerPlanillasDisponibles = function () {
+        return this.http.get(this.ServicesBaseAddress + this.GoogleDriveService + "files")
+            .map(function (res) {
+            var body = res.json();
+            var result = model.Planilla[body.filesFound.length];
+            for (var index = 0; index < body.fileFound.length; index++) {
+                result[index] = new model.Planilla(body.fileFound.year, body.fileFound.key);
+            }
+            console.log("Planillas encontradas:");
+            console.log(result);
+            return result;
+        })
+            .catch(function (error) { return Rx_1.Observable.throw(error || 'Server error'); });
+    };
     /*** private methods *************************************************************************/
     PlanillaGastosMensualesService.prototype.ExtractPlanilla = function (res) {
         //TODO: tengo que construir el factory acá, porque parece que el objecto que ejecuta la acción no es PlanillaGastosMensualesService
         if (this.planillaGastosMensualesFactory === undefined) {
-            this.planillaGastosMensualesFactory = new planillaGastosMensualesFactory_1.PlanillaGastosMensualesFactory();
+            this.planillaGastosMensualesFactory = new model.PlanillaGastosMensualesFactory();
         }
         var body = res.json();
         console.log("resultado sin convertir:");

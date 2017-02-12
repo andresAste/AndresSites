@@ -16,11 +16,12 @@ var http_1 = require('@angular/http');
 var forms_1 = require('@angular/forms');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var app_component_1 = require('./app.component');
-var home_component_1 = require('./home.component');
+var gastos_component_1 = require('./gastos.component');
 var deudasMes_component_1 = require('./deudasMes.component');
 var calendario_component_1 = require('./calendario.component');
 var compras_component_1 = require('./compras.component');
 var editarPago_component_1 = require('./editarPago.component');
+var home_component_1 = require('./home.component');
 var framework = require('./framework/index');
 var spinner = require('ng2-spin-kit-new/app/spinners');
 var ng2_file_upload_1 = require('ng2-file-upload');
@@ -35,12 +36,12 @@ var AppModule = (function () {
         core_1.NgModule({
             imports: [platform_browser_1.BrowserModule, http_1.HttpModule, forms_1.FormsModule, ng_bootstrap_1.NgbModule.forRoot(),
                 router_1.RouterModule.forRoot([
-                    { path: 'home', component: home_component_1.HomeComponent },
+                    { path: 'gastos', component: gastos_component_1.GastosComponent },
                     { path: 'compras', component: compras_component_1.ComprasComponent },
-                    { path: '', component: home_component_1.HomeComponent }
+                    { path: '', component: gastos_component_1.GastosComponent }
                 ])],
             providers: [{ provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }],
-            declarations: [app_component_1.AppComponent, home_component_1.HomeComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, editarPago_component_1.EditarPagoComponent,
+            declarations: [app_component_1.AppComponent, gastos_component_1.GastosComponent, deudasMes_component_1.DeudasMesComponent, calendario_component_1.CalendarioComponent, compras_component_1.ComprasComponent, editarPago_component_1.EditarPagoComponent, home_component_1.HomeComponent,
                 framework.ProgresoModal, framework.ArchivoUploader,
                 ng2_file_upload_1.FileSelectDirective,
                 spinner.RotatingPlaneComponent,

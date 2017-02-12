@@ -7,3 +7,4 @@ export * from './pagoMensual';
 export * from './pagosAnualConcepto';
 export * from './planillaGastosMensuales';
 export * from './planillaGastosMensualesFactory';
+export * from './planilla';

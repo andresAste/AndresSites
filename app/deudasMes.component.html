@@ -10,8 +10,6 @@
                 <th class="gm-concepto">Concepto</th>
                 <th class="gm-vencimiento">Vencimiento</th>
                 <th class="gm-monto">Monto</th>
-                <th class="gm-pagado">Pagado</th>
-                <th class="gm-esPagoAnual">Es Pago Anual</th>
                 <th>Código Pago</th>
                 <th>Comprobante de pago</th>
                 <th>Origen</th>
@@ -21,8 +19,6 @@
                 <td>{{gastoMensual.Concepto.Concepto}}</td>
                 <td>{{gastoMensual.Vencimiento.toLocaleDateString("es-ar")}}</td>
                 <td>{{gastoMensual.Monto}}</td>
-                <td>{{gastoMensual.Pagado}}</td>
-                <td>{{gastoMensual.EsPagoAnual}}</td>
                 <td>{{gastoMensual.Concepto.CodigoPago}}</td>
                 <td>
                     <div *ngIf="TieneLinksParaSubirArchivos(gastoMensual)">

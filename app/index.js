@@ -6,6 +6,7 @@ __export(require('./calendario.component'));
 __export(require('./compras.component'));
 __export(require('./deudasMes.component'));
 __export(require('./editarPago.component'));
-__export(require('./home.component'));
+__export(require('./gastos.component'));
 __export(require('./app.component'));
+__export(require('./home.component'));
 //# sourceMappingURL=index.js.map
